@@ -46,6 +46,7 @@ public class OnTouchListener implements View.OnTouchListener {
 							new ViewGroup.MarginLayoutParams(
 									LinearLayout.LayoutParams.WRAP_CONTENT,
 									LinearLayout.LayoutParams.WRAP_CONTENT));
+
 					lp.setMargins((int)event.getX(), (int)event.getY(), 0, 0);
 
 					v.setLayoutParams(lp);
