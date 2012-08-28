@@ -1,11 +1,14 @@
 package eng.android.chess.views;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -14,93 +17,109 @@ import android.view.View;
  * @author augusteiner
  *
  */
-public class Peca extends View
-{
+public class Peca extends View {
 
-    private Tabuleiro tabuleiro;
-    private Paint pPaint;
+        private Tabuleiro tabuleiro;
+        private Paint pPaint;
 
-    /**
-     * @param context
-     * @param attrs
-     * @param defStyle
-     */
-    public Peca(Context context, AttributeSet attrs, int defStyle)
-    {
-        super(context, attrs, defStyle);
+        /**
+         * @param context
+         * @param attrs
+         * @param defStyle
+         */
+        public Peca(Context context, AttributeSet attrs, int defStyle) {
+                super(context, attrs, defStyle);
 
-        initPeca();
-    }
+                initPeca();
+        }
 
-    /**
-     * @param context
-     * @param attrs
-     */
-    public Peca(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
+        /**
+         * @param context
+         * @param attrs
+         */
+        public Peca(Context context, AttributeSet attrs) {
+                super(context, attrs);
 
-        initPeca();
-    }
+                initPeca();
+        }
 
-    /**
-     * @param context
-     */
-    public Peca(Context context)
-    {
-        super(context);
+        /**
+         * @param context
+         */
+        public Peca(Context context) {
+                super(context);
 
-        initPeca();
-    }
+                initPeca();
+        }
 
-    /**
-     * @param tabuleiro
-     */
-    public void setTabuleiro(Tabuleiro tabuleiro)
-    {
-        this.tabuleiro = tabuleiro;
-    }
+        /**
+         * @param tabuleiro
+         */
+        public void setTabuleiro(Tabuleiro tabuleiro) {
+                this.tabuleiro = tabuleiro;
+        }
 
-    /**
+        /**
      *
      */
-    private void initPeca()
-    {
-        pPaint = new Paint();
+        private void initPeca() {
+                pPaint = new Paint();
+        }
 
-        setOnTouchListener(new eng.android.chess.views.listeners.OnTouchListener());
-    }
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.view.View#onTouchEvent(android.view.MotionEvent)
+         */
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onDraw(android.graphics.Canvas)
-     */
-    @Override
-    protected void onDraw(Canvas canvas)
-    {
-        super.onDraw(canvas);
+                switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN :
 
-        pPaint.setColor(Color.LTGRAY);
-        pPaint.setStyle(Style.FILL);
+                                ClipData data = ClipData.newPlainText("Peca", "Move");
+                                DragShadowBuilder shadowBuilder = new DragShadowBuilder(this);
+                                Object myLocalState = this;
+                                int flags = 0;
 
-        int tPlaceSide = 60;// tabuleiro.getPlaceSide();
-        canvas.drawCircle(
-            tPlaceSide / 2,
-            tPlaceSide / 2,
-            tPlaceSide / 2 - 4,
-            pPaint
-        );
-    }
+                                setVisibility(View.INVISIBLE);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onMeasure(int, int)
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        setMeasuredDimension(getLayoutParams().width, getLayoutParams().height);
-    }
+                                startDrag(data, shadowBuilder, myLocalState, flags);
+
+                                return true;
+                        case MotionEvent.ACTION_UP :
+                                setVisibility(View.VISIBLE);
+                return true;
+                }
+
+                // TODO Auto-generated method stub
+                return super.onTouchEvent(event);
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.view.View#onDraw(android.graphics.Canvas)
+         */
+        @Override
+        protected void onDraw(Canvas canvas) {
+                super.onDraw(canvas);
+
+                pPaint.setColor(Color.LTGRAY);
+                pPaint.setStyle(Style.FILL);
+
+                int tPlaceSide = 60;// tabuleiro.getPlaceSide();
+                canvas.drawCircle(tPlaceSide / 2, tPlaceSide / 2, tPlaceSide / 2 - 4,
+                                pPaint);
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.view.View#onMeasure(int, int)
+         */
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                setMeasuredDimension(getLayoutParams().width, getLayoutParams().height);
+        }
 }

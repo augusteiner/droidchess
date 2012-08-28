@@ -10,8 +10,11 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 
 /**
  * @author augusteiner
@@ -19,120 +22,141 @@ import android.view.View;
  */
 public class Tabuleiro extends View {
 
-	private Rect tPlaceRect;
-	private Paint tPaint;
-	private int tPlaceSide;
+    private Rect tPlaceRect;
+    private Paint tPaint;
+    private int tPlaceSide;
+    private DisplayMetrics tDM;
 
-	/**
-	 * @param context
-	 */
-	public Tabuleiro(Context context) {
-		super(context);
+    /**
+     * @param context
+     */
+    public Tabuleiro(Context context) {
+        super(context);
 
-		initTabuleiro();
-	}
+        initTabuleiro();
+    }
 
-	/**
-	 * @param context
-	 * @param attrs
-	 */
-	public Tabuleiro(Context context, AttributeSet attrs) {
-		super(context, attrs);
+    /**
+     * @param context
+     * @param attrs
+     */
+    public Tabuleiro(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
-		initTabuleiro();
-	}
+        initTabuleiro();
+    }
 
-	/**
-	 * @param context
-	 * @param attrs
-	 * @param defStyle
-	 */
-	public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+    /**
+     * @param context
+     * @param attrs
+     * @param defStyle
+     */
+    public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
 
-		initTabuleiro();
-	}
+        initTabuleiro();
+    }
 
-	/**
-	 * Prepara objetos para desenho deste tabuleiro.
-	 */
-	protected void initTabuleiro() {
-		tPlaceRect = new Rect();
-		tPaint = new Paint();
-	}
+    /**
+     * Prepara objetos para desenho deste tabuleiro.
+     */
+    protected void initTabuleiro() {
+        tPlaceRect = new Rect();
+        tPaint = new Paint();
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.view.View#onMeasure(int, int)
-	 */
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(getLayoutParams().width + 1,
-				getLayoutParams().height + 2);
-	}
+        tDM = getContext().getResources().getDisplayMetrics();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.view.View#onDragEvent(android.view.DragEvent)
-	 */
-	@Override
-	public boolean onDragEvent(DragEvent event) {
-		switch (event.getAction()) {
-			case DragEvent.ACTION_DROP :
-				Peca p = (Peca)event.getLocalState();
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.ViewGroup#onLayout(boolean, int, int, int, int)
+     */
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        //
+    }
 
-				if (p != null){
-					//
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onMeasure(int, int)
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(tDM.widthPixels + 5, tDM.widthPixels);
+    }
 
-					return true;
-				}
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onDragEvent(android.view.DragEvent)
+     */
+    @Override
+    public boolean onDragEvent(DragEvent event) {
+        Peca p = (Peca) event.getLocalState();
 
-				break;
-			default :
-				return false;
-		}
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DROP :
+                if (p != null) {
+                    float x = (int) (event.getX() / p.getWidth())
+                            * p.getWidth();
+                    float y = (int) (event.getY() / p.getHeight())
+                            * p.getHeight();
 
-		// TODO Auto-generated method stub
-		return super.onDragEvent(event);
-	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.view.View#onDraw(android.graphics.Canvas)
-	 */
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
+                    p.setTranslationX(x);
+                    p.setTranslationY(y);
 
-		tPlaceSide = getLayoutParams().width / 8;
-		tPaint.setColor(Color.BLACK);
-		tPaint.setStyle(Style.FILL);
+                    p.invalidate();
 
-		for (int i = 0, j; i < 8; i++) {
-			for (j = i % 2; j < 8; j += 2) {
-				tPlaceRect.set(i * tPlaceSide,// left,
-						j * tPlaceSide,// top,
-						(i + 1) * tPlaceSide,// right,
-						(j + 1) * tPlaceSide// bottom
-				);
+                    return true;
+                }
 
-				canvas.drawRect(tPlaceRect, tPaint);
-			}
-		}
+                return false;
+            case DragEvent.ACTION_DRAG_ENDED :
+                p.setVisibility(View.VISIBLE);
 
-		tPlaceRect.set(0, 0, getLayoutParams().width, getLayoutParams().height);
-		tPaint.setStyle(Style.STROKE);
-		canvas.drawRect(tPlaceRect, tPaint);
-	}
+                return true;
+            default :
+                return true;
+        }
+    }
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onDraw(android.graphics.Canvas)
+     */
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-	/**
-	 * Retorna o tamanho de uma posição do tabuleiro.
-	 *
-	 * @return
-	 */
-	public int getPlaceSide() {
-		return tPlaceSide;
-	}
+        tPlaceSide = (tDM.widthPixels / 8);
+        tPaint.setColor(Color.BLACK);
+        tPaint.setStyle(Style.FILL);
+
+        for (int i = 0, j; i < 8; i++) {
+            for (j = i % 2; j < 8; j += 2) {
+                tPlaceRect.set(i * tPlaceSide,// left,
+                        j * tPlaceSide,// top,
+                        (i + 1) * tPlaceSide,// right,
+                        (j + 1) * tPlaceSide// bottom
+                );
+
+                canvas.drawRect(tPlaceRect, tPaint);
+            }
+        }
+
+        tPlaceRect.set(0, 0, tDM.widthPixels + 1, tDM.widthPixels + 1);
+        tPaint.setStyle(Style.STROKE);
+        canvas.drawRect(tPlaceRect, tPaint);
+    }
+
+    /**
+     * Retorna o tamanho de uma posição do tabuleiro.
+     *
+     * @return
+     */
+    public int getPlaceSide() {
+        return tPlaceSide;
+    }
 }
