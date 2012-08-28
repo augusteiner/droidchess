@@ -41,6 +41,22 @@ public interface IPeca {
     int getY();
 
     /**
+     * @param x
+     */
+    void setX(int x);
+
+    /**
+     * @param y
+     */
+    void setY(int y);
+
+    /**
+     * @param x
+     * @param y
+     */
+    void set(int x, int y);
+
+    /**
      * @return Retorna o tipo desta peça.
      */
     Tipo getTipo();

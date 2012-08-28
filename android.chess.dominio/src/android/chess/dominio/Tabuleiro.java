@@ -4,6 +4,9 @@
 package android.chess.dominio;
 
 import static java.lang.Math.abs;
+
+import java.util.Iterator;
+
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
 import android.chess.dominio.interfaces.IPeca;
@@ -23,7 +26,7 @@ import android.chess.dominio.pecas.Torre;
  * @author augusteiner
  */
 public class Tabuleiro {
-    private Peca[][] pecas;
+    private IPeca[][] pecas;
     private Jogador[] jogadores;
 
     /**
@@ -47,14 +50,14 @@ public class Tabuleiro {
             linha[0] = new Torre(cor);
             linha[7] = new Torre(cor);
 
-            linha[1] = new Bispo(cor);
-            linha[6] = new Bispo(cor);
+            linha[1] = new Cavalo(cor);
+            linha[6] = new Cavalo(cor);
 
-            linha[2] = new Cavalo(cor);
-            linha[5] = new Cavalo(cor);
+            linha[2] = new Bispo(cor);
+            linha[5] = new Bispo(cor);
 
-            linha[abs(fLinha - 3)] = new Rei(cor);
-            linha[abs(fLinha - 4)] = new Rainha(cor);
+            linha[3] = new Rainha(cor);
+            linha[4] = new Rei(cor);
 
             for (int j = 0; j < 8; j++) {
                 pecas[abs(fLinha - 1)][j] = new Peao(cor);
@@ -124,7 +127,12 @@ public class Tabuleiro {
                 throw new MovimentoInvalido(peca);
         }
 
+		//TODO O set para null e depois dest para peça deve ser feito dentro do método tomar(...) ?
+        pecas[peca.getX()][peca.getY()] = null;
+
         jogada.realizar();
+
+        pecas[jogada.getDestX()][jogada.getDestY()] = peca;
 
         tomar(jogada);
     }
@@ -237,5 +245,54 @@ public class Tabuleiro {
      */
     private boolean movimentoVertical(Jogada jogada) {
         return jogada.getPeca().getX() == jogada.getDestX();
+    }
+
+    /**
+     * @return
+     */
+    public Iterator<IPeca> getPecas() {
+        return new Iterator<IPeca>() {
+            private int i = 0;
+            private int j = -1;
+            /*
+             * (non-Javadoc)
+             *
+             * @see java.util.Iterator#hasNext()
+             */
+            @Override
+            public boolean hasNext() {
+                // TODO Auto-generated method stub
+                return i < pecas.length || j < pecas[0].length;
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see java.util.Iterator#next()
+             */
+            @Override
+            public IPeca next() {
+                j++;
+
+                if (j > 7)
+                {
+                    i++;
+                    j = 0;
+                }
+
+                return pecas[i][j];
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see java.util.Iterator#remove()
+             */
+            @Override
+            public void remove() {
+                // TODO Auto-generated method stub
+
+            }
+        };
     }
 }

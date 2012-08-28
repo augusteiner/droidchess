@@ -63,4 +63,13 @@ public class Partida {
 
         tabuleiro.mover(orig, destX, destY);
     }
+
+    /**
+     * Retorna o tabuleiro desta partida.
+     *
+     * @return {@link Tabuleiro}
+     */
+    public Tabuleiro getTabuleiro() {
+        return tabuleiro;
+    }
 }
