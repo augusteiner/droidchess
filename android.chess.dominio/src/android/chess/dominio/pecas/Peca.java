@@ -51,7 +51,6 @@ public abstract class Peca implements IPeca {
     public void setX(int x) {
         this.x = x;
     }
-
     /**
      * Altera a coordenada y atual desta peça.
      *
@@ -60,6 +59,17 @@ public abstract class Peca implements IPeca {
      */
     public void setY(int y) {
         this.y = y;
+    }
+
+    /**
+     * Altera as duas coordenadas atuais desta peça.
+     *
+     * @param x
+     * @param y
+     */
+    public void set(int x, int y) {
+        setX(x);
+        setY(y);
     }
 
     /**
@@ -88,14 +98,10 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public String toString() {
-        return String.format(
-            "%s %s (%d:%d)",
+        return String.format("%s %s (%d:%d)",
 
-            this.getClass().getName(),
-            this.getCor(),
+        this.getClass().getName(), this.getCor(),
 
-            this.getX(),
-            this.getY()
-        );
+        this.getX(), this.getY());
     }
 }

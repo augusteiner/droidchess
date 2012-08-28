@@ -62,6 +62,14 @@ public class Tabuleiro {
 
             fLinha = 7;
         }
+
+        for (int i = 0, j; i < 2; i++) {
+            for (j = 0; j < 8; j++) {
+                pecas[i][j].set(i, j);
+
+                pecas[7 - i][j].set(7 - i, j);
+            }
+        }
     }
 
     /**
@@ -99,21 +107,21 @@ public class Tabuleiro {
         // Peças que tem o movimento limitado
         // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
-        case Rei:
-            // Checar condições de cheque e cheque mate
-            break;
-        case Rainha:
-            break;
-        case Peao:
-            ok = movimentoDiagonal(jogada);
+            case Rei :
+                // Checar condições de cheque e cheque mate
+                break;
+            case Rainha :
+                break;
+            case Peao :
+                ok = movimentoDiagonal(jogada);
 
-            break;
-        case Torre:
-            ok = !movimentoDiagonal(jogada) && movimentoHorizVert(jogada);
+                break;
+            case Torre :
+                ok = !movimentoDiagonal(jogada) && movimentoHorizVert(jogada);
 
-            break;
-        default:
-            throw new MovimentoInvalido(peca);
+                break;
+            default :
+                throw new MovimentoInvalido(peca);
         }
 
         jogada.realizar();
@@ -158,37 +166,76 @@ public class Tabuleiro {
      *
      */
     protected void onTomada(IPeca peca, IPeca outra) {
-        marcarPonto(peca.getCor());
+        marcarPonto(peca);
     }
 
     /**
      * @param cor
      */
-    private void marcarPonto(IPeca.Cor cor) {
+    private void marcarPonto(IPeca peca) {
         // Índice do jogador a marcar pontos.
-        int jIndex = abs(cor.compareTo(Cor.Branca));
+        int jIndex = abs(peca.getCor().compareTo(Cor.Branca));
 
         // partida.marcar(jIndex);
         // jogadores[jIndex].marcar();
     }
 
     /**
-     * @param peca
-     * @param destX
-     * @param destY
-     * @return
+     * Retorna se o movimento da jogada está sendo realizado nas diagonais.
+     *
+     * @param jogada
+     *            Jogada cujo movimento está sendo testado.
+     *
+     * @return {@link Boolean} True caso o movimento seja na diagonal, False
+     *         caso contrário.
      */
     private boolean movimentoDiagonal(Jogada jogada) {
-        return false;
+        int origX = jogada.getPeca().getX();
+        int origY = jogada.getPeca().getY();
+
+        int destX = jogada.getDestX();
+        int destY = jogada.getDestY();
+
+        return abs(origX - destX) == abs(origY - destY);
     }
 
     /**
-     * @param peca
-     * @param destX
-     * @param destY
-     * @return
+     * Retorna se o movimento da jogada é vertical ou horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja horizontal ou vertical
+     *         e False caso contrário.
      */
     private boolean movimentoHorizVert(Jogada jogada) {
-        return false;
+        return movimentoHorizontal(jogada) || movimentoVertical(jogada);
+    }
+
+    /**
+     * Retorna se o movimento da jogada é horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja na horizontal, False
+     *         caso contrário.
+     */
+    private boolean movimentoHorizontal(Jogada jogada) {
+        return jogada.getPeca().getY() == jogada.getDestY();
+    }
+
+    /**
+     * Retorna se o movimento da jogada é vertical.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     *
+     * @return {@link Boolean} True caso o movimento seja na vertical, False
+     *         caso contrário.
+     */
+    private boolean movimentoVertical(Jogada jogada) {
+        return jogada.getPeca().getX() == jogada.getDestX();
     }
 }

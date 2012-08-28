@@ -21,6 +21,6 @@ public class Application {
     private static void testJogadas() throws MovimentoInvalido, PecaNaoEncontrada {
         Partida p = new Partida();
 
-        p.jogada(1, 1, 1, 2);
+        p.jogada(1, 0, 2, 0);
     }
 }
