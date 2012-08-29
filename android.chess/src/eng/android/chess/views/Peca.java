@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -19,6 +20,7 @@ import android.view.View;
 public class Peca extends View {
 
     private Paint pPaint;
+    private DisplayMetrics pDM;
 
     /**
      * @param context
@@ -55,6 +57,8 @@ public class Peca extends View {
      */
     private void initPeca() {
         pPaint = new Paint();
+
+        pDM = getContext().getResources().getDisplayMetrics();
     }
 
     /*
@@ -65,7 +69,7 @@ public class Peca extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        switch (event.getAction()) {
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN :
 
                 ClipData data = ClipData.newPlainText("Peca", "Move");
@@ -79,12 +83,14 @@ public class Peca extends View {
 
                 return true;
             case MotionEvent.ACTION_UP :
-                setVisibility(View.VISIBLE);
                 return true;
-        }
+            case MotionEvent.ACTION_CANCEL :
+                setVisibility(View.VISIBLE);
 
-        // TODO Auto-generated method stub
-        return super.onTouchEvent(event);
+                return true;
+            default :
+                return super.onTouchEvent(event);
+        }
     }
 
     /*
@@ -99,9 +105,9 @@ public class Peca extends View {
         pPaint.setColor(Color.LTGRAY);
         pPaint.setStyle(Style.FILL);
 
-        int tPlaceSide = 60;// tabuleiro.getPlaceSide();
-        canvas.drawCircle(tPlaceSide / 2, tPlaceSide / 2, tPlaceSide / 2 - 4,
-                pPaint);
+        int width = getMeasuredWidth();
+
+        canvas.drawCircle(width / 2, width / 2, width / 2 - 4, pPaint);
     }
 
     /*
@@ -111,6 +117,6 @@ public class Peca extends View {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getLayoutParams().width, getLayoutParams().height);
+        setMeasuredDimension(pDM.widthPixels / 8, pDM.widthPixels / 8);
     }
 }

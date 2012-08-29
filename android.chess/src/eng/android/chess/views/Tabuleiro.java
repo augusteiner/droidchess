@@ -12,13 +12,14 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
-import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TableLayout;
 
 /**
  * @author augusteiner
  *
  */
-public class Tabuleiro extends View {
+public class Tabuleiro extends TableLayout {
 
     private Rect tPlaceRect;
     private Paint tPaint;
@@ -49,11 +50,11 @@ public class Tabuleiro extends View {
      * @param attrs
      * @param defStyle
      */
-    public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-
-        initTabuleiro();
-    }
+//    public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
+//        super(context, attrs, defStyle);
+//
+//        initTabuleiro();
+//    }
 
     /**
      * Prepara objetos para desenho deste tabuleiro.
@@ -68,21 +69,14 @@ public class Tabuleiro extends View {
     /*
      * (non-Javadoc)
      *
-     * @see android.view.ViewGroup#onLayout(boolean, int, int, int, int)
-     */
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(tDM.widthPixels + 5, tDM.widthPixels);
+        if (!isInEditMode())
+            setMeasuredDimension(tDM.widthPixels, tDM.widthPixels);
+        else
+            setMeasuredDimension(480, 480);
     }
 
     /*
@@ -102,6 +96,9 @@ public class Tabuleiro extends View {
                     float y = (int) (event.getY() / p.getHeight())
                             * p.getHeight();
 
+                    p.setLayoutParams(new ViewGroup.LayoutParams(p.getWidth(),
+                            p.getHeight()));
+
                     p.setTranslationX(x);
                     p.setTranslationY(y);
 
@@ -112,8 +109,6 @@ public class Tabuleiro extends View {
 
                 return false;
             case DragEvent.ACTION_DRAG_ENDED :
-                p.setVisibility(View.VISIBLE);
-
                 return true;
             default :
                 return true;
@@ -128,7 +123,9 @@ public class Tabuleiro extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        tPlaceSide = (tDM.widthPixels / 8);
+        int width = getMeasuredWidth();
+
+        tPlaceSide = (width / 8);
         tPaint.setColor(Color.BLACK);
         tPaint.setStyle(Style.FILL);
 
@@ -144,17 +141,14 @@ public class Tabuleiro extends View {
             }
         }
 
-        tPlaceRect.set(0, 0, tDM.widthPixels + 1, tDM.widthPixels + 1);
+        tPlaceRect.set(0, 0, width + 1, width + 1);
         tPaint.setStyle(Style.STROKE);
         canvas.drawRect(tPlaceRect, tPaint);
     }
 
-    /**
-     * Retorna o tamanho de uma posição do tabuleiro.
-     *
-     * @return
-     */
-    public int getPlaceSide() {
-        return tPlaceSide;
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        // TODO Auto-generated method stub
+        super.onLayout(changed, l, t, r, b);
     }
 }
