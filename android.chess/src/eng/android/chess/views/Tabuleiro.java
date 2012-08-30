@@ -9,11 +9,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 
 /**
@@ -25,6 +26,7 @@ public class Tabuleiro extends View {
     private Rect tPlaceRect;
     private Paint tPaint;
     private DisplayMetrics tDM;
+    private boolean moving;
 
     /**
      * @param context
@@ -76,6 +78,23 @@ public class Tabuleiro extends View {
         Context context = getContext();
 
         tDM = context.getResources().getDisplayMetrics();
+
+        // Peca peca = null;
+        //
+        // int width = getSquareSide();
+        //
+        // for (int i = 0, j; i < 1; i++) {
+        // for (j = 0; j < 1; j++) {
+        // peca = new Peca(context);
+        // LayoutParams lp = new LayoutParams(width, width);
+        //
+        // lp.leftMargin = width * j;
+        // lp.topMargin = width * i;
+        //
+        // //((ViewGroup) getContext().get).addView(peca, lp);
+        // //
+        // }
+        // }
     }
 
     /*
@@ -88,7 +107,12 @@ public class Tabuleiro extends View {
         Peca p = (Peca) event.getLocalState();
 
         switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_ENTERED:
+                moving = true;
+                invalidate();
             case DragEvent.ACTION_DROP :
+                moving = false;
+
                 if (p != null) {
                     int x = (int) (event.getX() / p.getWidth());
                     int y = (int) (event.getY() / p.getHeight());
@@ -118,6 +142,7 @@ public class Tabuleiro extends View {
 
                 return false;
             case DragEvent.ACTION_DRAG_ENDED :
+                invalidate();
                 return true;
             default :
                 return true;
@@ -147,7 +172,22 @@ public class Tabuleiro extends View {
                         (j + 1) * tPlaceSide// bottom
                 );
 
-                canvas.drawRect(tPlaceRect, tPaint);
+                if (moving && i == 3) {
+                    canvas.drawRect(tPlaceRect, tPaint);
+
+                    int color = tPaint.getColor();
+                    float strokeWidth = tPaint.getStrokeWidth();
+
+                    tPaint.setColor(Color.parseColor("#661696C9"));
+                    tPaint.setStrokeWidth(5.0F);
+
+                    canvas.drawRect(tPlaceRect, tPaint);
+
+                    tPaint.setColor(color);
+                    tPaint.setStrokeWidth(strokeWidth);
+                } else {
+                    canvas.drawRect(tPlaceRect, tPaint);
+                }
             }
         }
 
