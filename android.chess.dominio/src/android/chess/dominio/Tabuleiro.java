@@ -127,7 +127,7 @@ public class Tabuleiro {
                 throw new MovimentoInvalido(peca);
         }
 
-		//TODO O set para null e depois dest para peça deve ser feito dentro do método tomar(...) ?
+        //TODO O set para null e depois dest para peça deve ser feito dentro do método tomar(...) ?
         pecas[peca.getX()][peca.getY()] = null;
 
         jogada.realizar();

@@ -1,40 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical" >
 
     <eng.android.chess.views.Tabuleiro
-        android:id="@+id/tabuleiro1"
-        android:layout_width="match_parent"
+        android:id="@+id/tabuleiro"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:columnCount="1" >
+        android:layout_centerVertical="true" />
 
-        <eng.android.chess.views.Peca
-            android:id="@+id/peca3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="right"
-            android:layout_row="0" />
+    <eng.android.chess.views.Peca
+        android:id="@+id/peca1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/tabuleiro" />
 
-        <eng.android.chess.views.Peca
-            android:id="@+id/peca2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="right|bottom"
-            android:layout_row="0" />
-
-        <eng.android.chess.views.Peca
-            android:id="@+id/peca1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="left"
-            android:layout_row="0" />
-    </eng.android.chess.views.Tabuleiro>
+    <eng.android.chess.views.Peca
+        android:id="@+id/peca2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tabuleiro"
+        android:layout_marginLeft="40dp" />
 
 </RelativeLayout>

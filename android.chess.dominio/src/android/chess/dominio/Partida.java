@@ -33,6 +33,22 @@ public class Partida {
     }
 
     /**
+     * @return
+     */
+    public Jogador[] getJogadores() {
+        return jogadores;
+    }
+
+    /**
+     * Retorna o tabuleiro desta partida.
+     *
+     * @return {@link Tabuleiro}
+     */
+    public Tabuleiro getTabuleiro() {
+        return tabuleiro;
+    }
+
+    /**
      *
      */
     private void initJogadores(Jogador j1, Jogador j2) {
@@ -40,13 +56,6 @@ public class Partida {
 
         jogadores[0] = j1;
         jogadores[1] = j2;
-    }
-
-    /**
-     * @return
-     */
-    public Jogador[] getJogadores() {
-        return jogadores;
     }
 
     /**
@@ -62,14 +71,5 @@ public class Partida {
         IPeca orig = tabuleiro.peca(origX, origY);
 
         tabuleiro.mover(orig, destX, destY);
-    }
-
-    /**
-     * Retorna o tabuleiro desta partida.
-     *
-     * @return {@link Tabuleiro}
-     */
-    public Tabuleiro getTabuleiro() {
-        return tabuleiro;
     }
 }

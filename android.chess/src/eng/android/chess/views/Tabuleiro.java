@@ -12,18 +12,18 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
-import android.view.ViewGroup;
-import android.widget.TableLayout;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
  *
  */
-public class Tabuleiro extends TableLayout {
+public class Tabuleiro extends View {
 
     private Rect tPlaceRect;
     private Paint tPaint;
-    private int tPlaceSide;
     private DisplayMetrics tDM;
 
     /**
@@ -50,11 +50,18 @@ public class Tabuleiro extends TableLayout {
      * @param attrs
      * @param defStyle
      */
-//    public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
-//        super(context, attrs, defStyle);
-//
-//        initTabuleiro();
-//    }
+    public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        initTabuleiro();
+    }
+
+    /**
+     * @return
+     */
+    public int getSquareSide() {
+        return (getMeasuredWidth() / 8);
+    }
 
     /**
      * Prepara objetos para desenho deste tabuleiro.
@@ -62,21 +69,13 @@ public class Tabuleiro extends TableLayout {
     protected void initTabuleiro() {
         tPlaceRect = new Rect();
         tPaint = new Paint();
+        // partida = new Partida();
 
-        tDM = getContext().getResources().getDisplayMetrics();
-    }
+        setBackgroundColor(Color.WHITE);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onMeasure(int, int)
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (!isInEditMode())
-            setMeasuredDimension(tDM.widthPixels, tDM.widthPixels);
-        else
-            setMeasuredDimension(480, 480);
+        Context context = getContext();
+
+        tDM = context.getResources().getDisplayMetrics();
     }
 
     /*
@@ -91,16 +90,26 @@ public class Tabuleiro extends TableLayout {
         switch (event.getAction()) {
             case DragEvent.ACTION_DROP :
                 if (p != null) {
-                    float x = (int) (event.getX() / p.getWidth())
-                            * p.getWidth();
-                    float y = (int) (event.getY() / p.getHeight())
-                            * p.getHeight();
+                    int x = (int) (event.getX() / p.getWidth());
+                    int y = (int) (event.getY() / p.getHeight());
 
-                    p.setLayoutParams(new ViewGroup.LayoutParams(p.getWidth(),
-                            p.getHeight()));
+                    int leftMargin = x * p.getWidth();
+                    int topMargin = y * p.getHeight();
 
-                    p.setTranslationX(x);
-                    p.setTranslationY(y);
+                    // p.getLayoutParams() utilizado para não perder a
+                    // referência
+                    // de alinhamento com a view do tabuleiro
+                    LayoutParams lp = (LayoutParams) p.getLayoutParams();
+
+                    if (lp != null) {
+                        lp.leftMargin = leftMargin;
+                        lp.topMargin = topMargin;
+
+                        // p.setTranslationX(x);
+                        // p.setTranslationY(y);
+
+                        p.setLayoutParams(lp);
+                    }
 
                     p.invalidate();
 
@@ -114,6 +123,7 @@ public class Tabuleiro extends TableLayout {
                 return true;
         }
     }
+
     /*
      * (non-Javadoc)
      *
@@ -124,8 +134,8 @@ public class Tabuleiro extends TableLayout {
         super.onDraw(canvas);
 
         int width = getMeasuredWidth();
+        int tPlaceSide = getSquareSide();
 
-        tPlaceSide = (width / 8);
         tPaint.setColor(Color.BLACK);
         tPaint.setStyle(Style.FILL);
 
@@ -146,9 +156,16 @@ public class Tabuleiro extends TableLayout {
         canvas.drawRect(tPlaceRect, tPaint);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onMeasure(int, int)
+     */
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        // TODO Auto-generated method stub
-        super.onLayout(changed, l, t, r, b);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (!isInEditMode())
+            setMeasuredDimension(tDM.widthPixels, tDM.widthPixels);
+        else
+            setMeasuredDimension(480, 480);
     }
 }
