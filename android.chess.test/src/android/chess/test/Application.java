@@ -60,9 +60,11 @@ public class Application {
         Partida p = new Partida();
 
         // Jogada simples entre dois peões.
-        p.jogada(1, 0, 3, 0);
-        p.jogada(6, 1, 4, 1);
-        p.jogada(3, 0, 4, 1);
+        // p.jogada(1, 0, 3, 0);
+        // p.jogada(6, 1, 4, 1);
+        // p.jogada(3, 0, 4, 1);
+
+        p.jogada(0, 6, 2, 6);
 
         printTabuleiro(p.getTabuleiro());
     }

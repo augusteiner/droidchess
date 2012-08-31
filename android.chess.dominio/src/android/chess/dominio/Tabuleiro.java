@@ -39,6 +39,54 @@ public class Tabuleiro {
     }
 
     /**
+     * @return
+     */
+    public Iterator<IPeca> getPecas() {
+        return new Iterator<IPeca>() {
+            private int i = 0;
+            private int j = -1;
+            /*
+             * (non-Javadoc)
+             *
+             * @see java.util.Iterator#hasNext()
+             */
+            @Override
+            public boolean hasNext() {
+                // TODO Auto-generated method stub
+                return i < pecas.length || j < pecas[0].length;
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see java.util.Iterator#next()
+             */
+            @Override
+            public IPeca next() {
+                j++;
+
+                if (j > 7) {
+                    i++;
+                    j = 0;
+                }
+
+                return pecas[i][j];
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see java.util.Iterator#remove()
+             */
+            @Override
+            public void remove() {
+                // TODO Auto-generated method stub
+
+            }
+        };
+    }
+
+    /**
      * Inicia peças nas suas devidas posições.
      */
     private void initPecas() {
@@ -73,6 +121,17 @@ public class Tabuleiro {
                 pecas[7 - i][j].set(7 - i, j);
             }
         }
+    }
+
+    /**
+     * @param cor
+     */
+    private void marcarPonto(IPeca peca) {
+        // Índice do jogador a marcar pontos.
+        int jIndex = abs(peca.getCor().compareTo(Cor.Branca));
+
+        // partida.marcar(jIndex);
+        // jogadores[jIndex].marcar();
     }
 
     /**
@@ -123,11 +182,13 @@ public class Tabuleiro {
                 ok = !movimentoDiagonal(jogada) && movimentoHorizVert(jogada);
 
                 break;
+            case Cavalo :
             default :
-                throw new MovimentoInvalido(peca);
+                // throw new MovimentoInvalido(peca);
         }
 
-        //TODO O set para null e depois dest para peça deve ser feito dentro do método tomar(...) ?
+        // TODO O set para null e depois dest para peça deve ser feito dentro do
+        // método tomar(...) ?
         pecas[peca.getX()][peca.getY()] = null;
 
         jogada.realizar();
@@ -135,57 +196,6 @@ public class Tabuleiro {
         pecas[jogada.getDestX()][jogada.getDestY()] = peca;
 
         tomar(jogada);
-    }
-
-    /**
-     * @param jogada
-     * @return
-     * @throws PecaNaoEncontrada
-     */
-    private IPeca peca(Jogada jogada) {
-        try {
-            return peca(jogada.getDestX(), jogada.getDestY());
-        } catch (PecaNaoEncontrada e) {
-            return null;
-        }
-    }
-
-    /**
-     * @param x
-     * @param y
-     * @return
-     */
-    IPeca peca(int x, int y) throws PecaNaoEncontrada {
-        return pecas[x][y];
-    }
-
-    /**
-     * @param jogada
-     * @throws PecaNaoEncontrada
-     */
-    private void tomar(Jogada jogada) {
-        IPeca outra = peca(jogada);
-
-        if (outra != null)
-            onTomada(jogada.getPeca(), outra);
-    }
-
-    /**
-     *
-     */
-    protected void onTomada(IPeca peca, IPeca outra) {
-        marcarPonto(peca);
-    }
-
-    /**
-     * @param cor
-     */
-    private void marcarPonto(IPeca peca) {
-        // Índice do jogador a marcar pontos.
-        int jIndex = abs(peca.getCor().compareTo(Cor.Branca));
-
-        // partida.marcar(jIndex);
-        // jogadores[jIndex].marcar();
     }
 
     /**
@@ -208,19 +218,6 @@ public class Tabuleiro {
     }
 
     /**
-     * Retorna se o movimento da jogada é vertical ou horizontal.
-     *
-     * @param jogada
-     *            Jogada a ser testado o tipo de movimento.
-     *
-     * @return {@link Boolean} True caso o movimento seja horizontal ou vertical
-     *         e False caso contrário.
-     */
-    private boolean movimentoHorizVert(Jogada jogada) {
-        return movimentoHorizontal(jogada) || movimentoVertical(jogada);
-    }
-
-    /**
      * Retorna se o movimento da jogada é horizontal.
      *
      * @param jogada
@@ -231,6 +228,19 @@ public class Tabuleiro {
      */
     private boolean movimentoHorizontal(Jogada jogada) {
         return jogada.getPeca().getY() == jogada.getDestY();
+    }
+
+    /**
+     * Retorna se o movimento da jogada é vertical ou horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja horizontal ou vertical
+     *         e False caso contrário.
+     */
+    private boolean movimentoHorizVert(Jogada jogada) {
+        return movimentoHorizontal(jogada) || movimentoVertical(jogada);
     }
 
     /**
@@ -248,51 +258,42 @@ public class Tabuleiro {
     }
 
     /**
+     *
+     */
+    protected void onTomada(IPeca peca, IPeca outra) {
+        marcarPonto(peca);
+    }
+
+    /**
+     * @param x
+     * @param y
      * @return
      */
-    public Iterator<IPeca> getPecas() {
-        return new Iterator<IPeca>() {
-            private int i = 0;
-            private int j = -1;
-            /*
-             * (non-Javadoc)
-             *
-             * @see java.util.Iterator#hasNext()
-             */
-            @Override
-            public boolean hasNext() {
-                // TODO Auto-generated method stub
-                return i < pecas.length || j < pecas[0].length;
-            }
+    IPeca peca(int x, int y) throws PecaNaoEncontrada {
+        return pecas[x][y];
+    }
 
-            /*
-             * (non-Javadoc)
-             *
-             * @see java.util.Iterator#next()
-             */
-            @Override
-            public IPeca next() {
-                j++;
+    /**
+     * @param jogada
+     * @return
+     * @throws PecaNaoEncontrada
+     */
+    private IPeca peca(Jogada jogada) {
+        try {
+            return peca(jogada.getDestX(), jogada.getDestY());
+        } catch (PecaNaoEncontrada e) {
+            return null;
+        }
+    }
 
-                if (j > 7)
-                {
-                    i++;
-                    j = 0;
-                }
+    /**
+     * @param jogada
+     * @throws PecaNaoEncontrada
+     */
+    private void tomar(Jogada jogada) {
+        IPeca outra = peca(jogada);
 
-                return pecas[i][j];
-            }
-
-            /*
-             * (non-Javadoc)
-             *
-             * @see java.util.Iterator#remove()
-             */
-            @Override
-            public void remove() {
-                // TODO Auto-generated method stub
-
-            }
-        };
+        if (outra != null)
+            onTomada(jogada.getPeca(), outra);
     }
 }
