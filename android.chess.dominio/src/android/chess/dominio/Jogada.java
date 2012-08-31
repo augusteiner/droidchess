@@ -3,6 +3,8 @@ package android.chess.dominio;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IPeca;
 
+
+
 /**
  * @author augusteiner
  *
