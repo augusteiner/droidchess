@@ -1,15 +1,19 @@
 package eng.android.chess.views;
 
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import eng.android.chess.R;
 
 /**
  * Representa graficamente uma peça de um tabuleiro.
@@ -19,16 +23,15 @@ import android.view.View;
  */
 public class Peca extends View {
 
+    private static final String TAG = View.class.getSimpleName();
     private Paint pPaint;
     private DisplayMetrics pDM;
 
     /**
      * @param context
-     * @param attrs
-     * @param defStyle
      */
-    public Peca(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public Peca(Context context) {
+        super(context);
 
         initPeca();
     }
@@ -45,9 +48,11 @@ public class Peca extends View {
 
     /**
      * @param context
+     * @param attrs
+     * @param defStyle
      */
-    public Peca(Context context) {
-        super(context);
+    public Peca(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
 
         initPeca();
     }
@@ -59,38 +64,6 @@ public class Peca extends View {
         pPaint = new Paint();
 
         pDM = getContext().getResources().getDisplayMetrics();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onTouchEvent(android.view.MotionEvent)
-     */
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN :
-
-                ClipData data = ClipData.newPlainText("Peca", "Move");
-                DragShadowBuilder shadowBuilder = new DragShadowBuilder(this);
-                Object myLocalState = this;
-                int flags = 0;
-
-                setVisibility(View.INVISIBLE);
-
-                startDrag(data, shadowBuilder, myLocalState, flags);
-
-                return true;
-            case MotionEvent.ACTION_UP :
-                return true;
-            case MotionEvent.ACTION_CANCEL :
-                setVisibility(View.VISIBLE);
-
-                return true;
-            default :
-                return super.onTouchEvent(event);
-        }
     }
 
     /*
@@ -118,5 +91,68 @@ public class Peca extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(pDM.widthPixels / 8, pDM.widthPixels / 8);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onTouchEvent(android.view.MotionEvent)
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (Build.VERSION.SDK_INT > 11) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN :
+                    startDrag();
+
+                    return true;
+                case MotionEvent.ACTION_UP :
+                    return true;
+                case MotionEvent.ACTION_CANCEL :
+                    setVisibility(View.VISIBLE);
+
+                    return true;
+                default :
+                    return super.onTouchEvent(event);
+            }
+        } else {
+            return startDragOlder(event);
+        }
+    }
+    /**
+     * @return
+     */
+    @TargetApi(11)
+    private boolean startDrag() {
+        ClipData data = ClipData.newPlainText("Peca", "Move");
+        DragShadowBuilder shadowBuilder = new DragShadowBuilder(this);
+        Object myLocalState = this;
+        int flags = 0;
+
+        setVisibility(View.INVISIBLE);
+
+        return startDrag(data, shadowBuilder, myLocalState, flags);
+    }
+    /**
+     * @deprecated
+     *
+     * @return
+     */
+    @Deprecated
+    private boolean startDragOlder(MotionEvent event) {
+        View p = (View) getParent();
+        if (p != null) {
+            Tabuleiro tabuleiro = (Tabuleiro) p.findViewById(R.id.tabuleiro);
+
+            if (tabuleiro != null) {
+                Log.d(TAG,
+                        String.format("startDragOlder : %d", event.getAction()));
+
+                // event.get
+                return tabuleiro.onTouchEvent(event, this);
+            }
+        }
+
+        return super.onTouchEvent(event);
     }
 }

@@ -3,18 +3,18 @@
  */
 package eng.android.chess.views;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 
 /**
@@ -23,10 +23,11 @@ import android.widget.RelativeLayout.LayoutParams;
  */
 public class Tabuleiro extends View {
 
-    private Rect tPlaceRect;
-    private Paint tPaint;
-    private DisplayMetrics tDM;
+    private Rect placeRect;
+    private Paint paint;
+    private DisplayMetrics dm;
     private boolean moving;
+    private Peca peca;
 
     /**
      * @param context
@@ -69,15 +70,15 @@ public class Tabuleiro extends View {
      * Prepara objetos para desenho deste tabuleiro.
      */
     protected void initTabuleiro() {
-        tPlaceRect = new Rect();
-        tPaint = new Paint();
+        placeRect = new Rect();
+        paint = new Paint();
         // partida = new Partida();
 
         setBackgroundColor(Color.WHITE);
 
         Context context = getContext();
 
-        tDM = context.getResources().getDisplayMetrics();
+        dm = context.getResources().getDisplayMetrics();
 
         // Peca peca = null;
         //
@@ -102,40 +103,17 @@ public class Tabuleiro extends View {
      *
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
+    @TargetApi(11)
     @Override
     public boolean onDragEvent(DragEvent event) {
-        Peca p = (Peca) event.getLocalState();
+        Peca peca = (Peca) event.getLocalState();
 
         switch (event.getAction()) {
-            case DragEvent.ACTION_DRAG_ENTERED:
-                moving = true;
-                invalidate();
             case DragEvent.ACTION_DROP :
-                moving = false;
+                if (peca != null) {
+                    performDrag(event.getX(), event.getY(), peca);
 
-                if (p != null) {
-                    int x = (int) (event.getX() / p.getWidth());
-                    int y = (int) (event.getY() / p.getHeight());
-
-                    int leftMargin = x * p.getWidth();
-                    int topMargin = y * p.getHeight();
-
-                    // p.getLayoutParams() utilizado para não perder a
-                    // referência
-                    // de alinhamento com a view do tabuleiro
-                    LayoutParams lp = (LayoutParams) p.getLayoutParams();
-
-                    if (lp != null) {
-                        lp.leftMargin = leftMargin;
-                        lp.topMargin = topMargin;
-
-                        // p.setTranslationX(x);
-                        // p.setTranslationY(y);
-
-                        p.setLayoutParams(lp);
-                    }
-
-                    p.invalidate();
+                    peca.invalidate();
 
                     return true;
                 }
@@ -143,6 +121,7 @@ public class Tabuleiro extends View {
                 return false;
             case DragEvent.ACTION_DRAG_ENDED :
                 invalidate();
+
                 return true;
             default :
                 return true;
@@ -161,39 +140,39 @@ public class Tabuleiro extends View {
         int width = getMeasuredWidth();
         int tPlaceSide = getSquareSide();
 
-        tPaint.setColor(Color.BLACK);
-        tPaint.setStyle(Style.FILL);
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Style.FILL);
 
         for (int i = 0, j; i < 8; i++) {
             for (j = i % 2; j < 8; j += 2) {
-                tPlaceRect.set(i * tPlaceSide,// left,
+                placeRect.set(i * tPlaceSide,// left,
                         j * tPlaceSide,// top,
                         (i + 1) * tPlaceSide,// right,
                         (j + 1) * tPlaceSide// bottom
                 );
 
-                if (moving && i == 3) {
-                    canvas.drawRect(tPlaceRect, tPaint);
-
-                    int color = tPaint.getColor();
-                    float strokeWidth = tPaint.getStrokeWidth();
-
-                    tPaint.setColor(Color.parseColor("#661696C9"));
-                    tPaint.setStrokeWidth(5.0F);
-
-                    canvas.drawRect(tPlaceRect, tPaint);
-
-                    tPaint.setColor(color);
-                    tPaint.setStrokeWidth(strokeWidth);
-                } else {
-                    canvas.drawRect(tPlaceRect, tPaint);
-                }
+                // if (moving && i == 3) {
+                // canvas.drawRect(tPlaceRect, tPaint);
+                //
+                // int color = tPaint.getColor();
+                // float strokeWidth = tPaint.getStrokeWidth();
+                //
+                // tPaint.setColor(Color.parseColor("#661696C9"));
+                // tPaint.setStrokeWidth(5.0F);
+                //
+                // canvas.drawRect(tPlaceRect, tPaint);
+                //
+                // tPaint.setColor(color);
+                // tPaint.setStrokeWidth(strokeWidth);
+                // } else {
+                canvas.drawRect(placeRect, paint);
+                // }
             }
         }
 
-        tPlaceRect.set(0, 0, width + 1, width + 1);
-        tPaint.setStyle(Style.STROKE);
-        canvas.drawRect(tPlaceRect, tPaint);
+        placeRect.set(0, 0, width + 1, width + 1);
+        paint.setStyle(Style.STROKE);
+        canvas.drawRect(placeRect, paint);
     }
 
     /*
@@ -204,8 +183,61 @@ public class Tabuleiro extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (!isInEditMode())
-            setMeasuredDimension(tDM.widthPixels, tDM.widthPixels);
+            setMeasuredDimension(dm.widthPixels, dm.widthPixels);
         else
             setMeasuredDimension(480, 480);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onTouchEvent(android.view.MotionEvent)
+     */
+    public boolean onTouchEvent(MotionEvent event, Peca peca) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN :
+                this.peca = peca;
+
+                break;
+            case MotionEvent.ACTION_UP :
+                this.peca = null;
+
+                break;
+            case MotionEvent.ACTION_MOVE :
+                performDrag(event.getX(), event.getY(), this.peca);
+
+                break;
+            default :
+                return true;
+        }
+        return true;
+    }
+
+    private boolean performDrag(float eventX, float eventY, Peca peca) {
+
+        // p.getLayoutParams() utilizado para não perder a
+        // referência
+        // de alinhamento com a view do tabuleiro
+        LayoutParams lp = (LayoutParams) peca.getLayoutParams();
+
+        if (lp == null)
+            return false;
+
+        int x = (int) (eventX / peca.getWidth());
+        int y = (int) (eventY / peca.getHeight());
+
+        int leftMargin = x * peca.getWidth();
+        int topMargin = y * peca.getHeight();
+
+        lp.leftMargin = leftMargin;
+        lp.topMargin = topMargin;
+
+        // p.setTranslationX(x);
+        // p.setTranslationY(y);
+
+        peca.setLayoutParams(lp);
+        peca.invalidate();
+
+        return true;
     }
 }
