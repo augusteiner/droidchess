@@ -220,6 +220,7 @@ public class Tabuleiro extends View {
         // de alinhamento com a view do tabuleiro
         LayoutParams lp = (LayoutParams) peca.getLayoutParams();
 
+
         if (lp == null)
             return false;
 
