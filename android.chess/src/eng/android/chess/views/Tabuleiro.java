@@ -221,6 +221,7 @@ public class Tabuleiro extends View {
         LayoutParams lp = (LayoutParams) peca.getLayoutParams();
 
 
+
         if (lp == null)
             return false;
 
