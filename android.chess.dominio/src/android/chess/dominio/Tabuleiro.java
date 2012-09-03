@@ -27,6 +27,53 @@ import android.chess.dominio.pecas.Torre;
  * @author augusteiner
  */
 public class Tabuleiro {
+    /**
+     * @author augusteiner
+     *
+     */
+    public class PecaIterator implements Iterator<IPeca> {
+        private int i = 0;
+        private int j = -1;
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.util.Iterator#hasNext()
+         */
+        @Override
+        public boolean hasNext() {
+            // TODO Auto-generated method stub
+            return i < pecas.length || j < pecas[0].length;
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.util.Iterator#next()
+         */
+        @Override
+        public IPeca next() {
+            j++;
+
+            if (j > 7) {
+                i++;
+                j = 0;
+            }
+
+            return pecas[i][j];
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.util.Iterator#remove()
+         */
+        @Override
+        public void remove() {
+            // TODO Auto-generated method stub
+
+        }
+    }
+
     private IPeca[][] pecas;
     private Jogador[] jogadores;
 
@@ -43,48 +90,7 @@ public class Tabuleiro {
      * @return
      */
     public Iterator<IPeca> getPecas() {
-        return new Iterator<IPeca>() {
-            private int i = 0;
-            private int j = -1;
-            /*
-             * (non-Javadoc)
-             *
-             * @see java.util.Iterator#hasNext()
-             */
-            @Override
-            public boolean hasNext() {
-                // TODO Auto-generated method stub
-                return i < pecas.length || j < pecas[0].length;
-            }
-
-            /*
-             * (non-Javadoc)
-             *
-             * @see java.util.Iterator#next()
-             */
-            @Override
-            public IPeca next() {
-                j++;
-
-                if (j > 7) {
-                    i++;
-                    j = 0;
-                }
-
-                return pecas[i][j];
-            }
-
-            /*
-             * (non-Javadoc)
-             *
-             * @see java.util.Iterator#remove()
-             */
-            @Override
-            public void remove() {
-                // TODO Auto-generated method stub
-
-            }
-        };
+        return new PecaIterator();
     }
 
     /**

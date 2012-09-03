@@ -125,6 +125,33 @@ public abstract class Peca implements IPeca {
     }
 
     /**
+     * Retorna se o movimento da jogada é diagonal ou horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja horizontal ou diagonal
+     *         e False caso contrário.
+     */
+    @Override
+    public boolean movimentoHorizDiag(int destX, int destY) {
+        return movimentoHorizontal(destY) || movimentoDiagonal(destX, destY);
+    }
+    /**
+     * Retorna se o movimento da jogada é horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja na horizontal, False
+     *         caso contrário.
+     */
+    @Override
+    public boolean movimentoHorizontal(int destY) {
+        return getY() == destY;
+    }
+
+    /**
      * Retorna se o movimento da jogada é horizontal.
      *
      * @param jogada
@@ -135,16 +162,16 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public boolean movimentoHorizontal(Jogada jogada) {
-        return jogada.getPeca().getY() == jogada.getDestY();
+        return movimentoHorizontal(jogada.getDestY());
     }
 
     /**
-     * Retorna se o movimento da jogada é vertical ou horizontal.
+     * Retorna se o movimento da jogada é diagonal ou horizontal.
      *
      * @param jogada
      *            Jogada a ser testado o tipo de movimento.
      *
-     * @return {@link Boolean} True caso o movimento seja horizontal ou vertical
+     * @return {@link Boolean} True caso o movimento seja horizontal ou diagonal
      *         e False caso contrário.
      */
     @Override

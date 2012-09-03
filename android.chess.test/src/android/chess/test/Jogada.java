@@ -1,9 +1,6 @@
 package android.chess.test;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
-
-import javax.swing.DebugGraphics;
 
 import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
@@ -141,6 +138,14 @@ public class Jogada {
     }
 
     /**
+     * @throws JogadaInvalida
+     * @throws PecaNaoEncontrada
+     */
+    private static void rainha() throws JogadaInvalida, PecaNaoEncontrada {
+        jogada(0, 3, 3, 6);
+    }
+
+    /**
      * Realiza o teste com algumas jogadas
      *
      * @throws MovimentoInvalido
@@ -149,6 +154,7 @@ public class Jogada {
     private static void test() throws JogadaInvalida, PecaNaoEncontrada {
 //        peao();
 //        cavalo();
-        bispo();
+//        bispo();
+        rainha();
     }
 }
