@@ -7,6 +7,7 @@ import static java.lang.Math.abs;
 
 import java.util.Iterator;
 
+import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
 import android.chess.dominio.interfaces.IPeca;
@@ -140,8 +141,7 @@ public class Tabuleiro {
      * @param destY
      * @throws MovimentoInvalido
      */
-    public void mover(IPeca peca, int destX, int destY)
-            throws MovimentoInvalido {
+    public void mover(IPeca peca, int destX, int destY) throws JogadaInvalida {
         mover(new Jogada(peca, destX, destY));
     }
 
@@ -161,7 +161,7 @@ public class Tabuleiro {
      * @param jogada
      * @throws MovimentoInvalido
      */
-    private void mover(Jogada jogada) throws MovimentoInvalido {
+    private void mover(Jogada jogada) throws JogadaInvalida {
         boolean ok = true;
 
         IPeca peca = jogada.getPeca();
@@ -175,11 +175,11 @@ public class Tabuleiro {
             case Rainha :
                 break;
             case Peao :
-                ok = movimentoDiagonal(jogada);
+                ok = jogada.movimentoDiagonal();
 
                 break;
             case Torre :
-                ok = !movimentoDiagonal(jogada) && movimentoHorizVert(jogada);
+                ok = !jogada.movimentoDiagonal() && jogada.movimentoHorizDiag();
 
                 break;
             case Cavalo :
@@ -196,65 +196,6 @@ public class Tabuleiro {
         pecas[jogada.getDestX()][jogada.getDestY()] = peca;
 
         tomar(jogada);
-    }
-
-    /**
-     * Retorna se o movimento da jogada está sendo realizado nas diagonais.
-     *
-     * @param jogada
-     *            Jogada cujo movimento está sendo testado.
-     *
-     * @return {@link Boolean} True caso o movimento seja na diagonal, False
-     *         caso contrário.
-     */
-    private boolean movimentoDiagonal(Jogada jogada) {
-        int origX = jogada.getPeca().getX();
-        int origY = jogada.getPeca().getY();
-
-        int destX = jogada.getDestX();
-        int destY = jogada.getDestY();
-
-        return abs(origX - destX) == abs(origY - destY);
-    }
-
-    /**
-     * Retorna se o movimento da jogada é horizontal.
-     *
-     * @param jogada
-     *            Jogada a ser testado o tipo de movimento.
-     *
-     * @return {@link Boolean} True caso o movimento seja na horizontal, False
-     *         caso contrário.
-     */
-    private boolean movimentoHorizontal(Jogada jogada) {
-        return jogada.getPeca().getY() == jogada.getDestY();
-    }
-
-    /**
-     * Retorna se o movimento da jogada é vertical ou horizontal.
-     *
-     * @param jogada
-     *            Jogada a ser testado o tipo de movimento.
-     *
-     * @return {@link Boolean} True caso o movimento seja horizontal ou vertical
-     *         e False caso contrário.
-     */
-    private boolean movimentoHorizVert(Jogada jogada) {
-        return movimentoHorizontal(jogada) || movimentoVertical(jogada);
-    }
-
-    /**
-     * Retorna se o movimento da jogada é vertical.
-     *
-     * @param jogada
-     *            Jogada a ser testado o tipo de movimento.
-     *
-     *
-     * @return {@link Boolean} True caso o movimento seja na vertical, False
-     *         caso contrário.
-     */
-    private boolean movimentoVertical(Jogada jogada) {
-        return jogada.getPeca().getX() == jogada.getDestX();
     }
 
     /**

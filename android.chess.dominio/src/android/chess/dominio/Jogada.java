@@ -1,9 +1,8 @@
 package android.chess.dominio;
 
+import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IPeca;
-
-
 
 /**
  * @author augusteiner
@@ -18,18 +17,11 @@ public class Jogada {
      * @param destX
      * @param destY
      */
-    Jogada(IPeca peca, int destX, int destY) {
+    public Jogada(IPeca peca, int destX, int destY) {
         this.peca = peca;
 
         this.destX = destX;
         this.destY = destY;
-    }
-
-    /**
-     * @return
-     */
-    public IPeca getPeca() {
-        return peca;
     }
 
     /**
@@ -47,9 +39,47 @@ public class Jogada {
     }
 
     /**
-     * @throws MovimentoInvalido
+     * @return
      */
-    public void realizar() throws MovimentoInvalido {
-        peca.mover(destX, destY);
+    public IPeca getPeca() {
+        return peca;
+    }
+
+    /**
+     * @return
+     *
+     * @see IPeca#movimentoDiagonal(Jogada)
+     */
+    public boolean movimentoDiagonal() {
+        return peca.movimentoDiagonal(this);
+    }
+
+    /**
+     * @return
+     *
+     * @see IPeca#movimentoHorizVert(Jogada)
+     */
+    public boolean movimentoHorizDiag() {
+        return peca.movimentoHorizVert(this);
+    }
+
+    /**
+     * @return
+     *
+     * @see IPeca#movimentoHorizontal(Jogada)
+     */
+    public boolean movimentoHorizontal() {
+        return peca.movimentoHorizontal(this);
+    }
+
+    /**
+     * @throws JogadaInvalida
+     */
+    public void realizar() throws JogadaInvalida {
+        try {
+            peca.mover(destX, destY);
+        } catch (MovimentoInvalido e) {
+            throw new JogadaInvalida(this, e);
+        }
     }
 }

@@ -27,10 +27,10 @@ public class Peao extends Peca {
      */
     @Override
     public void mover(int destX, int destY) throws MovimentoInvalido {
-        //TODO Implementar lógica de validação do movimento
+        if (getMoveu())
 
-        this.setX(destX);
-        this.setY(destY);
+
+        super.mover(destX, destY);
     }
 
 }

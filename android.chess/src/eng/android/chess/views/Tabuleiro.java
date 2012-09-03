@@ -213,6 +213,12 @@ public class Tabuleiro extends View {
         return true;
     }
 
+    /**
+     * @param eventX
+     * @param eventY
+     * @param peca
+     * @return
+     */
     private boolean performDrag(float eventX, float eventY, Peca peca) {
 
         // p.getLayoutParams() utilizado para não perder a
