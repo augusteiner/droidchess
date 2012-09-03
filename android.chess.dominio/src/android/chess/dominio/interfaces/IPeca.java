@@ -68,6 +68,12 @@ public interface IPeca {
     boolean movimentoDiagonal(Jogada jogada);
 
     /**
+     * @param destY
+     * @return
+     */
+    boolean movimentoHorizontal(int destY);
+
+    /**
      * Retorna se o movimento da peça na jogada é horizontal. Útil para
      * validação de movimentos de torres.
      *
@@ -75,6 +81,13 @@ public interface IPeca {
      * @return
      */
     boolean movimentoHorizontal(Jogada jogada);
+
+    /**
+     * @param destX
+     * @param destY
+     * @return
+     */
+    boolean movimentoHorizDiag(int destX, int destY);
 
     /**
      * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
@@ -90,6 +103,7 @@ public interface IPeca {
      * @param y
      */
     void set(int x, int y);
+
     /**
      * @param x
      */
