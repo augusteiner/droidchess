@@ -121,8 +121,6 @@ public class Peca extends View {
             case MotionEvent.ACTION_UP:
                 return true;
             case MotionEvent.ACTION_CANCEL:
-                setVisibility(View.VISIBLE);
-
                 return true;
             default:
                 return super.onTouchEvent(event);
@@ -143,6 +141,7 @@ public class Peca extends View {
         int flags = 0;
 
         setVisibility(View.INVISIBLE);
+        invalidate();
 
         return startDrag(data, shadowBuilder, myLocalState, flags);
     }

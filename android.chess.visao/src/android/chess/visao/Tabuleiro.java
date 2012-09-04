@@ -101,6 +101,7 @@ public class Tabuleiro extends View {
             if (peca != null) {
                 performDrag(event.getX(), event.getY(), peca);
 
+                peca.setVisibility(VISIBLE);
                 peca.invalidate();
 
                 return true;

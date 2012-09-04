@@ -62,20 +62,19 @@ public class Main extends Activity {
         ViewGroup contentView = getContentView();
         Peca peca = null;
 
-        // LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
-        // LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
 
         for (int i = 0, j; i < 2; i++) {
-            for (j = 0; j < 7; j++) {
+            for (j = 0; j < 8; j++) {
                 peca = new Peca(context);
                 peca.setTag(pecas.next());
 
-                LayoutParams lp = new LayoutParams(peca.getMeasuredWidth(),
-                        peca.getMeasuredWidth());
-                // LayoutParams não copias as "rules" definidas.
+                lp = new LayoutParams(lp);
+                // LayoutParams não copia as "rules" definidas.
                 lp.addRule(RelativeLayout.ALIGN_TOP, R.id.tabuleiro);
 
-                // lp.topMargin = side * i;
+                lp.topMargin = peca.getSide() * i;
                 lp.leftMargin = peca.getSide() * j;
 
                 // peca.setBackgroundResource(context.getResources().get)
