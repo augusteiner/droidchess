@@ -3,6 +3,7 @@
  */
 package android.chess.dominio.interfaces;
 
+import android.chess.dominio.Jogada;
 import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
@@ -31,6 +32,16 @@ public interface IPeca {
     }
 
     /**
+     * @return Cor desta peça.
+     */
+    Cor getCor();
+
+    /**
+     * @return Retorna o tipo desta peça.
+     */
+    Tipo getTipo();
+
+    /**
      * @return Coordenada x atual desta peça.
      */
     int getX();
@@ -39,6 +50,59 @@ public interface IPeca {
      * @return Coordenada y atual desta peça.
      */
     int getY();
+
+    /**
+     * @param destX
+     * @param destY
+     * @throws MovimentoInvalido
+     */
+    void mover(int destX, int destY) throws MovimentoInvalido;
+
+    /**
+     * Retorna se o movimento da peça na jogada é na diagonal. Útil para
+     * validação de movimentos de bispos.
+     *
+     * @param jogada
+     * @return
+     */
+    boolean movimentoDiagonal(Jogada jogada);
+
+    /**
+     * @param destY
+     * @return
+     */
+    boolean movimentoHorizontal(int destY);
+
+    /**
+     * Retorna se o movimento da peça na jogada é horizontal. Útil para
+     * validação de movimentos de torres.
+     *
+     * @param jogada
+     * @return
+     */
+    boolean movimentoHorizontal(Jogada jogada);
+
+    /**
+     * @param destX
+     * @param destY
+     * @return
+     */
+    boolean movimentoHorizDiag(int destX, int destY);
+
+    /**
+     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
+     * para validação de movimentos de bispos, torres e rainhas.
+     *
+     * @param jogada
+     * @return
+     */
+    boolean movimentoHorizVert(Jogada jogada);
+
+    /**
+     * @param x
+     * @param y
+     */
+    void set(int x, int y);
 
     /**
      * @param x
@@ -50,28 +114,6 @@ public interface IPeca {
      */
     void setY(int y);
 
-    /**
-     * @param x
-     * @param y
-     */
-    void set(int x, int y);
-
-    /**
-     * @return Retorna o tipo desta peça.
-     */
-    Tipo getTipo();
-
-    /**
-     * @return Cor desta peça.
-     */
-    Cor getCor();
-
-    /**
-     * @param destX
-     * @param destY
-     * @throws MovimentoInvalido
-     */
-    void mover(int destX, int destY) throws MovimentoInvalido;
     /**
      * @return
      */

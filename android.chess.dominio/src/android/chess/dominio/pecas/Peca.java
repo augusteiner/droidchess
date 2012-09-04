@@ -3,6 +3,9 @@
  */
 package android.chess.dominio.pecas;
 
+import static java.lang.Math.abs;
+import android.chess.dominio.Jogada;
+import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IPeca;
 
 /**
@@ -10,14 +13,56 @@ import android.chess.dominio.interfaces.IPeca;
  *
  */
 public abstract class Peca implements IPeca {
-    private int x, y;
-    private Cor cor;
+    /**
+     * @param peca
+     * @param destX
+     * @param destY
+     * @return
+     */
+    private static boolean movimentoDiagonal(IPeca peca, int destX, int destY) {
+        int origX = peca.getX();
+        int origY = peca.getY();
 
+        return abs(origX - destX) == abs(origY - destY);
+    }
+    private int x;
+    private int y;
+    private Cor cor;
+    private boolean moveu;
     /**
      * @param tabuleiro
      */
     protected Peca(Cor cor) {
         this.cor = cor;
+
+        moveu = false;
+    }
+    /**
+     * @return
+     */
+    @Override
+    public Cor getCor() {
+        // TODO Auto-generated method stub
+        return cor;
+    }
+
+    /**
+     * Retorna se a peça já foi movida.
+     *
+     * @return
+     */
+    public final boolean getMoveu() {
+        return moveu;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.chess.dominio.interfaces.IPeca#getTipo()
+     */
+    @Override
+    public final Tipo getTipo() {
+        return Tipo.valueOf(this.getClass().getSimpleName());
     }
 
     /*
@@ -43,52 +88,129 @@ public abstract class Peca implements IPeca {
     }
 
     /**
+     * Move a peça da posição atual para a nova posição definida pelos pontos
+     * destX e destY.
+     *
+     * @param destX
+     * @param destY
+     * @throws MovimentoInvalido
+     */
+    @Override
+    public void mover(int destX, int destY) throws MovimentoInvalido {
+        moveu = true;
+
+        set(destX, destY);
+    }
+    /**
+     * @param destX
+     * @param destY
+     * @return
+     */
+    public boolean movimentoDiagonal(int destX, int destY) {
+        return movimentoDiagonal(this, destX, destY);
+    }
+
+    /**
+     * Retorna se o movimento da jogada está sendo realizado nas diagonais.
+     *
+     * @param jogada
+     *            Jogada cujo movimento está sendo testado.
+     *
+     * @return {@link Boolean} True caso o movimento seja na diagonal, False
+     *         caso contrário.
+     */
+    @Override
+    public boolean movimentoDiagonal(Jogada jogada) {
+        return jogada.getPeca().getX() == jogada.getDestX();
+    }
+
+    /**
+     * Retorna se o movimento da jogada é diagonal ou horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja horizontal ou diagonal
+     *         e False caso contrário.
+     */
+    @Override
+    public boolean movimentoHorizDiag(int destX, int destY) {
+        return movimentoHorizontal(destY) || movimentoDiagonal(destX, destY);
+    }
+    /**
+     * Retorna se o movimento da jogada é horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja na horizontal, False
+     *         caso contrário.
+     */
+    @Override
+    public boolean movimentoHorizontal(int destY) {
+        return getY() == destY;
+    }
+
+    /**
+     * Retorna se o movimento da jogada é horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja na horizontal, False
+     *         caso contrário.
+     */
+    @Override
+    public boolean movimentoHorizontal(Jogada jogada) {
+        return movimentoHorizontal(jogada.getDestY());
+    }
+
+    /**
+     * Retorna se o movimento da jogada é diagonal ou horizontal.
+     *
+     * @param jogada
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja horizontal ou diagonal
+     *         e False caso contrário.
+     */
+    @Override
+    public boolean movimentoHorizVert(Jogada jogada) {
+        return movimentoHorizontal(jogada) || movimentoDiagonal(jogada);
+    }
+
+    /**
+     * Altera as duas coordenadas atuais desta peça.
+     *
+     * @param destX
+     * @param destY
+     */
+    @Override
+    public void set(int destX, int destY) {
+        setX(destX);
+        setY(destY);
+    }
+
+    /**
      * Altera a coordenada x atual desta peça.
      *
      * @param x
      *            Nova coordenada x.
      */
+    @Override
     public void setX(int x) {
         this.x = x;
     }
+
     /**
      * Altera a coordenada y atual desta peça.
      *
      * @param y
      *            Nova coordenada y.
      */
+    @Override
     public void setY(int y) {
         this.y = y;
-    }
-
-    /**
-     * Altera as duas coordenadas atuais desta peça.
-     *
-     * @param x
-     * @param y
-     */
-    public void set(int x, int y) {
-        setX(x);
-        setY(y);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public Cor getCor() {
-        // TODO Auto-generated method stub
-        return cor;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.chess.dominio.interfaces.IPeca#getTipo()
-     */
-    @Override
-    public final Tipo getTipo() {
-        return Tipo.valueOf(this.getClass().getSimpleName());
     }
 
     /*
@@ -100,7 +222,7 @@ public abstract class Peca implements IPeca {
     public String toString() {
         return String.format("%s %s (%d:%d)",
 
-        this.getClass().getName(), this.getCor(),
+        this.getClass().getSimpleName(), this.getCor(),
 
         this.getX(), this.getY());
     }

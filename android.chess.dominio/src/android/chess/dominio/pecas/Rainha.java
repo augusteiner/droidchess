@@ -20,13 +20,17 @@ public class Rainha extends Peca {
         // TODO Auto-generated constructor stub
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
     public void mover(int destX, int destY) throws MovimentoInvalido {
-        // TODO Auto-generated method stub
+        if (!movimentoHorizDiag(destX, destY))
+            throw new MovimentoInvalido(this);
 
+        super.mover(destX, destY);
     }
 
 }
