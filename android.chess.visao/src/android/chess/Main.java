@@ -62,19 +62,25 @@ public class Main extends Activity {
         ViewGroup contentView = getContentView();
         Peca peca = null;
 
-        int side = getDisplayMetrics().widthPixels / 8;
-
-        LayoutParams lp = new LayoutParams(side, side);
-        lp.addRule(RelativeLayout.ALIGN_TOP, R.id.tabuleiro);
+        // LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
+        // LayoutParams.WRAP_CONTENT);
 
         for (int i = 0, j; i < 2; i++) {
             for (j = 0; j < 7; j++) {
                 peca = new Peca(context);
                 peca.setTag(pecas.next());
-                peca.setLayoutParams(lp);
+
+                LayoutParams lp = new LayoutParams(peca.getMeasuredWidth(),
+                        peca.getMeasuredWidth());
+                // LayoutParams não copias as "rules" definidas.
+                lp.addRule(RelativeLayout.ALIGN_TOP, R.id.tabuleiro);
+
+                // lp.topMargin = side * i;
+                lp.leftMargin = peca.getSide() * j;
+
                 // peca.setBackgroundResource(context.getResources().get)
 
-                // contentView.addView(peca);
+                contentView.addView(peca, lp);
             }
         }
     }
@@ -89,13 +95,12 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        initTabuleiro();
-
         setContentView(R.layout.main);
+
+        initTabuleiro();
     }
 
     /*

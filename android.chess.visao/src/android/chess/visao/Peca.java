@@ -65,6 +65,13 @@ public class Peca extends View {
     }
 
     /**
+     * @return
+     */
+    public int getSide() {
+        return getDisplayMetrics().widthPixels / 8;
+    }
+
+    /**
      *
      */
     private void initPeca() {
@@ -94,11 +101,8 @@ public class Peca extends View {
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
-    protected void onMeasure(int widthMeasureSpec,
-            int heightMeasureSpec) {
-        int side = getDisplayMetrics().widthPixels / 8;
-
-        setMeasuredDimension(side, side);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(getSide(), getSide());
     }
 
     /*
@@ -152,13 +156,11 @@ public class Peca extends View {
     private boolean startDragOlder(MotionEvent event) {
         View p = (View) getParent();
         if (p != null) {
-            Tabuleiro tabuleiro = (Tabuleiro) p
-                    .findViewById(R.id.tabuleiro);
+            Tabuleiro tabuleiro = (Tabuleiro) p.findViewById(R.id.tabuleiro);
 
             if (tabuleiro != null) {
                 Log.d(TAG,
-                        String.format("startDragOlder : %d",
-                                event.getAction()));
+                        String.format("startDragOlder : %d", event.getAction()));
 
                 // event.get
                 return tabuleiro.onTouchEvent(event, this);
