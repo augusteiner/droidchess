@@ -5,6 +5,7 @@ package android.chess.visao;
 
 import android.annotation.TargetApi;
 import android.chess.Main;
+import android.chess.dominio.Partida;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,10 +18,11 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Tabuleiro extends View {
 
@@ -28,6 +30,7 @@ public class Tabuleiro extends View {
     private Paint paint;
     private Peca peca;
     private Rect placeRect;
+    private Partida partida;
 
     /**
      * @param context
@@ -81,14 +84,14 @@ public class Tabuleiro extends View {
         placeRect = new Rect();
         paint = new Paint();
 
-        // partida = new Partida();
+        partida = new Partida();
 
         setBackgroundColor(Color.WHITE);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
     @TargetApi(11)
@@ -97,29 +100,43 @@ public class Tabuleiro extends View {
         Peca peca = (Peca) event.getLocalState();
 
         switch (event.getAction()) {
-        case DragEvent.ACTION_DROP:
-            if (peca != null) {
-                performDrag(event.getX(), event.getY(), peca);
+            case DragEvent.ACTION_DROP :
+                if (peca != null) {
+                    int destX = (int) (event.getX() / getSquareSide());
+                    int destY = (int) (event.getX() / getSquareSide());
 
-                peca.setVisibility(VISIBLE);
-                peca.invalidate();
+                    try {
+                        partida.jogada(peca.getCoordX(), peca.getCoordY(),
+                                destX, destY);
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+
+                        Toast.makeText(getContext(), e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    performDrag(event.getX(), event.getY(), peca);
+
+                    peca.setVisibility(VISIBLE);
+                    peca.invalidate();
+
+                    return true;
+                }
+
+                return false;
+            case DragEvent.ACTION_DRAG_ENDED :
+                invalidate();
 
                 return true;
-            }
-
-            return false;
-        case DragEvent.ACTION_DRAG_ENDED:
-            invalidate();
-
-            return true;
-        default:
-            return true;
+            default :
+                return true;
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -138,7 +155,7 @@ public class Tabuleiro extends View {
                         j * tPlaceSide,// top,
                         (i + 1) * tPlaceSide,// right,
                         (j + 1) * tPlaceSide// bottom
-                        );
+                );
 
                 // if (moving && i == 3) {
                 // canvas.drawRect(tPlaceRect, tPaint);
@@ -166,12 +183,11 @@ public class Tabuleiro extends View {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
-    protected void onMeasure(int widthMeasureSpec,
-            int heightMeasureSpec) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (!isInEditMode()) {
             int side = getDisplayMetrics().widthPixels;
 
@@ -183,25 +199,25 @@ public class Tabuleiro extends View {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     public boolean onTouchEvent(MotionEvent event, Peca peca) {
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-            this.peca = peca;
+            case MotionEvent.ACTION_DOWN :
+                this.peca = peca;
 
-            break;
-        case MotionEvent.ACTION_UP:
-            this.peca = null;
+                break;
+            case MotionEvent.ACTION_UP :
+                this.peca = null;
 
-            break;
-        case MotionEvent.ACTION_MOVE:
-            performDrag(event.getX(), event.getY(), this.peca);
+                break;
+            case MotionEvent.ACTION_MOVE :
+                performDrag(event.getX(), event.getY(), this.peca);
 
-            break;
-        default:
-            return true;
+                break;
+            default :
+                return true;
         }
         return true;
     }

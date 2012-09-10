@@ -14,12 +14,13 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * Representa graficamente uma peça de um tabuleiro.
- * 
+ *
  * @author augusteiner
- * 
+ *
  */
 public class Peca extends View {
 
@@ -58,6 +59,25 @@ public class Peca extends View {
     }
 
     /**
+     * Retorna a coordenada x desta peça em relação ao tabuleiro.
+     *
+     * @return
+     */
+    public int getCoordX() {
+
+        return (int) (getX() / getSide());
+    }
+
+    /**
+     * Retorna a coordenada y desta peça em relação ao tabuleiro.
+     *
+     * @return
+     */
+    public int getCoordY() {
+        return (int) (getY() / getSide());
+    }
+
+    /**
      * @return
      */
     private DisplayMetrics getDisplayMetrics() {
@@ -80,7 +100,7 @@ public class Peca extends View {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -97,7 +117,7 @@ public class Peca extends View {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -107,23 +127,23 @@ public class Peca extends View {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (Build.VERSION.SDK_INT > 11) {
             switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startDrag();
+                case MotionEvent.ACTION_DOWN :
+                    startDrag();
 
-                return true;
-            case MotionEvent.ACTION_UP:
-                return true;
-            case MotionEvent.ACTION_CANCEL:
-                return true;
-            default:
-                return super.onTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP :
+                    return true;
+                case MotionEvent.ACTION_CANCEL :
+                    return true;
+                default :
+                    return super.onTouchEvent(event);
             }
         } else {
             return startDragOlder(event);
@@ -148,7 +168,7 @@ public class Peca extends View {
 
     /**
      * @deprecated
-     * 
+     *
      * @return
      */
     @Deprecated

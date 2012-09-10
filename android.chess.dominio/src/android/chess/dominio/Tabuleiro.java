@@ -76,6 +76,7 @@ public class Tabuleiro {
 
     private IPeca[][] pecas;
     private Jogador[] jogadores;
+    private Partida partida;
 
     /**
      * Inicializa a matriz de peças deste tabuleiro.
@@ -83,7 +84,7 @@ public class Tabuleiro {
     public Tabuleiro() {
         pecas = new Peca[8][8];
 
-        initPecas();
+        initTabuleiro();
     }
 
     /**
@@ -94,7 +95,7 @@ public class Tabuleiro {
     }
 
     /**
-     * Inicia peças nas suas devidas posições.
+     *
      */
     private void initPecas() {
         int fLinha = 0;
@@ -128,6 +129,13 @@ public class Tabuleiro {
                 pecas[7 - i][j].set(7 - i, j);
             }
         }
+    }
+
+    /**
+     * Inicia peças nas suas devidas posições.
+     */
+    private void initTabuleiro() {
+        initPecas();
     }
 
     /**
