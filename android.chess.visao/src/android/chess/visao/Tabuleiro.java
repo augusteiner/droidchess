@@ -5,7 +5,8 @@ package android.chess.visao;
 
 import android.annotation.TargetApi;
 import android.chess.Main;
-import android.chess.dominio.Partida;
+import android.chess.controle.PartidaControle;
+import android.chess.dominio.interfaces.IPeca;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,7 +19,6 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Toast;
 
 /**
  * @author augusteiner
@@ -30,7 +30,7 @@ public class Tabuleiro extends View {
     private Paint paint;
     private Peca peca;
     private Rect placeRect;
-    private Partida partida;
+    private PartidaControle controle;
 
     /**
      * @param context
@@ -66,14 +66,20 @@ public class Tabuleiro extends View {
      * @return
      */
     private DisplayMetrics getDisplayMetrics() {
-        // TODO Auto-generated method stub
         return Main.getDisplayMetrics(getContext());
     }
 
     /**
      * @return
      */
-    public int getSquareSide() {
+    public Mensageiro getMensageiro() {
+        return new Mensageiro(getContext());
+    }
+
+    /**
+     * @return
+     */
+    public final int getSquareSide() {
         return (getMeasuredWidth() / 8);
     }
 
@@ -81,10 +87,10 @@ public class Tabuleiro extends View {
      * Prepara objetos para desenho deste tabuleiro.
      */
     protected void initTabuleiro() {
+        controle = new PartidaControle();
+
         placeRect = new Rect();
         paint = new Paint();
-
-        partida = new Partida();
 
         setBackgroundColor(Color.WHITE);
     }
@@ -103,18 +109,9 @@ public class Tabuleiro extends View {
             case DragEvent.ACTION_DROP :
                 if (peca != null) {
                     int destX = (int) (event.getX() / getSquareSide());
-                    int destY = (int) (event.getX() / getSquareSide());
+                    int destY = (int) (event.getY() / getSquareSide());
 
-                    try {
-                        partida.jogada(peca.getCoordX(), peca.getCoordY(),
-                                destX, destY);
-                    } catch (Exception e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-
-                        Toast.makeText(getContext(), e.getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    controle.jogada((IPeca)peca.getTag(), destX, destY);
 
                     performDrag(event.getX(), event.getY(), peca);
 

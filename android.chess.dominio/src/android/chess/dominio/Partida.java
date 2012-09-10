@@ -73,4 +73,15 @@ public class Partida {
 
         tabuleiro.mover(orig, destX, destY);
     }
+
+    /**
+     * @param peca
+     * @param destX
+     * @param destY
+     * @throws PecaNaoEncontrada
+     * @throws JogadaInvalida
+     */
+    public void jogada(IPeca peca, int destX, int destY) throws JogadaInvalida, PecaNaoEncontrada {
+        jogada(peca.getX(), peca.getY(), destX, destY);
+    }
 }

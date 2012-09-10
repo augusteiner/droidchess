@@ -233,7 +233,15 @@ public class Tabuleiro {
      * @return
      */
     IPeca peca(int x, int y) throws PecaNaoEncontrada {
-        return pecas[x][y];
+        if (x < 0 || y < 0 || x > 7 || y > 7)
+            throw new PecaNaoEncontrada();
+
+        IPeca peca = pecas[x][y];
+
+        if (peca == null)
+            throw new PecaNaoEncontrada();
+
+        return peca;
     }
 
     /**
