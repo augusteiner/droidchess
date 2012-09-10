@@ -75,8 +75,8 @@ public class Tabuleiro {
     }
 
     private IPeca[][] pecas;
-    private Jogador[] jogadores;
-    private Partida partida;
+    // private Jogador[] jogadores;
+    // private Partida partida;
 
     /**
      * Inicializa a matriz de peças deste tabuleiro.
@@ -139,10 +139,14 @@ public class Tabuleiro {
     }
 
     /**
+     * @deprecated
+     *
      * @param cor
      */
+    @Deprecated
     private void marcarPonto(IPeca peca) {
         // Índice do jogador a marcar pontos.
+        @SuppressWarnings("unused")
         int jIndex = abs(peca.getCor().compareTo(Cor.Branca));
 
         // partida.marcar(jIndex);
@@ -189,7 +193,7 @@ public class Tabuleiro {
             case Rainha :
                 break;
             case Peao :
-                ok = jogada.movimentoDiagonal();
+                ok = jogada.movimentoHorizontal();
 
                 break;
             case Torre :
@@ -199,6 +203,10 @@ public class Tabuleiro {
             case Cavalo :
             default :
                 // throw new MovimentoInvalido(peca);
+        }
+
+        if (!ok) {
+            throw new JogadaInvalida(jogada);
         }
 
         // TODO O set para null e depois dest para peça deve ser feito dentro do

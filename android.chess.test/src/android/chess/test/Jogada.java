@@ -152,9 +152,9 @@ public class Jogada {
      * @throws PecaNaoEncontrada
      */
     private static void test() throws JogadaInvalida, PecaNaoEncontrada {
-//        peao();
-//        cavalo();
-//        bispo();
+        peao();
+        cavalo();
+        bispo();
         rainha();
     }
 }

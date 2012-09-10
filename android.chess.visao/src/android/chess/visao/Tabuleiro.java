@@ -26,7 +26,7 @@ import android.widget.Toast;
  */
 public class Tabuleiro extends View {
 
-    private boolean moving;
+    // private boolean moving;
     private Paint paint;
     private Peca peca;
     private Rect placeRect;

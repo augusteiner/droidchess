@@ -57,10 +57,10 @@ public class Jogada {
     /**
      * @return
      *
-     * @see IPeca#movimentoHorizVert(Jogada)
+     * @see IPeca#movimentoHorizDiag(Jogada)
      */
     public boolean movimentoHorizDiag() {
-        return peca.movimentoHorizVert(this);
+        return peca.movimentoHorizDiag(this);
     }
 
     /**

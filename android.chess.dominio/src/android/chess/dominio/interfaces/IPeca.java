@@ -62,11 +62,40 @@ public interface IPeca {
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
      *
+     * @param destX
+     * @param destY
+     *
+     * @return
+     */
+    boolean movimentoDiagonal(int destX, int destY);
+
+    /**
+     * Retorna se o movimento da peça na jogada é na diagonal. Útil para
+     * validação de movimentos de bispos.
+     *
      * @param jogada
      * @return
      */
     boolean movimentoDiagonal(Jogada jogada);
 
+    /**
+     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
+     * para validação de movimentos de bispos, torres e rainhas.
+     *
+     * @param destX
+     * @param destY
+     * @return
+     */
+    boolean movimentoHorizDiag(int destX, int destY);
+
+    /**
+     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
+     * para validação de movimentos de bispos, torres e rainhas.
+     *
+     * @param jogada
+     * @return
+     */
+    boolean movimentoHorizDiag(Jogada jogada);
     /**
      * @param destY
      * @return
@@ -81,22 +110,6 @@ public interface IPeca {
      * @return
      */
     boolean movimentoHorizontal(Jogada jogada);
-
-    /**
-     * @param destX
-     * @param destY
-     * @return
-     */
-    boolean movimentoHorizDiag(int destX, int destY);
-
-    /**
-     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
-     * para validação de movimentos de bispos, torres e rainhas.
-     *
-     * @param jogada
-     * @return
-     */
-    boolean movimentoHorizVert(Jogada jogada);
 
     /**
      * @param x

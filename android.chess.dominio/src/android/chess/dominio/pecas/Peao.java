@@ -3,6 +3,7 @@
  */
 package android.chess.dominio.pecas;
 
+import static java.lang.Math.abs;
 import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
@@ -27,8 +28,19 @@ public class Peao extends Peca {
      */
     @Override
     public void mover(int destX, int destY) throws MovimentoInvalido {
-        if (getMoveu())
+        int dy = abs(getY() - destY);
+        int dx = abs(getX() - destX);
+        boolean ok = true;
 
+        if (dy != 0)
+            ok = false;
+        else if (dx > 2)
+            ok = false;
+        if (getMoveu() && dx > 1)
+            ok = false;
+
+        if (!ok)
+            throw new MovimentoInvalido(this);
 
         super.mover(destX, destY);
     }

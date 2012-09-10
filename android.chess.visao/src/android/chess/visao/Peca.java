@@ -14,7 +14,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * Representa graficamente uma peça de um tabuleiro.
@@ -25,7 +24,6 @@ import android.widget.RelativeLayout.LayoutParams;
 public class Peca extends View {
 
     private static final String TAG = View.class.getSimpleName();
-    private DisplayMetrics pDM;
     private Paint pPaint;
 
     /**
