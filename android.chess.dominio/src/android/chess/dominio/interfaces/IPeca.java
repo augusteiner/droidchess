@@ -28,7 +28,7 @@ public interface IPeca {
      * @author augusteiner
      */
     public enum Tipo {
-        Bispo, Cavalo, Peao, Rei, Rainha, Torre;
+        Bispo, Cavalo, Peao, Rainha, Rei, Torre;
     }
 
     /**
@@ -59,6 +59,15 @@ public interface IPeca {
     void mover(int destX, int destY) throws MovimentoInvalido;
 
     /**
+     * @param jogada
+     *
+     * @throws MovimentoInvalido
+     *
+     * @see {@link IPeca#mover(int, int)}
+     */
+    void mover(Jogada jogada) throws MovimentoInvalido;
+
+    /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
      *
@@ -68,15 +77,6 @@ public interface IPeca {
      * @return
      */
     boolean movimentoDiagonal(int destX, int destY);
-
-    /**
-     * Retorna se o movimento da peça na jogada é na diagonal. Útil para
-     * validação de movimentos de bispos.
-     *
-     * @param jogada
-     * @return
-     */
-    boolean movimentoDiagonal(Jogada jogada);
 
     /**
      * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
@@ -89,27 +89,32 @@ public interface IPeca {
     boolean movimentoHorizDiag(int destX, int destY);
 
     /**
-     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
-     * para validação de movimentos de bispos, torres e rainhas.
+     * Retorna se o movimento da jogada é horizontal.
      *
      * @param jogada
-     * @return
-     */
-    boolean movimentoHorizDiag(Jogada jogada);
-    /**
-     * @param destY
-     * @return
+     *            Jogada a ser testado o tipo de movimento.
+     *
+     * @return {@link Boolean} True caso o movimento seja na horizontal, False
+     *         caso contrário.
      */
     boolean movimentoHorizontal(int destY);
 
     /**
-     * Retorna se o movimento da peça na jogada é horizontal. Útil para
-     * validação de movimentos de torres.
-     *
-     * @param jogada
+     * @param destX
+     * @param destY
      * @return
      */
-    boolean movimentoHorizontal(Jogada jogada);
+    boolean movimentoHorizVert(int destX, int destY);
+
+    /**
+     *
+     * @param destX
+     *
+     * @param destY
+     *
+     * @return
+     */
+    boolean movimentoVertical(int destX, int destY);
 
     /**
      * @param x

@@ -106,7 +106,7 @@ public class Jogada {
     private static void peao() throws JogadaInvalida, PecaNaoEncontrada {
         jogada(1, 0, 3, 0);
         jogada(6, 1, 4, 1);
-        jogada(3, 0, 4, 1);
+        //jogada(3, 0, 4, 1);
     }
     /**
      * Imprime uma representação gráfica do tabuleiro dado.

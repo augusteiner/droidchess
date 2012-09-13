@@ -27,7 +27,8 @@ public class Rainha extends Peca {
      */
     @Override
     public void mover(int destX, int destY) throws MovimentoInvalido {
-        if (!movimentoHorizDiag(destX, destY))
+        if (!movimentoHorizDiag(destX, destY)
+                && !movimentoVertical(destX, destY))
             throw new MovimentoInvalido(this);
 
         super.mover(destX, destY);

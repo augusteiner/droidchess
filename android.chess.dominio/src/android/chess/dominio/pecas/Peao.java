@@ -8,9 +8,11 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Peao extends Peca {
+
+    private int prevX;
 
     /**
      * @param tabuleiro
@@ -18,12 +20,11 @@ public class Peao extends Peca {
      */
     public Peao(Cor cor) {
         super(cor);
-        // TODO Auto-generated constructor stub
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
@@ -32,15 +33,33 @@ public class Peao extends Peca {
         int dx = abs(getX() - destX);
         boolean ok = true;
 
-        if (dy != 0)
+        if (dy != 0) {
             ok = false;
-        else if (dx > 2)
+        } else if (dx > 2) {
             ok = false;
-        if (getMoveu() && dx > 1)
-            ok = false;
+        }
+
+        if (getMoveu()) {
+            if (dx > 1)
+                ok = false;
+            else {
+                int pdx = getX() - prevX;
+
+                if (Math.signum(pdx) > 0) {
+                    ok = destX > getX();
+                } else {
+                    ok = destX < getX();
+                }
+            }
+            // ok = abs(getX() - prevX
+        } else {
+            //
+        }
 
         if (!ok)
             throw new MovimentoInvalido(this);
+
+        prevX = getX();
 
         super.mover(destX, destY);
     }

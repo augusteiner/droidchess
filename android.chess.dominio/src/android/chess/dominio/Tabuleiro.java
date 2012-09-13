@@ -180,44 +180,52 @@ public class Tabuleiro {
      * @throws MovimentoInvalido
      */
     private void mover(Jogada jogada) throws JogadaInvalida {
-        boolean ok = true;
 
         IPeca peca = jogada.getPeca();
+        boolean ok = false;
 
         // Peças que tem o movimento limitado
         // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
-            case Rei :
-                // Checar condições de cheque e cheque mate
-                break;
-            case Rainha :
-                break;
-            case Peao :
-                ok = jogada.movimentoHorizontal();
+        case Rei :
+            // Checar condições de cheque e cheque mate
+            break;
+        case Rainha :
+            break;
+        case Peao :
+            ok = jogada.movimentoHorizontal();
 
-                break;
-            case Torre :
-                ok = !jogada.movimentoDiagonal() && jogada.movimentoHorizDiag();
+            break;
+        case Torre :
+            ok = jogada.movimentoHorizDiag();
 
-                break;
-            case Cavalo :
-            default :
-                // throw new MovimentoInvalido(peca);
+            break;
+        case Cavalo :
+        default :
         }
+
+        ok = !pecaNoCaminho(jogada);
+
+        IPeca outra = peca(jogada);
+
+        ok &= outra == null || peca.getCor() != outra.getCor();
 
         if (!ok) {
             throw new JogadaInvalida(jogada);
         }
 
-        // TODO O set para null e depois dest para peça deve ser feito dentro do
-        // método tomar(...) ?
-        pecas[peca.getX()][peca.getY()] = null;
+        int x = peca.getX();
+        int y = peca.getY();
 
         jogada.realizar();
 
-        pecas[jogada.getDestX()][jogada.getDestY()] = peca;
-
+        // TODO O set para null e depois dest para peça deve ser feito dentro do
+        // método tomar(...) ?
         tomar(jogada);
+
+        // Refletindo alterações da jogada no tabuleiro.
+        pecas[x][y] = null;
+        pecas[jogada.getDestX()][jogada.getDestY()] = peca;
     }
 
     /**
@@ -258,13 +266,44 @@ public class Tabuleiro {
     }
 
     /**
+     *
+     * @param jogada
+     *
+     * @return
+     *
+     * @todo Implementar
+     */
+    private boolean pecaNoCaminho(Jogada jogada) {
+        boolean vert = jogada.movimentoHorizVert();
+        boolean horiz = jogada.movimentoHorizontal();
+        boolean diag = jogada.movimentoDiagonal();
+
+        boolean horizVert = vert || horiz;
+
+        if (!horizVert && !diag)
+            return false;
+
+        // IPeca peca = jogada.getPeca();
+        //
+        // for (int i = peca.getX(), j; i <= jogada.getDestX(); i++) {
+        // for (j = peca.getY(); j <= jogada.getDestY(); j++) {
+        // if (pecas[i][j] != null) {
+        // return true;
+        // }
+        // }
+        // }
+
+        return false;
+    }
+
+    /**
      * @param jogada
      * @throws PecaNaoEncontrada
      */
     private void tomar(Jogada jogada) {
         IPeca outra = peca(jogada);
 
-        if (outra != null)
+        if (outra != null && jogada.getPeca().getCor() != outra.getCor())
             onTomada(jogada.getPeca(), outra);
     }
 }

@@ -27,8 +27,11 @@ public class Torre extends Peca {
      */
     @Override
     public void mover(int destX, int destY) throws MovimentoInvalido {
-        // TODO Auto-generated method stub
 
+        if (!movimentoHorizVert(destX, destY))
+            throw new MovimentoInvalido(this);
+
+        super.mover(destX, destY);
     }
 
 }

@@ -3,6 +3,7 @@ package android.chess.dominio;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.pecas.Peca;
 
 /**
  * @author augusteiner
@@ -51,7 +52,7 @@ public class Jogada {
      * @see IPeca#movimentoDiagonal(Jogada)
      */
     public boolean movimentoDiagonal() {
-        return peca.movimentoDiagonal(this);
+        return Peca.movimentoDiagonal(this);
     }
 
     /**
@@ -60,7 +61,7 @@ public class Jogada {
      * @see IPeca#movimentoHorizDiag(Jogada)
      */
     public boolean movimentoHorizDiag() {
-        return peca.movimentoHorizDiag(this);
+        return Peca.movimentoHorizDiag(this);
     }
 
     /**
@@ -69,7 +70,16 @@ public class Jogada {
      * @see IPeca#movimentoHorizontal(Jogada)
      */
     public boolean movimentoHorizontal() {
-        return peca.movimentoHorizontal(this);
+        return Peca.movimentoHorizontal(this);
+    }
+
+    /**
+     * @return
+     *
+     * @see Peca#movimentoHorizVert(Jogada)
+     */
+    public boolean movimentoHorizVert() {
+        return Peca.movimentoHorizVert(this);
     }
 
     /**
@@ -81,5 +91,16 @@ public class Jogada {
         } catch (MovimentoInvalido e) {
             throw new JogadaInvalida(this, e);
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("%s (%d:%d)", getPeca().getTipo().toString(),
+                getDestX(), getDestY());
     }
 }

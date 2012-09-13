@@ -21,6 +21,7 @@ import android.view.View;
  * @author augusteiner
  *
  */
+@TargetApi(11)
 public class Peca extends View {
 
     private static final String TAG = View.class.getSimpleName();
@@ -105,12 +106,12 @@ public class Peca extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        pPaint.setColor(Color.LTGRAY);
-        pPaint.setStyle(Style.FILL);
-
-        int width = getMeasuredWidth();
-
-        canvas.drawCircle(width / 2, width / 2, width / 2 - 4, pPaint);
+        // pPaint.setColor(Color.LTGRAY);
+        // pPaint.setStyle(Style.FILL);
+        //
+        // int width = getMeasuredWidth();
+        //
+        // canvas.drawCircle(width / 2, width / 2, width / 2 - 4, pPaint);
     }
 
     /*
@@ -137,8 +138,15 @@ public class Peca extends View {
 
                     return true;
                 case MotionEvent.ACTION_UP :
+                    setVisibility(View.VISIBLE);
+                    invalidate();
+
                     return true;
                 case MotionEvent.ACTION_CANCEL :
+                    // TODO Remover duplicação de código com ACTION_UP
+                    setVisibility(View.VISIBLE);
+                    invalidate();
+
                     return true;
                 default :
                     return super.onTouchEvent(event);
@@ -171,18 +179,18 @@ public class Peca extends View {
      */
     @Deprecated
     private boolean startDragOlder(MotionEvent event) {
-        View p = (View) getParent();
-        if (p != null) {
-            Tabuleiro tabuleiro = (Tabuleiro) p.findViewById(R.id.tabuleiro);
-
-            if (tabuleiro != null) {
-                Log.d(TAG,
-                        String.format("startDragOlder : %d", event.getAction()));
-
-                // event.get
-                return tabuleiro.onTouchEvent(event, this);
-            }
-        }
+        // View p = (View) getParent();
+        // if (p != null) {
+        // Tabuleiro tabuleiro = (Tabuleiro) p.findViewById(R.id.tabuleiro);
+        //
+        // if (tabuleiro != null) {
+        // Log.d(TAG,
+        // String.format("startDragOlder : %d", event.getAction()));
+        //
+        // // event.get
+        // return tabuleiro.onTouchEvent(event, this);
+        // }
+        // }
 
         return super.onTouchEvent(event);
     }

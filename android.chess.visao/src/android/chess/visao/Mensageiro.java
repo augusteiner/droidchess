@@ -23,23 +23,23 @@ public class Mensageiro extends Toast {
     }
 
     /**
-     * @param message
+     * @param mensagem
      *
-     * @see Mensageiro#alerta(CharSequence, int)
+     * @see Mensageiro#alertar(CharSequence, int)
      */
-    public void alerta(CharSequence message) {
-        alerta(message, LENGTH_SHORT);
+    public void alertar(CharSequence mensagem) {
+        alertar(mensagem, LENGTH_SHORT);
     }
 
     /**
-     * @param message
-     * @param length
+     * @param mensagem
+     * @param duracao
      *
      * @see Toast#makeText(Context, CharSequence, int)
      * @see Toast#makeText(Context, int, int)
      */
-    public void alerta(CharSequence message, int length) {
-        Toast.makeText(context, String.format("ATENÇÃO!\n\n%s", message), length)
-                .show();
+    public void alertar(CharSequence mensagem, int duracao) {
+        Toast.makeText(context, String.format("ATENÇÃO!\n\n%s", mensagem),
+                duracao).show();
     }
 }
