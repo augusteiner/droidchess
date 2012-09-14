@@ -146,6 +146,7 @@ public class Tabuleiro {
     @Deprecated
     private void marcarPonto(IPeca peca) {
         // Índice do jogador a marcar pontos.
+
         @SuppressWarnings("unused")
         int jIndex = abs(peca.getCor().compareTo(Cor.Branca));
 
@@ -155,29 +156,23 @@ public class Tabuleiro {
 
     /**
      * @param peca
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      * @throws MovimentoInvalido
      */
-    public void mover(IPeca peca, int destX, int destY) throws JogadaInvalida {
-        mover(new Jogada(peca, destX, destY));
+    public void mover(IPeca peca, int destI, int destJ) throws JogadaInvalida {
+        mover(new Jogada(peca, destI, destJ));
     }
 
     /**
      * Valida o movimento desta peça de acordo com as coordenadas de destino
      * informadas e realiza o movimento da mesma.
      *
-     * @param x
-     *            Coordenada x de destino.
+     * @param jogada
      *
-     * @param y
-     *            Coordenada y de destino.
+     * @throws MovimentoInvalido
      *
      * @todo Adicionar suporte a jogadas especiais
-     */
-    /**
-     * @param jogada
-     * @throws MovimentoInvalido
      */
     private void mover(Jogada jogada) throws JogadaInvalida {
 
@@ -187,21 +182,21 @@ public class Tabuleiro {
         // Peças que tem o movimento limitado
         // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
-        case Rei :
-            // Checar condições de cheque e cheque mate
-            break;
-        case Rainha :
-            break;
-        case Peao :
-            ok = jogada.movimentoHorizontal();
+            case Rei :
+                // Checar condições de cheque e cheque mate
+                break;
+            case Rainha :
+                break;
+            case Peao :
+                ok = jogada.movimentoVertical();
 
-            break;
-        case Torre :
-            ok = jogada.movimentoHorizDiag();
+                break;
+            case Torre :
+                ok = jogada.movimentoHorizDiag();
 
-            break;
-        case Cavalo :
-        default :
+                break;
+            case Cavalo :
+            default :
         }
 
         ok = !pecaNoCaminho(jogada);
@@ -214,8 +209,8 @@ public class Tabuleiro {
             throw new JogadaInvalida(jogada);
         }
 
-        int x = peca.getX();
-        int y = peca.getY();
+        int i = peca.getI();
+        int j = peca.getJ();
 
         jogada.realizar();
 
@@ -224,8 +219,8 @@ public class Tabuleiro {
         tomar(jogada);
 
         // Refletindo alterações da jogada no tabuleiro.
-        pecas[x][y] = null;
-        pecas[jogada.getDestX()][jogada.getDestY()] = peca;
+        pecas[i][j] = null;
+        pecas[jogada.getDestI()][jogada.getDestJ()] = peca;
     }
 
     /**
@@ -236,15 +231,15 @@ public class Tabuleiro {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param i
+     * @param j
      * @return
      */
-    IPeca peca(int x, int y) throws PecaNaoEncontrada {
-        if (x < 0 || y < 0 || x > 7 || y > 7)
+    IPeca peca(int i, int j) throws PecaNaoEncontrada {
+        if (i < 0 || j < 0 || i > 7 || j > 7)
             throw new PecaNaoEncontrada();
 
-        IPeca peca = pecas[x][y];
+        IPeca peca = pecas[i][j];
 
         if (peca == null)
             throw new PecaNaoEncontrada();
@@ -259,43 +254,60 @@ public class Tabuleiro {
      */
     private IPeca peca(Jogada jogada) {
         try {
-            return peca(jogada.getDestX(), jogada.getDestY());
+            return peca(jogada.getDestI(), jogada.getDestJ());
         } catch (PecaNaoEncontrada e) {
             return null;
         }
     }
 
     /**
+     * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
+     * só deve ser chamado após as validações do movimento da peça.
      *
      * @param jogada
      *
-     * @return
-     *
-     * @todo Implementar
+     * @return <code>true</code> caso haja peça no caminho da jogada,
+     *         <code>false</code> caso contrário.
      */
     private boolean pecaNoCaminho(Jogada jogada) {
-        boolean vert = jogada.movimentoHorizVert();
-        boolean horiz = jogada.movimentoHorizontal();
-        boolean diag = jogada.movimentoDiagonal();
+        Boolean vert = jogada.movimentoVertical();
+        Boolean horiz = jogada.movimentoHorizontal();
+        Boolean diag = jogada.movimentoDiagonal();
 
-        boolean horizVert = vert || horiz;
+        Boolean horizVert = vert || horiz;
 
         if (!horizVert && !diag)
             return false;
 
-        // IPeca peca = jogada.getPeca();
-        //
-        // for (int i = peca.getX(), j; i <= jogada.getDestX(); i++) {
-        // for (j = peca.getY(); j <= jogada.getDestY(); j++) {
-        // if (pecas[i][j] != null) {
-        // return true;
-        // }
-        // }
-        // }
+        Boolean invertida = jogada.invertida();
+
+        int jinc = horiz.compareTo(false) - invertida.compareTo(false);
+        int iinc = vert.compareTo(false) - invertida.compareTo(false);
+
+        IPeca peca = jogada.getPeca();
+
+        Integer origI = peca.getI();
+        Integer origJ = peca.getJ();
+
+        int i = origI + iinc;
+        int j = origJ + jinc;
+
+        while (origI.compareTo(i) != 0) {
+            j = diag ? i : peca.getJ() + jinc;
+
+            while (origJ.compareTo(j) != 0) {
+                if (pecas[i][j] != null) {
+                    return true;
+                }
+
+                j += jinc;
+            }
+
+            i += iinc;
+        }
 
         return false;
     }
-
     /**
      * @param jogada
      * @throws PecaNaoEncontrada

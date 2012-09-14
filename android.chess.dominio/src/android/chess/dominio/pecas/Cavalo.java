@@ -27,13 +27,13 @@ public class Cavalo extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void mover(int destX, int destY) throws MovimentoInvalido {
-        int dx = abs(getX() - destX);
-        int dy = abs(getY() - destY);
+    public void mover(int destI, int destJ) throws MovimentoInvalido {
+        int di = abs(getI() - destI);
+        int dj = abs(getJ() - destJ);
 
-        if ((dx != 1 && dx != 2) || (dy != 1 && dy != 2) || dx == dy)
+        if ((di != 1 && di != 2) || (dj != 1 && dj != 2) || di == dj)
             throw new MovimentoInvalido(this);
 
-        super.mover(destX, destY);
+        super.mover(destI, destJ);
     }
 }

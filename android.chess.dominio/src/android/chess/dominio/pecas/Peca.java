@@ -10,38 +10,26 @@ import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public abstract class Peca implements IPeca {
-    /**
-     * @param peca
-     * @param destX
-     * @param destY
-     * @return
-     */
-    private static boolean movimentoDiagonal(IPeca peca, int destX, int destY) {
-        int origX = peca.getX();
-        int origY = peca.getY();
-
-        return abs(origX - destX) == abs(origY - destY);
-    }
 
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
-     * 
+     *
      * @param jogada
      * @return
      */
     public static boolean movimentoDiagonal(Jogada jogada) {
-        return movimentoDiagonal(jogada.getPeca(), jogada.getDestX(),
-                jogada.getDestY());
+        return jogada.getPeca().movimentoDiagonal(jogada.getDestI(),
+                jogada.getDestJ());
     }
 
     /**
      * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
      * para validação de movimentos de bispos, torres e rainhas.
-     * 
+     *
      * @param jogada
      * @return
      */
@@ -52,12 +40,12 @@ public abstract class Peca implements IPeca {
     /**
      * Retorna se o movimento da peça na jogada é horizontal. Útil para
      * validação de movimentos de torres.
-     * 
+     *
      * @param jogada
      * @return
      */
     public static boolean movimentoHorizontal(Jogada jogada) {
-        return jogada.getPeca().movimentoHorizontal(jogada.getDestX());
+        return jogada.getPeca().movimentoHorizontal(jogada.getDestI());
     }
 
     /**
@@ -65,17 +53,26 @@ public abstract class Peca implements IPeca {
      * @return
      */
     public static boolean movimentoHorizVert(Jogada jogada) {
-        return jogada.getPeca().movimentoHorizVert(jogada.getDestX(),
-                jogada.getDestY());
+        return jogada.getPeca().movimentoHorizVert(jogada.getDestI(),
+                jogada.getDestJ());
+    }
+
+    /**
+     * @param jogada
+     * @return
+     */
+    public static boolean movimentoVertical(Jogada jogada) {
+        return jogada.getPeca().movimentoVertical(jogada.getDestI(),
+                jogada.getDestJ());
     }
 
     private Cor cor;
 
     private boolean moveu;
 
-    private int x;
+    private int i;
 
-    private int y;
+    private int j;
 
     /**
      * @param tabuleiro
@@ -95,9 +92,31 @@ public abstract class Peca implements IPeca {
         return cor;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.chess.dominio.interfaces.IPeca#getI()
+     */
+    @Override
+    public int getI() {
+        // TODO Auto-generated method stub
+        return i;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.chess.dominio.interfaces.IPeca#getJ()
+     */
+    @Override
+    public int getJ() {
+        // TODO Auto-generated method stub
+        return j;
+    }
+
     /**
      * Retorna se a peça já foi movida.
-     * 
+     *
      * @return
      */
     public final boolean getMoveu() {
@@ -106,7 +125,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#getTipo()
      */
     @Override
@@ -114,162 +133,132 @@ public abstract class Peca implements IPeca {
         return Tipo.valueOf(this.getClass().getSimpleName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.chess.dominio.interfaces.IPeca#getX()
-     */
-    @Override
-    public int getX() {
-        // TODO Auto-generated method stub
-        return x;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.chess.dominio.interfaces.IPeca#getY()
-     */
-    @Override
-    public int getY() {
-        // TODO Auto-generated method stub
-        return y;
-    }
-
     /**
      * Move a peça da posição atual para a nova posição definida pelos pontos
-     * destX e destY.
-     * 
-     * @param destX
-     * @param destY
+     * destI e destJ.
+     *
+     * @param destI
+     * @param destJ
      * @throws MovimentoInvalido
      */
     @Override
-    public void mover(int destX, int destY) throws MovimentoInvalido {
+    public void mover(int destI, int destJ) throws MovimentoInvalido {
         moveu = true;
 
-        set(destX, destY);
+        set(destI, destJ);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.interfaces.IPeca#mover(android.chess.dominio.Jogada
      * )
      */
     @Override
     public void mover(Jogada jogada) throws MovimentoInvalido {
-        mover(jogada.getDestX(), jogada.getDestY());
+        mover(jogada.getDestI(), jogada.getDestJ());
     }
 
     /**
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      * @return
      */
     @Override
-    public boolean movimentoDiagonal(int destX, int destY) {
-        return movimentoDiagonal(this, destX, destY);
+    public boolean movimentoDiagonal(int destI, int destJ) {
+        return abs(getI() - destI) == abs(getJ() - destJ);
     }
 
     /**
      * Retorna se o movimento da jogada é diagonal ou horizontal.
-     * 
+     *
      * @param jogada
      *            Jogada a ser testado o tipo de movimento.
-     * 
+     *
      * @return {@link Boolean} True caso o movimento seja horizontal ou diagonal
      *         e False caso contrário.
      */
     @Override
-    public boolean movimentoHorizDiag(int destX, int destY) {
-        return movimentoHorizontal(destX) || movimentoDiagonal(destX, destY);
+    public boolean movimentoHorizDiag(int destI, int destJ) {
+        return movimentoHorizontal(destI) || movimentoDiagonal(destI, destJ);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#movimentoHorizontal(int)
      */
     @Override
-    public boolean movimentoHorizontal(int destX) {
-        return getX() == destX;
+    public boolean movimentoHorizontal(int destI) {
+        return getI() == destI;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#movimentoHorizVert(int, int)
      */
     @Override
-    public boolean movimentoHorizVert(int destX, int destY) {
-        return movimentoVertical(destX, destY) || movimentoHorizontal(destX);
+    public boolean movimentoHorizVert(int destI, int destJ) {
+        return movimentoVertical(destI, destJ) || movimentoHorizontal(destI);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#movimentoVertical(int, int)
      */
     @Override
-    public boolean movimentoVertical(int destX, int destY) {
-        return getX() != destX && getY() == destY;
-    }
-
-    /**
-     * @param jogada
-     * @return
-     */
-    public boolean movimentoVertical(Jogada jogada) {
-        return movimentoVertical(jogada.getDestX(), jogada.getDestY());
+    public boolean movimentoVertical(int destI, int destJ) {
+        return getI() != destI && getJ() == destJ;
     }
 
     /**
      * Altera as duas coordenadas atuais desta peça.
-     * 
-     * @param destX
-     * @param destY
+     *
+     * @param destI
+     * @param destJ
      */
     @Override
-    public void set(int destX, int destY) {
-        setX(destX);
-        setY(destY);
+    public void set(int destI, int destJ) {
+        setI(destI);
+        setJ(destJ);
     }
 
     /**
-     * Altera a coordenada x atual desta peça.
-     * 
-     * @param x
-     *            Nova coordenada x.
+     * Altera a linha atual desta peça.
+     *
+     * @param i
+     *            Nova linha.
      */
     @Override
-    public void setX(int x) {
-        this.x = x;
+    public void setI(int i) {
+        this.i = i;
     }
 
     /**
      * Altera a coordenada y atual desta peça.
-     * 
-     * @param y
+     *
+     * @param j
      *            Nova coordenada y.
      */
     @Override
-    public void setY(int y) {
-        this.y = y;
+    public void setJ(int j) {
+        this.j = j;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return String.format("%s %s (%d:%d)",
 
-                this.getClass().getSimpleName(), this.getCor(),
+        this.getClass().getSimpleName(), this.getCor(),
 
-                this.getX(), this.getY());
+        this.getI(), this.getJ());
     }
 }

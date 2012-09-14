@@ -8,11 +8,11 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Peao extends Peca {
 
-    private int prevX;
+    private int prevI;
 
     /**
      * @param tabuleiro
@@ -24,31 +24,31 @@ public class Peao extends Peca {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void mover(int destX, int destY) throws MovimentoInvalido {
-        int dy = abs(getY() - destY);
-        int dx = abs(getX() - destX);
+    public void mover(int destI, int destJ) throws MovimentoInvalido {
+        int di = abs(getI() - destI);
+        int dj = abs(getJ() - destJ);
         boolean ok = true;
 
-        if (dy != 0) {
+        if (dj != 0) {
             ok = false;
-        } else if (dx > 2) {
+        } else if (di > 2) {
             ok = false;
         }
 
         if (getMoveu()) {
-            if (dx > 1)
+            if (di > 1)
                 ok = false;
             else {
-                int pdx = getX() - prevX;
+                int pdi = getI() - prevI;
 
-                if (Math.signum(pdx) > 0) {
-                    ok = destX > getX();
+                if (Math.signum(pdi) > 0) {
+                    ok = destI > getI();
                 } else {
-                    ok = destX < getX();
+                    ok = destI < getI();
                 }
             }
             // ok = abs(getX() - prevX
@@ -59,9 +59,9 @@ public class Peao extends Peca {
         if (!ok)
             throw new MovimentoInvalido(this);
 
-        prevX = getX();
+        prevI = getI();
 
-        super.mover(destX, destY);
+        super.mover(destI, destJ);
     }
 
 }

@@ -50,8 +50,11 @@ public class Jogada {
     }
 
     /**
+     * @deprecated
+     *
      * @return
      */
+    @Deprecated
     public static Partida getPartida() {
         if (partida == null)
             partida = new Partida();
@@ -62,18 +65,18 @@ public class Jogada {
     /**
      * Realiza uma jogada no tabuleiro da partida atual e imprime-o logo após.
      *
-     * @param origX
-     * @param origY
-     * @param destX
-     * @param destY
+     * @param origI
+     * @param origJ
+     * @param destI
+     * @param destJ
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
-    public static void jogada(int origX, int origY, int destX, int destY)
+    public static void jogada(int origI, int origJ, int destI, int destJ)
             throws JogadaInvalida, PecaNaoEncontrada {
         Partida p = getPartida();
 
-        p.jogada(origX, origY, destX, destY);
+        p.jogada(origI, origJ, destI, destJ);
 
         print(p.getTabuleiro());
     }
@@ -106,7 +109,7 @@ public class Jogada {
     private static void peao() throws JogadaInvalida, PecaNaoEncontrada {
         jogada(1, 0, 3, 0);
         jogada(6, 1, 4, 1);
-        //jogada(3, 0, 4, 1);
+        jogada(3, 0, 4, 1);
     }
     /**
      * Imprime uma representação gráfica do tabuleiro dado.

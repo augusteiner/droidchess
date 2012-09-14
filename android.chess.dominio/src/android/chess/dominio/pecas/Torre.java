@@ -26,12 +26,12 @@ public class Torre extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void mover(int destX, int destY) throws MovimentoInvalido {
+    public void mover(int destI, int destJ) throws MovimentoInvalido {
 
-        if (!movimentoHorizVert(destX, destY))
+        if (!movimentoHorizVert(destI, destJ))
             throw new MovimentoInvalido(this);
 
-        super.mover(destX, destY);
+        super.mover(destI, destJ);
     }
 
 }

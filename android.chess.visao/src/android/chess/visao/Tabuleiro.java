@@ -3,6 +3,7 @@
  */
 package android.chess.visao;
 
+import static android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT;
 import java.util.Iterator;
 
 import android.annotation.TargetApi;
@@ -121,44 +122,26 @@ public class Tabuleiro extends View {
      * @param contentView
      *
      */
-    @SuppressWarnings("deprecation")
     protected void initPecas(ViewGroup contentView) {
 
         Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
         Context context = getContext();
 
         Peca peca = null;
-        IPeca next = null;
 
-        String bgName = "";
-        int resId = 0;
-
-        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 
         for (int i = 0, j; i < 2; i++) {
             for (j = 0; j < 8; j++) {
                 peca = new Peca(context);
-                next = pecas.next();
 
-                peca.setTag(next);
+                peca.setTag(pecas.next());
 
-                bgName = String.format("%s_%s", next.getCor().toString()
-                        .substring(0, 1).toLowerCase(), next.getClass()
-                        .getSimpleName().toLowerCase());
-
-                resId = 0;
-                try {
-                    resId = R.drawable.class.getDeclaredField(bgName).getInt(
-                            null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                peca.setBackgroundResource(resId);
+                peca.setBackgroundResource(peca.backgroundResId());
                 // peca.setBackgroundResource()
 
                 lp = new LayoutParams(lp);
+
                 // LayoutParams não copia as "rules" definidas.
                 lp.addRule(RelativeLayout.ALIGN_TOP, getId());
 
@@ -282,7 +265,7 @@ public class Tabuleiro extends View {
      * @param peca
      * @return
      */
-    private boolean performDrag(int x, int y, Peca peca) {
+    private boolean performDrag(int i, int j, Peca peca) {
 
         // p.getLayoutParams() utilizado para não perder a
         // referência
@@ -292,8 +275,8 @@ public class Tabuleiro extends View {
         if (lp == null)
             return false;
 
-        int leftMargin = y * peca.getWidth();
-        int topMargin = x * peca.getHeight();
+        int leftMargin = j * peca.getWidth();
+        int topMargin = i * peca.getHeight();
 
         lp.leftMargin = leftMargin;
         lp.topMargin = topMargin;
@@ -314,14 +297,14 @@ public class Tabuleiro extends View {
         switch (event.getAction()) {
             case DragEvent.ACTION_DROP :
                 if (peca != null) {
-                    int destX = (int) (event.getY() / getSquareSide());
-                    int destY = (int) (event.getX() / getSquareSide());
+                    int destI = (int) (event.getY() / getSquareSide());
+                    int destJ = (int) (event.getX() / getSquareSide());
 
-                    Log.d(TAG, String.format("X: %d, Y: %d", destX, destY));
+                    Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
 
-                    controle.jogada((IPeca) peca.getTag(), destX, destY);
+                    controle.jogada((IPeca) peca.getTag(), destI, destJ);
 
-                    performDrag(destX, destY, peca);
+                    performDrag(destI, destJ, peca);
 
                     peca.setVisibility(VISIBLE);
                     peca.invalidate();

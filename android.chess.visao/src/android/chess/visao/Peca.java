@@ -2,16 +2,14 @@ package android.chess.visao;
 
 import android.annotation.TargetApi;
 import android.chess.Main;
+import android.chess.dominio.interfaces.IPeca;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -58,11 +56,36 @@ public class Peca extends View {
     }
 
     /**
-     * Retorna a coordenada x desta peça em relação ao tabuleiro.
+     * Retorna o resid de acordo com a cor e nome da peça configurada com o
+     * setTag.
+     *
+     * @return Id do recurso associado com a imagem da peça de chadrez.
+     *
+     * @see View#setTag(Object)
+     */
+    public int backgroundResId() {
+        IPeca peca = (IPeca) getTag();
+
+        if (peca == null)
+            return 0;
+
+        String bgName = String.format("%s_%s", peca.getCor().toString()
+                .substring(0, 1).toLowerCase(), peca.getClass().getSimpleName()
+                .toLowerCase());
+
+        try {
+            return R.drawable.class.getDeclaredField(bgName).getInt(null);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Retorna a linha desta peça em relação ao tabuleiro.
      *
      * @return
      */
-    public int getCoordX() {
+    public int getCoordI() {
 
         return (int) (getX() / getSide());
     }
@@ -72,7 +95,7 @@ public class Peca extends View {
      *
      * @return
      */
-    public int getCoordY() {
+    public int getCoordJ() {
         return (int) (getY() / getSide());
     }
 

@@ -27,16 +27,14 @@ public class PartidaControle {
 
     /**
      * @param peca
-     * @param origX
-     * @param origY
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      *
      * @throws Exception
      */
-    public void jogada(IPeca peca, int destX, int destY) throws Exception {
+    public void jogada(IPeca peca, int destI, int destJ) throws Exception {
         try {
-            partida.jogada(peca, destX, destY);
+            partida.jogada(peca, destI, destJ);
         } catch (JogadaInvalida e) {
             throw e;
         } catch (Exception e) {

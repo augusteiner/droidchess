@@ -10,33 +10,33 @@ import android.chess.dominio.pecas.Peca;
  *
  */
 public class Jogada {
-    private int destX, destY;
+    private int destI, destJ;
     private IPeca peca;
 
     /**
      * @param peca
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      */
-    public Jogada(IPeca peca, int destX, int destY) {
+    public Jogada(IPeca peca, int destI, int destJ) {
         this.peca = peca;
 
-        this.destX = destX;
-        this.destY = destY;
+        this.destI = destI;
+        this.destJ = destJ;
     }
 
     /**
      * @return
      */
-    public int getDestX() {
-        return destX;
+    public int getDestI() {
+        return destI;
     }
 
     /**
      * @return
      */
-    public int getDestY() {
-        return destY;
+    public int getDestJ() {
+        return destJ;
     }
 
     /**
@@ -44,6 +44,16 @@ public class Jogada {
      */
     public IPeca getPeca() {
         return peca;
+    }
+
+    /**
+     * Retorna se a jogada está sendo realizada no sentido inverso do tabuleiro
+     * (de baixo para cima).
+     *
+     * @return
+     */
+    public boolean invertida() {
+        return peca.getI() - getDestI() > 0 || peca.getJ() - getDestJ() > 0;
     }
 
     /**
@@ -83,11 +93,20 @@ public class Jogada {
     }
 
     /**
+     * @return
+     *
+     * @see Peca#movimentoVertical(Jogada)
+     */
+    public Boolean movimentoVertical() {
+        return Peca.movimentoVertical(this);
+    }
+
+    /**
      * @throws JogadaInvalida
      */
     public void realizar() throws JogadaInvalida {
         try {
-            peca.mover(destX, destY);
+            peca.mover(destI, destJ);
         } catch (MovimentoInvalido e) {
             throw new JogadaInvalida(this, e);
         }
@@ -101,6 +120,6 @@ public class Jogada {
     @Override
     public String toString() {
         return String.format("%s (%d:%d)", getPeca().getTipo().toString(),
-                getDestX(), getDestY());
+                getDestI(), getDestJ());
     }
 }

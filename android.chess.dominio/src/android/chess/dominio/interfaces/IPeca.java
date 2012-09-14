@@ -37,26 +37,26 @@ public interface IPeca {
     Cor getCor();
 
     /**
+     * @return Linha atual desta peça.
+     */
+    int getI();
+
+    /**
+     * @return Coluna atual desta peça.
+     */
+    int getJ();
+
+    /**
      * @return Retorna o tipo desta peça.
      */
     Tipo getTipo();
 
     /**
-     * @return Coordenada x atual desta peça.
-     */
-    int getX();
-
-    /**
-     * @return Coordenada y atual desta peça.
-     */
-    int getY();
-
-    /**
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      * @throws MovimentoInvalido
      */
-    void mover(int destX, int destY) throws MovimentoInvalido;
+    void mover(int destI, int destJ) throws MovimentoInvalido;
 
     /**
      * @param jogada
@@ -71,22 +71,22 @@ public interface IPeca {
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
      *
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      *
      * @return
      */
-    boolean movimentoDiagonal(int destX, int destY);
+    boolean movimentoDiagonal(int destI, int destJ);
 
     /**
      * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
      * para validação de movimentos de bispos, torres e rainhas.
      *
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      * @return
      */
-    boolean movimentoHorizDiag(int destX, int destY);
+    boolean movimentoHorizDiag(int destI, int destJ);
 
     /**
      * Retorna se o movimento da jogada é horizontal.
@@ -97,40 +97,40 @@ public interface IPeca {
      * @return {@link Boolean} True caso o movimento seja na horizontal, False
      *         caso contrário.
      */
-    boolean movimentoHorizontal(int destY);
+    boolean movimentoHorizontal(int destJ);
 
     /**
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      * @return
      */
-    boolean movimentoHorizVert(int destX, int destY);
+    boolean movimentoHorizVert(int destI, int destJ);
 
     /**
      *
-     * @param destX
+     * @param destI
      *
-     * @param destY
+     * @param destJ
      *
      * @return
      */
-    boolean movimentoVertical(int destX, int destY);
+    boolean movimentoVertical(int destI, int destJ);
 
     /**
-     * @param x
-     * @param y
+     * @param i
+     * @param j
      */
-    void set(int x, int y);
+    void set(int i, int j);
 
     /**
-     * @param x
+     * @param i
      */
-    void setX(int x);
+    void setI(int i);
 
     /**
-     * @param y
+     * @param j
      */
-    void setY(int y);
+    void setJ(int j);
 
     /**
      * @return

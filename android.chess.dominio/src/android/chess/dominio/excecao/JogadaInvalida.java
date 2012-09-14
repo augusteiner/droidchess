@@ -29,6 +29,6 @@ public class JogadaInvalida extends Exception {
      */
     public JogadaInvalida(Jogada jogada, Throwable cause) {
         super(String.format("Jogada inválida %s -> (%d:%d)", jogada.getPeca(),
-                jogada.getDestX(), jogada.getDestY()), cause);
+                jogada.getDestI(), jogada.getDestJ()), cause);
     }
 }

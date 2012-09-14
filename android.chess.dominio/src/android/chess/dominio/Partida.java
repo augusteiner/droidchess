@@ -60,28 +60,28 @@ public class Partida {
     }
 
     /**
-     * @param origX
-     * @param origY
-     * @param destX
-     * @param destY
+     * @param origI
+     * @param origJ
+     * @param destI
+     * @param destJ
      * @throws MovimentoInvalido
      * @throws PecaNaoEncontrada
      */
-    public void jogada(int origX, int origY, int destX, int destY)
+    public void jogada(int origI, int origJ, int destI, int destJ)
             throws JogadaInvalida, PecaNaoEncontrada {
-        IPeca orig = tabuleiro.peca(origX, origY);
+        IPeca orig = tabuleiro.peca(origI, origJ);
 
-        tabuleiro.mover(orig, destX, destY);
+        tabuleiro.mover(orig, destI, destJ);
     }
 
     /**
      * @param peca
-     * @param destX
-     * @param destY
+     * @param destI
+     * @param destJ
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
      */
-    public void jogada(IPeca peca, int destX, int destY) throws JogadaInvalida, PecaNaoEncontrada {
-        jogada(peca.getX(), peca.getY(), destX, destY);
+    public void jogada(IPeca peca, int destI, int destJ) throws JogadaInvalida, PecaNaoEncontrada {
+        jogada(peca.getI(), peca.getJ(), destI, destJ);
     }
 }
