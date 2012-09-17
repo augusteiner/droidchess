@@ -6,6 +6,7 @@ package android.chess.dominio.pecas;
 import static java.lang.Math.abs;
 import android.chess.dominio.Jogada;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
 
 /**
@@ -142,8 +143,10 @@ public abstract class Peca implements IPeca {
      * @throws MovimentoInvalido
      */
     @Override
-    public void mover(int destI, int destJ) throws MovimentoInvalido {
+    public final void mover(int destI, int destJ) throws MovimentoInvalido {
         moveu = true;
+
+        validar(destI, destJ);
 
         set(destI, destJ);
     }
@@ -260,5 +263,17 @@ public abstract class Peca implements IPeca {
         this.getClass().getSimpleName(), this.getCor(),
 
         this.getI(), this.getJ());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeca#validar(android.chess.dominio.
+     * Jogada)
+     */
+    @Override
+    public final void validar(IJogada jogada) throws MovimentoInvalido {
+        validar(jogada.getDestI(), jogada.getDestJ());
     }
 }

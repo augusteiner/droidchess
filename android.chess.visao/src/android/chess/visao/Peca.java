@@ -114,6 +114,14 @@ public class Peca extends View {
     }
 
     /**
+     * @param peca
+     */
+    public void hide() {
+        setVisibility(INVISIBLE);
+        invalidate();
+    }
+
+    /**
      *
      */
     private void initPeca() {
@@ -161,14 +169,9 @@ public class Peca extends View {
 
                     return true;
                 case MotionEvent.ACTION_UP :
-                    setVisibility(View.VISIBLE);
-                    invalidate();
 
                     return true;
                 case MotionEvent.ACTION_CANCEL :
-                    // TODO Remover duplicação de código com ACTION_UP
-                    setVisibility(View.VISIBLE);
-                    invalidate();
 
                     return true;
                 default :
@@ -177,6 +180,14 @@ public class Peca extends View {
         } else {
             return startDragOlder(event);
         }
+    }
+
+    /**
+     * @param peca
+     */
+    public void show() {
+        setVisibility(VISIBLE);
+        invalidate();
     }
 
     /**
@@ -189,8 +200,7 @@ public class Peca extends View {
         Object myLocalState = this;
         int flags = 0;
 
-        setVisibility(View.INVISIBLE);
-        invalidate();
+        hide();
 
         return startDrag(data, shadowBuilder, myLocalState, flags);
     }

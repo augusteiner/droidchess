@@ -3,7 +3,8 @@
  */
 package android.chess.visao;
 
-import static android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import java.util.Iterator;
 
 import android.annotation.TargetApi;
@@ -32,15 +33,15 @@ import android.widget.RelativeLayout.LayoutParams;
  */
 public class Tabuleiro extends View {
 
+    private static final String TAG = Tabuleiro.class.getSimpleName();
+    private PartidaControle controle;
+    private boolean inicializado;
+    private Mensageiro mensageiro;
     // private boolean moving;
     private Paint paint;
     // TODO Reabilitar no caso da implementação de suporte a uma API antiga.
     // private Peca peca;
     private Rect placeRect;
-    private PartidaControle controle;
-    private Mensageiro mensageiro;
-    private boolean inicializado;
-    private static final String TAG = Tabuleiro.class.getSimpleName();
 
     /**
      * @param context
@@ -214,10 +215,20 @@ public class Tabuleiro extends View {
             }
         }
 
+        // if (pecaMovendo != null) {
+        // paint.setColor(Color.YELLOW);
+        // placeRect.set((int) (pecaMovendo.getY()),
+        // (int) (pecaMovendo.getX()), pecaMovendo.getMeasuredWidth(),
+        // pecaMovendo.getMeasuredHeight());
+        // }
+
+        canvas.drawRect(placeRect, paint);
+
         placeRect.set(0, 0, width + 1, width + 1);
         paint.setStyle(Style.STROKE);
         canvas.drawRect(placeRect, paint);
     }
+
     /*
      * (non-Javadoc)
      *
@@ -302,12 +313,17 @@ public class Tabuleiro extends View {
 
                     Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
 
-                    controle.jogada((IPeca) peca.getTag(), destI, destJ);
+                    try {
+                        controle.mover((IPeca) peca.getTag(), destI, destJ);
+                    } catch (Exception e) {
+                        peca.show();
+
+                        throw e;
+                    } finally {
+                        peca.show();
+                    }
 
                     performDrag(destI, destJ, peca);
-
-                    peca.setVisibility(VISIBLE);
-                    peca.invalidate();
 
                     return true;
                 }

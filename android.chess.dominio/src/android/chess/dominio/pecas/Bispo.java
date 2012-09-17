@@ -26,11 +26,9 @@ public class Bispo extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void mover(int destI, int destJ) throws MovimentoInvalido {
+    public void validar(int destI, int destJ) throws MovimentoInvalido {
         if (!super.movimentoDiagonal(destI, destJ))
             throw new MovimentoInvalido(this);
-
-        super.mover(destI, destJ);
     }
 
 }

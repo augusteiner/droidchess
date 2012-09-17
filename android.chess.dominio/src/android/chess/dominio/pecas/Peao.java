@@ -28,7 +28,7 @@ public class Peao extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void mover(int destI, int destJ) throws MovimentoInvalido {
+    public void validar(int destI, int destJ) throws MovimentoInvalido {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
         boolean ok = true;
@@ -60,8 +60,5 @@ public class Peao extends Peca {
             throw new MovimentoInvalido(this);
 
         prevI = getI();
-
-        super.mover(destI, destJ);
     }
-
 }

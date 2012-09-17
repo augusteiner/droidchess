@@ -32,14 +32,10 @@ public class PartidaControle {
      *
      * @throws Exception
      */
-    public void jogada(IPeca peca, int destI, int destJ) throws Exception {
+    public void mover(IPeca peca, int destI, int destJ) throws Exception {
         try {
             partida.jogada(peca, destI, destJ);
-        } catch (JogadaInvalida e) {
-            throw e;
         } catch (Exception e) {
-            // getMensageiro().alerta(e.getMessage());
-
             throw e;
         }
     }

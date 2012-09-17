@@ -23,14 +23,11 @@ public class Rei extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void mover(int destI, int destJ) throws MovimentoInvalido {
+    public void validar(int destI, int destJ) throws MovimentoInvalido {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
 
         if (di > 1 || dj > 1)
             throw new MovimentoInvalido(this);
-
-        super.mover(destI, destJ);
     }
-
 }

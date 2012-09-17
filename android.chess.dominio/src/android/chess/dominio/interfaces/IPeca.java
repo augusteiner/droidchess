@@ -66,7 +66,6 @@ public interface IPeca {
      * @see {@link IPeca#mover(int, int)}
      */
     void mover(Jogada jogada) throws MovimentoInvalido;
-
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
@@ -133,8 +132,35 @@ public interface IPeca {
     void setJ(int j);
 
     /**
-     * @return
+     * @return Representação desta peça como {@link String}
      */
     @Override
     String toString();
+
+    /**
+     * Valida o movimento da peça em questão de acordo com a jogada
+     * especificada.
+     *
+     * @param jogada
+     *            Jogada a ser realizada com a peça em questão.
+     *
+     * @throws MovimentoInvalido
+     *             Caso o movimento seja inválido esta exceção será jogada.
+     */
+    void validar(IJogada jogada) throws MovimentoInvalido;
+
+    /**
+     * Valida o movimento da peça em questão de acordo com as posições de
+     * destino informadas.
+     *
+     * @param destI
+     *            Linha de destino.
+     *
+     * @param destJ
+     *            Coluna de destino.
+     *
+     * @throws MovimentoInvalido
+     *             Caso o movimento seja inválido esta exceção será jogada.
+     */
+    void validar(int destI, int destJ) throws MovimentoInvalido;
 }

@@ -145,7 +145,7 @@ public class Jogada {
      * @throws PecaNaoEncontrada
      */
     private static void rainha() throws JogadaInvalida, PecaNaoEncontrada {
-        jogada(0, 3, 3, 6);
+        jogada(0, 3, 2, 5);
     }
 
     /**
@@ -155,9 +155,9 @@ public class Jogada {
      * @throws PecaNaoEncontrada
      */
     private static void test() throws JogadaInvalida, PecaNaoEncontrada {
-        peao();
-        cavalo();
-        bispo();
+        // peao();
+        // cavalo();
+        // bispo();
         rainha();
     }
 }

@@ -1,5 +1,7 @@
 package android.chess;
 
+import javax.swing.text.View;
+
 import android.app.Activity;
 import android.chess.visao.R;
 import android.chess.visao.Tabuleiro;
@@ -13,7 +15,7 @@ import android.view.WindowManager;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Main extends Activity {
 
@@ -45,9 +47,16 @@ public class Main extends Activity {
         return R.id.layout_main;
     }
 
+    /**
+     * @param view
+     */
+    public void menuExitOnClick(View v) {
+        finish();
+    }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
@@ -67,7 +76,7 @@ public class Main extends Activity {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override

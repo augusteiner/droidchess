@@ -69,7 +69,7 @@ public class Partida {
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
             throws JogadaInvalida, PecaNaoEncontrada {
-        IPeca orig = tabuleiro.peca(origI, origJ);
+        IPeca orig = tabuleiro.outra(origI, origJ);
 
         tabuleiro.mover(orig, destI, destJ);
     }
