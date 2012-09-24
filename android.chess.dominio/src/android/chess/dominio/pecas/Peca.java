@@ -24,7 +24,7 @@ public abstract class Peca implements IPeca {
      */
     public static boolean movimentoDiagonal(Jogada jogada) {
         return jogada.getPeca().movimentoDiagonal(jogada.getDestI(),
-                jogada.getDestJ());
+            jogada.getDestJ());
     }
 
     /**
@@ -55,7 +55,7 @@ public abstract class Peca implements IPeca {
      */
     public static boolean movimentoHorizVert(Jogada jogada) {
         return jogada.getPeca().movimentoHorizVert(jogada.getDestI(),
-                jogada.getDestJ());
+            jogada.getDestJ());
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class Peca implements IPeca {
      */
     public static boolean movimentoVertical(Jogada jogada) {
         return jogada.getPeca().movimentoVertical(jogada.getDestI(),
-                jogada.getDestJ());
+            jogada.getDestJ());
     }
 
     private Cor cor;
@@ -144,9 +144,9 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public final void mover(int destI, int destJ) throws MovimentoInvalido {
-        moveu = true;
-
         validar(destI, destJ);
+
+        moveu = true;
 
         set(destI, destJ);
     }

@@ -3,27 +3,36 @@
  */
 package android.chess.visao;
 
+import static java.lang.Math.min;
+
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import java.util.Iterator;
 
 import android.annotation.TargetApi;
+
 import android.chess.Main;
 import android.chess.controle.PartidaControle;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.interfaces.IPeca;
+
 import android.content.Context;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -126,33 +135,34 @@ public class Tabuleiro extends View {
     protected void initPecas(ViewGroup contentView) {
 
         Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
+        IPeca next = null;
         Context context = getContext();
 
         Peca peca = null;
 
         LayoutParams lp = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 
-        for (int i = 0, j; i < 2; i++) {
-            for (j = 0; j < 8; j++) {
-                peca = new Peca(context);
+        while (pecas.hasNext()) {
+            peca = new Peca(context);
 
-                peca.setTag(pecas.next());
+            next = pecas.next();
 
-                peca.setBackgroundResource(peca.backgroundResId());
-                // peca.setBackgroundResource()
+            peca.setTag(next);
 
-                lp = new LayoutParams(lp);
+            peca.setBackgroundResource(peca.backgroundResId());
+            // peca.setBackgroundResource()
 
-                // LayoutParams não copia as "rules" definidas.
-                lp.addRule(RelativeLayout.ALIGN_TOP, getId());
+            lp = new LayoutParams(lp);
 
-                lp.topMargin = peca.getSide() * i;
-                lp.leftMargin = peca.getSide() * j;
+            // LayoutParams não copia as "rules" definidas.
+            lp.addRule(RelativeLayout.ALIGN_TOP, getId());
 
-                // peca.setBackgroundResource(context.getResources().get)
+            lp.topMargin = peca.getSide() * next.getI();
+            lp.leftMargin = peca.getSide() * next.getJ();
 
-                contentView.addView(peca, lp);
-            }
+            // peca.setBackgroundResource(context.getResources().get)
+
+            contentView.addView(peca, lp);
         }
     }
 
@@ -166,8 +176,15 @@ public class Tabuleiro extends View {
     public boolean onDragEvent(DragEvent event) {
         try {
             return performOnDragEvent(event);
+            // } catch (ArrayIndexOutOfBoundsException e) {
+            // e.printStackTrace();
+            // return false;
         } catch (Exception e) {
+            e.printStackTrace();
+
             mensageiro.alertar(e.getMessage());
+
+            Log.d(TAG, e.toString());
 
             return false;
         }
@@ -191,9 +208,9 @@ public class Tabuleiro extends View {
         for (int i = 0, j; i < 8; i++) {
             for (j = i % 2; j < 8; j += 2) {
                 placeRect.set(i * tPlaceSide,// left,
-                        j * tPlaceSide,// top,
-                        (i + 1) * tPlaceSide,// right,
-                        (j + 1) * tPlaceSide// bottom
+                    j * tPlaceSide,// top,
+                    (i + 1) * tPlaceSide,// right,
+                    (j + 1) * tPlaceSide// bottom
                 );
 
                 // if (moving && i == 3) {
@@ -237,7 +254,8 @@ public class Tabuleiro extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (!isInEditMode()) {
-            int side = getDisplayMetrics().widthPixels;
+            int side = min(getDisplayMetrics().widthPixels,
+                getDisplayMetrics().heightPixels);
 
             setMeasuredDimension(side, side);
         } else {
@@ -253,17 +271,17 @@ public class Tabuleiro extends View {
     public boolean onTouchEvent(MotionEvent event, Peca peca) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN :
-                // this.peca = peca;
+            // this.peca = peca;
 
-                break;
+            break;
             case MotionEvent.ACTION_UP :
-                // this.peca = null;
+            // this.peca = null;
 
-                break;
+            break;
             case MotionEvent.ACTION_MOVE :
-                // performDrag(event.getX(), event.getY(), this.peca);
+            // performDrag(event.getX(), event.getY(), this.peca);
 
-                break;
+            break;
             default :
                 return true;
         }
@@ -305,31 +323,32 @@ public class Tabuleiro extends View {
     private boolean performOnDragEvent(DragEvent event) throws Exception {
         Peca peca = (Peca) event.getLocalState();
 
+        //Caso o evento seja realizado muito rápido, peca vem nulo.
+        if (peca == null)
+            return false;
+
         switch (event.getAction()) {
             case DragEvent.ACTION_DROP :
-                if (peca != null) {
-                    int destI = (int) (event.getY() / getSquareSide());
-                    int destJ = (int) (event.getX() / getSquareSide());
+                int destI = (int) (event.getY() / getSquareSide());
+                int destJ = (int) (event.getX() / getSquareSide());
 
-                    Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
+                Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
 
-                    try {
-                        controle.mover((IPeca) peca.getTag(), destI, destJ);
-                    } catch (Exception e) {
-                        peca.show();
-
-                        throw e;
-                    } finally {
-                        peca.show();
-                    }
-
-                    performDrag(destI, destJ, peca);
-
-                    return true;
+                try {
+                    controle.mover((IPeca) peca.getTag(), destI, destJ);
+                } catch (JogadaException e) {
+                    throw e;
                 }
 
-                return false;
+                performDrag(destI, destJ, peca);
+
+                return true;
+            case DragEvent.ACTION_DRAG_STARTED :
+                peca.hide();
+
+                return true;
             case DragEvent.ACTION_DRAG_ENDED :
+                peca.show();
                 invalidate();
 
                 return true;

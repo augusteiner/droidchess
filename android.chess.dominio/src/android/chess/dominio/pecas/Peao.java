@@ -37,9 +37,7 @@ public class Peao extends Peca {
             ok = false;
         } else if (di > 2) {
             ok = false;
-        }
-
-        if (getMoveu()) {
+        } else if (getMoveu()) {
             if (di > 1)
                 ok = false;
             else {

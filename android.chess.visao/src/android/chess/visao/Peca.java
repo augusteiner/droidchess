@@ -1,5 +1,7 @@
 package android.chess.visao;
 
+import static java.lang.Math.min;
+
 import android.annotation.TargetApi;
 import android.chess.Main;
 import android.chess.dominio.interfaces.IPeca;
@@ -70,8 +72,8 @@ public class Peca extends View {
             return 0;
 
         String bgName = String.format("%s_%s", peca.getCor().toString()
-                .substring(0, 1).toLowerCase(), peca.getClass().getSimpleName()
-                .toLowerCase());
+            .substring(0, 1).toLowerCase(), peca.getClass().getSimpleName()
+            .toLowerCase());
 
         try {
             return R.drawable.class.getDeclaredField(bgName).getInt(null);
@@ -110,15 +112,18 @@ public class Peca extends View {
      * @return
      */
     public int getSide() {
-        return getDisplayMetrics().widthPixels / 8;
+        return (min(getDisplayMetrics().widthPixels,
+            getDisplayMetrics().heightPixels) / 8);
     }
 
     /**
      * @param peca
      */
     public void hide() {
-        setVisibility(INVISIBLE);
-        invalidate();
+        return;
+
+        // setVisibility(INVISIBLE);
+        // invalidate();
     }
 
     /**
@@ -161,6 +166,7 @@ public class Peca extends View {
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     @Override
+    @Deprecated
     public boolean onTouchEvent(MotionEvent event) {
         if (Build.VERSION.SDK_INT > 11) {
             switch (event.getAction()) {
@@ -186,8 +192,10 @@ public class Peca extends View {
      * @param peca
      */
     public void show() {
-        setVisibility(VISIBLE);
-        invalidate();
+        return;
+
+        // setVisibility(VISIBLE);
+        // invalidate();
     }
 
     /**
@@ -199,8 +207,6 @@ public class Peca extends View {
         DragShadowBuilder shadowBuilder = new DragShadowBuilder(this);
         Object myLocalState = this;
         int flags = 0;
-
-        hide();
 
         return startDrag(data, shadowBuilder, myLocalState, flags);
     }

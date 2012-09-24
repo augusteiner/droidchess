@@ -4,14 +4,14 @@ import java.util.Iterator;
 
 import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
 import android.chess.dominio.interfaces.IPeca;
 
-public class Jogada {
-
-    private static Partida partida;
+public class Jogada extends Test {
+    private Partida partida;
 
     /**
      * Testa jogadas com um bispo.
@@ -20,7 +20,7 @@ public class Jogada {
      * @throws JogadaInvalida
      *
      */
-    private static void bispo() throws JogadaInvalida, PecaNaoEncontrada {
+    private void bispo() throws JogadaException, PecaNaoEncontrada {
         novaPartida();
 
         // Removendo os peões do caminho.
@@ -36,7 +36,7 @@ public class Jogada {
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
-    private static void cavalo() throws JogadaInvalida, PecaNaoEncontrada {
+    private void cavalo() throws JogadaException, PecaNaoEncontrada {
 
         novaPartida();
 
@@ -55,7 +55,7 @@ public class Jogada {
      * @return
      */
     @Deprecated
-    public static Partida getPartida() {
+    public Partida getPartida() {
         if (partida == null)
             partida = new Partida();
 
@@ -72,8 +72,8 @@ public class Jogada {
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
-    public static void jogada(int origI, int origJ, int destI, int destJ)
-            throws JogadaInvalida, PecaNaoEncontrada {
+    public void jogada(int origI, int origJ, int destI, int destJ)
+        throws JogadaException, PecaNaoEncontrada {
         Partida p = getPartida();
 
         p.jogada(origI, origJ, destI, destJ);
@@ -82,21 +82,9 @@ public class Jogada {
     }
 
     /**
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        try {
-            test();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Partida do zero para reinicializar posições possivelmente alteradas.
      */
-    private static void novaPartida() {
+    private void novaPartida() {
         partida = new Partida();
     }
 
@@ -106,7 +94,7 @@ public class Jogada {
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
      */
-    private static void peao() throws JogadaInvalida, PecaNaoEncontrada {
+    private void peao() throws JogadaException, PecaNaoEncontrada {
         jogada(1, 0, 3, 0);
         jogada(6, 1, 4, 1);
         jogada(3, 0, 4, 1);
@@ -117,7 +105,7 @@ public class Jogada {
      * @param tabuleiro
      *            Tabuleiro a ser impresso.
      */
-    private static void print(Tabuleiro tabuleiro) {
+    private void print(Tabuleiro tabuleiro) {
         Iterator<IPeca> pecas = tabuleiro.getPecas();
         IPeca peca = null;
 
@@ -129,7 +117,7 @@ public class Jogada {
 
                 if (peca != null)
                     System.out.print(peca.getClass().getSimpleName()
-                            .substring(0, 2));
+                        .substring(0, 2));
                 else
                     System.out.print("  ");
 
@@ -144,8 +132,12 @@ public class Jogada {
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
-    private static void rainha() throws JogadaInvalida, PecaNaoEncontrada {
+    private void rainha() throws JogadaException, PecaNaoEncontrada {
+        // Peão na frente da rainha.
+        jogada(1, 4, 2, 4);
         jogada(0, 3, 2, 5);
+        jogada(0, 4, 0, 3);
+        jogada(2, 5, 2, 3);
     }
 
     /**
@@ -154,7 +146,8 @@ public class Jogada {
      * @throws MovimentoInvalido
      * @throws PecaNaoEncontrada
      */
-    private static void test() throws JogadaInvalida, PecaNaoEncontrada {
+    @Override
+    public void run() throws JogadaException, PecaNaoEncontrada {
         // peao();
         // cavalo();
         // bispo();

@@ -24,11 +24,23 @@ public interface IJogada {
      */
     public boolean movimentoDiagonal();
     /**
+     * @return
+     */
+    public boolean movimentoHorizontal();
+    /**
+     * @return
+     */
+    public boolean movimentoVertical();
+    /**
      *
      */
     public void realizar() throws JogadaInvalida;
     /**
      * @return
      */
-    public int sentido();
+    public float sentidoI();
+    /**
+     * @return
+     */
+    public float sentidoJ();
 }

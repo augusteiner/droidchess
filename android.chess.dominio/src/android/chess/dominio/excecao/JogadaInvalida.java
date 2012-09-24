@@ -9,7 +9,7 @@ import android.chess.dominio.interfaces.IJogada;
  * @author augusteiner
  *
  */
-public class JogadaInvalida extends Exception {
+public class JogadaInvalida extends JogadaException {
 
     /**
      *

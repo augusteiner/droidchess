@@ -1,5 +1,6 @@
 package android.chess.dominio;
 
+import static java.lang.Math.signum;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IJogada;
@@ -14,7 +15,30 @@ import android.chess.dominio.pecas.Peca;
  *
  */
 public class Jogada implements IJogada {
+    /**
+     * @author augusteiner
+     *
+     */
+    // public class Movimento {
+    // /**
+    // * Identifica o movimento de uma peça como sendo horizontal.
+    // */
+    // public static final char HORIZONTAL = 1;
+    // /**
+    // * Identifica o movimento de uma peça como sendo vertical.
+    // */
+    // public static final char VERTICAL = 2;
+    // /**
+    // * Identifica o movimento de uma peça como sendo diagonal.
+    // */
+    // public static final char DIAGONAL = 4;
+    // /**
+    // * Identifica o movimento de uma peça como sendo de outra modalidade.
+    // */
+    // public static final char OUTRO = 0;
+    // }
     private int destI, destJ;
+
     private IPeca peca;
 
     /**
@@ -60,7 +84,7 @@ public class Jogada implements IJogada {
      * @return
      */
     public boolean invertida() {
-        return peca.getI() - getDestI() > 0 || peca.getJ() - getDestJ() > 0;
+        return getDestI() - peca.getI() > 0 && getDestJ() - peca.getJ() > 0;
     }
 
     /**
@@ -68,6 +92,7 @@ public class Jogada implements IJogada {
      *
      * @see IPeca#movimentoDiagonal(Jogada)
      */
+    @Override
     public boolean movimentoDiagonal() {
         return Peca.movimentoDiagonal(this);
     }
@@ -86,6 +111,7 @@ public class Jogada implements IJogada {
      *
      * @see IPeca#movimentoHorizontal(Jogada)
      */
+    @Override
     public boolean movimentoHorizontal() {
         return Peca.movimentoHorizontal(this);
     }
@@ -104,13 +130,15 @@ public class Jogada implements IJogada {
      *
      * @see Peca#movimentoVertical(Jogada)
      */
-    public Boolean movimentoVertical() {
+    @Override
+    public boolean movimentoVertical() {
         return Peca.movimentoVertical(this);
     }
 
     /**
      * @throws JogadaInvalida
      */
+    @Override
     public void realizar() throws JogadaInvalida {
         try {
             peca.mover(destI, destJ);
@@ -124,8 +152,19 @@ public class Jogada implements IJogada {
      *
      * @return Um <code>int</code> sinalizando o sentido do movimento.
      */
-    public int sentido() {
-        return invertida() ? -1 : 1;
+    @Override
+    public float sentidoI() {
+        return signum(getDestI() - getPeca().getI());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.chess.dominio.interfaces.IJogada#sentidoJ()
+     */
+    @Override
+    public float sentidoJ() {
+        return signum(getDestJ() - getPeca().getJ());
     }
 
     /*

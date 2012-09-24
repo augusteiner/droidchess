@@ -5,21 +5,22 @@ package android.chess.dominio.iterators;
 
 import java.util.Iterator;
 
+import android.chess.dominio.interfaces.IPeca;
+
 /**
  * @author augusteiner
- * @param <T>
  */
-public class MatrixIterator<T> implements Iterator<T> {
-    private T[][] matrix;
+public class PecaIterator implements Iterator<IPeca> {
+    private IPeca[][] pecas;
     private int i = 0;
     private int j = -1;
 
     /**
      *
      */
-    public MatrixIterator(T[][] matrix) {
+    public PecaIterator(IPeca[][] pecas) {
 
-        this.matrix = matrix;
+        this.pecas = pecas;
     }
 
     /*
@@ -29,7 +30,7 @@ public class MatrixIterator<T> implements Iterator<T> {
      */
     @Override
     public boolean hasNext() {
-        return i < matrix.length || j < matrix[0].length;
+        return i < pecas.length - 1 || j < pecas[0].length - 1;
     }
 
     /*
@@ -38,15 +39,20 @@ public class MatrixIterator<T> implements Iterator<T> {
      * @see java.util.Iterator#next()
      */
     @Override
-    public T next() {
+    public IPeca next() {
         j++;
 
         if (j > 7) {
             i++;
+
+            if (i == 2) {
+                i = 6;
+            }
+
             j = 0;
         }
 
-        return matrix[i][j];
+        return pecas[i][j];
     }
 
     /*

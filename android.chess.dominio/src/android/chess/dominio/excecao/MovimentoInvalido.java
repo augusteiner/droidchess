@@ -9,7 +9,7 @@ import android.chess.dominio.interfaces.IPeca;
  *
  * @since 0.1
  */
-public class MovimentoInvalido extends Exception {
+public class MovimentoInvalido extends JogadaException {
     /**
      *
      */
@@ -19,7 +19,6 @@ public class MovimentoInvalido extends Exception {
      * @param peca
      */
     public MovimentoInvalido(IPeca peca) {
-        super(String.format("Peça \'%s\' não pode ser movida.", peca));
-        // TODO Auto-generated constructor stub
+        super(String.format("Peça \'%s\' não pode ser movida.", peca), null);
     }
 }
