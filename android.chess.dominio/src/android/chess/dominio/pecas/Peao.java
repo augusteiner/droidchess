@@ -20,6 +20,18 @@ public class Peao extends Peca {
      */
     public Peao(Cor cor) {
         super(cor);
+
+        prevI = 7 * abs(cor.compareTo(Cor.Branca));
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.chess.dominio.pecas.Peca#onBeforeSet(int, int)
+     */
+    @Override
+    protected void onBeforeSet(int destI, int destJ) {
+        prevI = getI();
     }
 
     /*
@@ -38,9 +50,9 @@ public class Peao extends Peca {
         } else if (di > 2) {
             ok = false;
         } else if (getMoveu()) {
-            if (di > 1)
+            if (di > 1) {
                 ok = false;
-            else {
+            } else {
                 int pdi = getI() - prevI;
 
                 if (Math.signum(pdi) > 0) {
@@ -49,14 +61,12 @@ public class Peao extends Peca {
                     ok = destI < getI();
                 }
             }
-            // ok = abs(getX() - prevX
         } else {
-            //
+            //Caso especial da 1ª jogada do peão.
+            ok = destI != prevI;
         }
 
         if (!ok)
             throw new MovimentoInvalido(this);
-
-        prevI = getI();
     }
 }

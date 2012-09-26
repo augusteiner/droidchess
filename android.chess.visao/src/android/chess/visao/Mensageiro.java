@@ -39,7 +39,22 @@ public class Mensageiro extends Toast {
      * @see Toast#makeText(Context, int, int)
      */
     public void alertar(CharSequence mensagem, int duracao) {
-        Toast.makeText(context, String.format("ATENÇÃO!\n\n%s", mensagem),
-                duracao).show();
+        makeText(String.format("ATENÇÃO!\n\n%s", mensagem), duracao);
+    }
+
+    /**
+     * @param mensagem
+     */
+    private void makeText(CharSequence mensagem) {
+        makeText(context, mensagem, LENGTH_SHORT).show();
+    }
+
+    /**
+     * @param mensagem
+     *
+     * @param duracao
+     */
+    private void makeText(CharSequence mensagem, int duracao) {
+        makeText(context, mensagem, duracao).show();
     }
 }

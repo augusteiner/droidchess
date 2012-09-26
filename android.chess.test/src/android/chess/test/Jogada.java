@@ -15,10 +15,10 @@ public class Jogada extends Test {
 
     /**
      * Testa jogadas com um bispo.
-     *
+     * 
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
-     *
+     * 
      */
     private void bispo() throws JogadaException, PecaNaoEncontrada {
         novaPartida();
@@ -32,7 +32,7 @@ public class Jogada extends Test {
 
     /**
      * Testa jogadas com um cavalo.
-     *
+     * 
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
@@ -51,7 +51,7 @@ public class Jogada extends Test {
 
     /**
      * @deprecated
-     *
+     * 
      * @return
      */
     @Deprecated
@@ -64,7 +64,7 @@ public class Jogada extends Test {
 
     /**
      * Realiza uma jogada no tabuleiro da partida atual e imprime-o logo após.
-     *
+     * 
      * @param origI
      * @param origJ
      * @param destI
@@ -73,7 +73,7 @@ public class Jogada extends Test {
      * @throws PecaNaoEncontrada
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
-        throws JogadaException, PecaNaoEncontrada {
+            throws JogadaException, PecaNaoEncontrada {
         Partida p = getPartida();
 
         p.jogada(origI, origJ, destI, destJ);
@@ -90,7 +90,7 @@ public class Jogada extends Test {
 
     /**
      * Jogada simples entre dois peões.
-     *
+     * 
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
      */
@@ -99,9 +99,15 @@ public class Jogada extends Test {
         jogada(6, 1, 4, 1);
         jogada(3, 0, 4, 1);
     }
+
+    private void peaoTorre() throws JogadaException, PecaNaoEncontrada {
+        jogada(6, 0, 4, 0);
+        jogada(7, 0, 3, 0);
+    }
+
     /**
      * Imprime uma representação gráfica do tabuleiro dado.
-     *
+     * 
      * @param tabuleiro
      *            Tabuleiro a ser impresso.
      */
@@ -117,7 +123,7 @@ public class Jogada extends Test {
 
                 if (peca != null)
                     System.out.print(peca.getClass().getSimpleName()
-                        .substring(0, 2));
+                            .substring(0, 2));
                 else
                     System.out.print("  ");
 
@@ -142,7 +148,7 @@ public class Jogada extends Test {
 
     /**
      * Realiza o teste com algumas jogadas
-     *
+     * 
      * @throws MovimentoInvalido
      * @throws PecaNaoEncontrada
      */
@@ -151,6 +157,7 @@ public class Jogada extends Test {
         // peao();
         // cavalo();
         // bispo();
-        rainha();
+        // rainha();
+        peaoTorre();
     }
 }

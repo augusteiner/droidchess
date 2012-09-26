@@ -5,6 +5,7 @@ package android.chess.dominio.interfaces;
 
 import android.chess.dominio.Jogada;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.interfaces.IPeca.Cor;
 
 /**
  * Interface básica para as peças que compõem o tabuleiro do jogo de xadrez.
@@ -20,6 +21,16 @@ public interface IPeca {
      */
     public enum Cor {
         Branca, Preta;
+
+        /**
+         * @return
+         */
+        public Cor outra() {
+            if (compareTo(Branca) == 0)
+                return Preta;
+            else
+                return Branca;
+        }
     }
 
     /**
@@ -114,12 +125,6 @@ public interface IPeca {
      * @return
      */
     boolean movimentoVertical(int destI, int destJ);
-
-    /**
-     * @param i
-     * @param j
-     */
-    void set(int i, int j);
 
     /**
      * @param i

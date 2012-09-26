@@ -11,6 +11,7 @@ import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
+import android.chess.dominio.excecao.VezInvalida;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
 import android.chess.dominio.interfaces.IPeca.Cor;
@@ -32,6 +33,7 @@ import android.chess.dominio.pecas.Torre;
 public class Tabuleiro {
 
     private IPeca[][] pecas;
+    private Cor atual;
 
     // private Jogador[] jogadores;
     // private Partida partida;
@@ -43,6 +45,8 @@ public class Tabuleiro {
         pecas = new Peca[8][8];
 
         initTabuleiro();
+
+        atual = Cor.Branca;
     }
 
     /**
@@ -82,9 +86,11 @@ public class Tabuleiro {
 
         for (int i = 0, j; i < 2; i++) {
             for (j = 0; j < 8; j++) {
-                pecas[i][j].set(i, j);
+                pecas[i][j].setI(i);
+                pecas[i][j].setJ(j);
 
-                pecas[7 - i][j].set(7 - i, j);
+                pecas[7 - i][j].setI(7 - i);
+                pecas[7 - i][j].setJ(j);
             }
         }
     }
@@ -132,10 +138,15 @@ public class Tabuleiro {
      */
     public void mover(IPeca peca, int destI, int destJ) throws JogadaException {
 
+        if (peca.getCor().outra() == atual)
+            throw new VezInvalida(atual);
+
         IJogada jogada = new Jogada(peca, destI, destJ);
 
         try {
             realizar(jogada);
+
+            atual = atual.outra();
         } catch (JogadaInvalida e) {
             throw e;
         } catch (JogadaException e) {
@@ -216,8 +227,8 @@ public class Tabuleiro {
         int i = peca.getI() + iinc;
         int j = peca.getJ() + jinc;
 
-        while (i != jogada.getDestI() && j != jogada.getDestJ()
-            && pecas[i][j] == null) {
+        while ((i != jogada.getDestI() || j != jogada.getDestJ())
+                && pecas[i][j] == null) {
             i += iinc;
             j += jinc;
         }
@@ -273,36 +284,34 @@ public class Tabuleiro {
         IPeca outra = outra(jogada);
 
         boolean isOutraOponente = outra == null
-            || peca.getCor() != outra.getCor();
-        boolean hasPecaNoCaminho = pecaNoCaminho(jogada);
+                || peca.getCor() != outra.getCor();
 
-        boolean ok = isOutraOponente && !hasPecaNoCaminho;
+        boolean ok = false;
 
         // TODO Checar condições de cheque e cheque mate
 
         // Peças que tem o movimento limitado
         // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
-            case Rei :
-
+        case Rei:
             break;
-            case Rainha :
-
+        case Rainha:
             break;
-            case Peao :
-
+        case Peao:
             break;
-            case Torre :
-
+        case Torre:
             break;
-            case Cavalo :
-                // Validação por parte do tabuleiro vazia para o caso do Cavalo.
-                ok = true;
+        case Cavalo:
+            // Validação por parte do tabuleiro vazia para o caso do Cavalo.
+            ok = outra == null || outra.getCor() != peca.getCor();
             break;
-            default :
-
+        default:
             break;
         }
+
+        boolean hasPecaNoCaminho = !ok && pecaNoCaminho(jogada);
+
+        ok = isOutraOponente && !hasPecaNoCaminho;
 
         if (!ok) {
             throw new JogadaInvalida(jogada);

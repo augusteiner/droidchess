@@ -69,11 +69,11 @@ public abstract class Peca implements IPeca {
 
     private Cor cor;
 
-    private boolean moveu;
-
     private int i;
 
     private int j;
+
+    private boolean moveu;
 
     /**
      * @param tabuleiro
@@ -218,15 +218,39 @@ public abstract class Peca implements IPeca {
     }
 
     /**
+     * @param destI
+     * @param destJ
+     */
+    protected void onBeforeSet(int destI, int destJ) {
+        //
+    }
+
+    /**
+     * Pseudo evento a ser chamado após a posição da peça ser alterada.
+     *
+     * @param destI
+     *            Coordenada i de destino.
+     *
+     * @param destJ
+     *            Coordenada j de destino.
+     */
+    protected void onSet(int destI, int destJ) {
+        // Do nothing!
+    }
+
+    /**
      * Altera as duas coordenadas atuais desta peça.
      *
      * @param destI
      * @param destJ
      */
-    @Override
-    public void set(int destI, int destJ) {
+    protected void set(int destI, int destJ) {
+        onBeforeSet(destI, destJ);
+
         setI(destI);
         setJ(destJ);
+
+        onSet(destI, destJ);
     }
 
     /**
