@@ -2,7 +2,7 @@ package android.chess.controle;
 
 /**
  * @author augusteiner
- *
+ * 
  * @param <T>
  */
 public class Controle<T> {

@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Mensageiro extends Toast {
 
@@ -24,7 +24,7 @@ public class Mensageiro extends Toast {
 
     /**
      * @param mensagem
-     *
+     * 
      * @see Mensageiro#alertar(CharSequence, int)
      */
     public void alertar(CharSequence mensagem) {
@@ -34,24 +34,33 @@ public class Mensageiro extends Toast {
     /**
      * @param mensagem
      * @param duracao
-     *
+     * 
      * @see Toast#makeText(Context, CharSequence, int)
      * @see Toast#makeText(Context, int, int)
      */
     public void alertar(CharSequence mensagem, int duracao) {
+        // FIXME Remover string hardcoded.
         makeText(String.format("ATENÇÃO!\n\n%s", mensagem), duracao);
     }
 
     /**
      * @param mensagem
      */
-    private void makeText(CharSequence mensagem) {
-        makeText(context, mensagem, LENGTH_SHORT).show();
+    public void erro(CharSequence mensagem) {
+        erro(mensagem, LENGTH_SHORT);
     }
 
     /**
      * @param mensagem
-     *
+     * @param duracao
+     */
+    public void erro(CharSequence mensagem, int duracao) {
+        makeText(String.format("ERRO!\n\n%s.", mensagem), duracao);
+    }
+
+    /**
+     * @param mensagem
+     * 
      * @param duracao
      */
     private void makeText(CharSequence mensagem, int duracao) {

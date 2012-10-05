@@ -1,31 +1,34 @@
 package android.chess.visao;
 
 import static java.lang.Math.min;
-
 import android.annotation.TargetApi;
 import android.chess.Main;
+import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.interfaces.handlers.ITomadaHandler;
+import android.chess.visao.handlers.EventoTomada;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 /**
  * Representa graficamente uma peça de um tabuleiro.
- *
+ * 
  * @author augusteiner
- *
+ * 
  */
 @TargetApi(11)
-public class Peca extends View {
+public class Peca extends View implements ITomadaHandler {
 
     private static final String TAG = View.class.getSimpleName();
-    private Paint pPaint;
+    private ITomadaHandler onTomadaHandler;
 
     /**
      * @param context
@@ -60,9 +63,9 @@ public class Peca extends View {
     /**
      * Retorna o resid de acordo com a cor e nome da peça configurada com o
      * setTag.
-     *
+     * 
      * @return Id do recurso associado com a imagem da peça de chadrez.
-     *
+     * 
      * @see View#setTag(Object)
      */
     public int backgroundResId() {
@@ -84,7 +87,7 @@ public class Peca extends View {
 
     /**
      * Retorna a linha desta peça em relação ao tabuleiro.
-     *
+     * 
      * @return
      */
     public int getCoordI() {
@@ -94,7 +97,7 @@ public class Peca extends View {
 
     /**
      * Retorna a coordenada y desta peça em relação ao tabuleiro.
-     *
+     * 
      * @return
      */
     public int getCoordJ() {
@@ -120,8 +123,6 @@ public class Peca extends View {
      * @param peca
      */
     public void hide() {
-        return;
-
         // setVisibility(INVISIBLE);
         // invalidate();
     }
@@ -130,12 +131,12 @@ public class Peca extends View {
      *
      */
     private void initPeca() {
-        pPaint = new Paint();
+
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -152,7 +153,7 @@ public class Peca extends View {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -162,7 +163,25 @@ public class Peca extends View {
 
     /*
      * (non-Javadoc)
-     *
+     * 
+     * @see
+     * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
+     * .chess.dominio.interfaces.IEventoTomada)
+     */
+    @Override
+    public void onTomada(IEventoTomada evento) throws JogadaException {
+        setVisibility(INVISIBLE);
+        invalidate();
+
+        // TODO Utilizar handler para remover peça do tabuleiro?
+        if (onTomadaHandler != null) {
+            onTomadaHandler.onTomada(new EventoTomada(evento, this));
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     @Override
@@ -189,11 +208,16 @@ public class Peca extends View {
     }
 
     /**
+     * @param onTomadaHandler
+     */
+    public void setOnTomadaHandler(ITomadaHandler onTomadaHandler) {
+        this.onTomadaHandler = onTomadaHandler;
+    }
+
+    /**
      * @param peca
      */
     public void show() {
-        return;
-
         // setVisibility(VISIBLE);
         // invalidate();
     }
@@ -208,12 +232,13 @@ public class Peca extends View {
         Object myLocalState = this;
         int flags = 0;
 
+        Log.d(TAG, String.format("Iniciando drag na peça %s.", getTag()));
         return startDrag(data, shadowBuilder, myLocalState, flags);
     }
 
     /**
      * @deprecated
-     *
+     * 
      * @return
      */
     @Deprecated

@@ -1,10 +1,12 @@
 package android.chess.dominio.interfaces;
 
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
+import android.chess.dominio.pecas.Peca;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public interface IJogada {
     /**
@@ -43,4 +45,9 @@ public interface IJogada {
      * @return
      */
     public float sentidoJ();
+    /**
+     * @throws JogadaException
+     * 
+     */
+    public void tomar(Peca outra) throws JogadaException;
 }

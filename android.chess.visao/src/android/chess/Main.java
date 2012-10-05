@@ -51,7 +51,7 @@ public class Main extends Activity {
      * @param view
      */
     public void menuExitOnClick(View v) {
-        finish();
+        // finish();
     }
 
     /*

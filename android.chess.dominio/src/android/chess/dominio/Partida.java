@@ -11,7 +11,7 @@ import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Partida {
     private Tabuleiro tabuleiro;
@@ -43,7 +43,7 @@ public class Partida {
 
     /**
      * Retorna o tabuleiro desta partida.
-     *
+     * 
      * @return {@link Tabuleiro}
      */
     public Tabuleiro getTabuleiro() {

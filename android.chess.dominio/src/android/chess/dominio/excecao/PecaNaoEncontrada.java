@@ -5,7 +5,7 @@ package android.chess.dominio.excecao;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class PecaNaoEncontrada extends Exception {
 

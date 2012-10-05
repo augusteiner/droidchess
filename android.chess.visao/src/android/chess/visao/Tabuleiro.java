@@ -3,44 +3,39 @@
  */
 package android.chess.visao;
 
-import static java.lang.Math.min;
-
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static java.lang.Math.min;
 
 import java.util.Iterator;
 
 import android.annotation.TargetApi;
-
 import android.chess.Main;
 import android.chess.controle.PartidaControle;
 import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IPeca;
-
+import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.content.Context;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
- *
+ * 
  */
-public class Tabuleiro extends View {
+public class Tabuleiro extends View implements ITomadaHandler {
 
     private static final String TAG = Tabuleiro.class.getSimpleName();
     private PartidaControle controle;
@@ -130,7 +125,7 @@ public class Tabuleiro extends View {
 
     /**
      * @param contentView
-     *
+     * 
      */
     protected void initPecas(ViewGroup contentView) {
 
@@ -146,6 +141,7 @@ public class Tabuleiro extends View {
             peca = new Peca(context);
 
             next = pecas.next();
+            next.setOnTomadaHandler(peca);
 
             peca.setTag(next);
 
@@ -168,7 +164,7 @@ public class Tabuleiro extends View {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
     @TargetApi(11)
@@ -192,7 +188,7 @@ public class Tabuleiro extends View {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -248,7 +244,7 @@ public class Tabuleiro extends View {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -265,7 +261,19 @@ public class Tabuleiro extends View {
 
     /*
      * (non-Javadoc)
-     *
+     * 
+     * @see
+     * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
+     * .chess.dominio.interfaces.IEventoTomada)
+     */
+    @Override
+    public void onTomada(IEventoTomada evento) throws JogadaException {
+        //
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     public boolean onTouchEvent(MotionEvent event, Peca peca) {
@@ -323,7 +331,7 @@ public class Tabuleiro extends View {
     private boolean performOnDragEvent(DragEvent event) throws Exception {
         Peca peca = (Peca) event.getLocalState();
 
-        //Caso o evento seja realizado muito rápido, peca vem nulo.
+        // Caso o evento seja realizado muito rápido, peca vem nulo.
         if (peca == null)
             return false;
 

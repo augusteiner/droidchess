@@ -4,7 +4,7 @@ import android.chess.dominio.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class VezInvalida extends JogadaException {
 

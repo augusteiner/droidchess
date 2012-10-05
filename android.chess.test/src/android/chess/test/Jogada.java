@@ -10,6 +10,11 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
 import android.chess.dominio.interfaces.IPeca;
 
+/**
+ * @author augusteiner
+ * 
+ */
+@SuppressWarnings("unused")
 public class Jogada extends Test {
     private Partida partida;
 
@@ -73,7 +78,7 @@ public class Jogada extends Test {
      * @throws PecaNaoEncontrada
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
-            throws JogadaException, PecaNaoEncontrada {
+        throws JogadaException, PecaNaoEncontrada {
         Partida p = getPartida();
 
         p.jogada(origI, origJ, destI, destJ);
@@ -100,6 +105,10 @@ public class Jogada extends Test {
         jogada(3, 0, 4, 1);
     }
 
+    /**
+     * @throws JogadaException
+     * @throws PecaNaoEncontrada
+     */
     private void peaoTorre() throws JogadaException, PecaNaoEncontrada {
         jogada(6, 0, 4, 0);
         jogada(7, 0, 3, 0);
@@ -112,7 +121,7 @@ public class Jogada extends Test {
      *            Tabuleiro a ser impresso.
      */
     private void print(Tabuleiro tabuleiro) {
-        Iterator<IPeca> pecas = tabuleiro.getPecas();
+        Iterator<IPeca> pecas = tabuleiro.getMatrizPecas();
         IPeca peca = null;
 
         for (int i = 0, j; i < 8; i++) {
@@ -123,7 +132,7 @@ public class Jogada extends Test {
 
                 if (peca != null)
                     System.out.print(peca.getClass().getSimpleName()
-                            .substring(0, 2));
+                        .substring(0, 2));
                 else
                     System.out.print("  ");
 

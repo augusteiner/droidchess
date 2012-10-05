@@ -1,6 +1,6 @@
 package android.chess.test;
 
-public class Application {
+public class App {
     /**
      * @param args
      */
@@ -17,7 +17,9 @@ public class Application {
      * 
      */
     private static void run() throws Exception {
-        Test[] tests = new Test[] { new Jogada() };
+        Test[] tests = new Test[]{
+            new Jogada()
+        };
 
         for (Test t : tests) {
             t.run();

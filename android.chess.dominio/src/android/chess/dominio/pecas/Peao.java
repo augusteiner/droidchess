@@ -5,10 +5,11 @@ package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.pecas.handlers.EventoMover;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Peao extends Peca {
 
@@ -26,17 +27,17 @@ public class Peao extends Peca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.pecas.Peca#onBeforeSet(int, int)
      */
     @Override
-    protected void onBeforeSet(int destI, int destJ) {
+    protected void onAntesMovimento(EventoMover evento) {
         prevI = getI();
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
@@ -62,7 +63,7 @@ public class Peao extends Peca {
                 }
             }
         } else {
-            //Caso especial da 1ª jogada do peão.
+            // Caso especial da 1ª jogada do peão.
             ok = destI != prevI;
         }
 

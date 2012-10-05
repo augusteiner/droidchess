@@ -5,20 +5,25 @@ package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
 import android.chess.dominio.Jogada;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.interfaces.handlers.ITomadaHandler;
+import android.chess.dominio.pecas.handlers.EventoMover;
+import android.chess.dominio.pecas.handlers.EventoTomada;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public abstract class Peca implements IPeca {
 
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
-     *
+     * 
      * @param jogada
      * @return
      */
@@ -30,7 +35,7 @@ public abstract class Peca implements IPeca {
     /**
      * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
      * para validação de movimentos de bispos, torres e rainhas.
-     *
+     * 
      * @param jogada
      * @return
      */
@@ -41,7 +46,7 @@ public abstract class Peca implements IPeca {
     /**
      * Retorna se o movimento da peça na jogada é horizontal. Útil para
      * validação de movimentos de torres.
-     *
+     * 
      * @param jogada
      * @return
      */
@@ -75,6 +80,8 @@ public abstract class Peca implements IPeca {
 
     private boolean moveu;
 
+    private ITomadaHandler onTomadaHandler;
+
     /**
      * @param tabuleiro
      */
@@ -95,7 +102,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#getI()
      */
     @Override
@@ -106,7 +113,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#getJ()
      */
     @Override
@@ -117,7 +124,7 @@ public abstract class Peca implements IPeca {
 
     /**
      * Retorna se a peça já foi movida.
-     *
+     * 
      * @return
      */
     public final boolean getMoveu() {
@@ -126,7 +133,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#getTipo()
      */
     @Override
@@ -137,7 +144,7 @@ public abstract class Peca implements IPeca {
     /**
      * Move a peça da posição atual para a nova posição definida pelos pontos
      * destI e destJ.
-     *
+     * 
      * @param destI
      * @param destJ
      * @throws MovimentoInvalido
@@ -153,7 +160,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.interfaces.IPeca#mover(android.chess.dominio.Jogada
      * )
@@ -175,10 +182,10 @@ public abstract class Peca implements IPeca {
 
     /**
      * Retorna se o movimento da jogada é diagonal ou horizontal.
-     *
+     * 
      * @param jogada
      *            Jogada a ser testado o tipo de movimento.
-     *
+     * 
      * @return {@link Boolean} True caso o movimento seja horizontal ou diagonal
      *         e False caso contrário.
      */
@@ -189,7 +196,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#movimentoHorizontal(int)
      */
     @Override
@@ -199,7 +206,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#movimentoHorizVert(int, int)
      */
     @Override
@@ -209,7 +216,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#movimentoVertical(int, int)
      */
     @Override
@@ -221,41 +228,53 @@ public abstract class Peca implements IPeca {
      * @param destI
      * @param destJ
      */
-    protected void onBeforeSet(int destI, int destJ) {
+    protected void onAntesMovimento(EventoMover evento) {
         //
     }
 
     /**
      * Pseudo evento a ser chamado após a posição da peça ser alterada.
-     *
+     * 
      * @param destI
      *            Coordenada i de destino.
-     *
+     * 
      * @param destJ
      *            Coordenada j de destino.
      */
-    protected void onSet(int destI, int destJ) {
+    protected void onMovimento(EventoMover evento) {
         // Do nothing!
     }
 
     /**
+     * @param evento
+     * @throws JogadaException
+     */
+    protected void onTomada(IEventoTomada evento) throws JogadaException {
+        if (onTomadaHandler != null) {
+            onTomadaHandler.onTomada(evento);
+        }
+    }
+
+    /**
      * Altera as duas coordenadas atuais desta peça.
-     *
+     * 
      * @param destI
      * @param destJ
      */
     protected void set(int destI, int destJ) {
-        onBeforeSet(destI, destJ);
+        EventoMover evento = new EventoMover(this, destI, destJ);
+
+        onAntesMovimento(evento);
 
         setI(destI);
         setJ(destJ);
 
-        onSet(destI, destJ);
+        onMovimento(evento);
     }
 
     /**
      * Altera a linha atual desta peça.
-     *
+     * 
      * @param i
      *            Nova linha.
      */
@@ -266,7 +285,7 @@ public abstract class Peca implements IPeca {
 
     /**
      * Altera a coordenada y atual desta peça.
-     *
+     * 
      * @param j
      *            Nova coordenada y.
      */
@@ -277,7 +296,34 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
+     * @see
+     * android.chess.dominio.interfaces.IPeca#setOnTomadaHandler(android.chess
+     * .dominio.interfaces.handlers.ITomadaHandler)
+     */
+    @Override
+    public void setOnTomadaHandler(ITomadaHandler onTomadaHandler) {
+        this.onTomadaHandler = onTomadaHandler;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.chess.dominio.interfaces.IPeca#tomar(android.chess.dominio.interfaces
+     * .IPeca)
+     */
+    @Override
+    public void tomar(Peca outra) throws JogadaException {
+
+        outra.onTomada(new EventoTomada(this, outra));
+
+        // throw new MovimentoInvalido(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -291,7 +337,7 @@ public abstract class Peca implements IPeca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.interfaces.IPeca#validar(android.chess.dominio.
      * Jogada)

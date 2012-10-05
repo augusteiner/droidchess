@@ -15,6 +15,7 @@ import android.chess.dominio.excecao.VezInvalida;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
 import android.chess.dominio.interfaces.IPeca.Cor;
+import android.chess.dominio.iterators.MatrixIterator;
 import android.chess.dominio.iterators.PecaIterator;
 import android.chess.dominio.pecas.Bispo;
 import android.chess.dominio.pecas.Cavalo;
@@ -27,13 +28,13 @@ import android.chess.dominio.pecas.Torre;
 /**
  * Classe de domínio para prover validação de jogadas e modelagem geral do jogo
  * de xadrez.
- *
+ * 
  * @author augusteiner
  */
 public class Tabuleiro {
 
-    private IPeca[][] pecas;
     private Cor atual;
+    private IPeca[][] pecas;
 
     // private Jogador[] jogadores;
     // private Partida partida;
@@ -47,6 +48,13 @@ public class Tabuleiro {
         initTabuleiro();
 
         atual = Cor.Branca;
+    }
+
+    /**
+     * @return
+     */
+    public Iterator<IPeca> getMatrizPecas() {
+        return new MatrixIterator<IPeca>(pecas);
     }
 
     /**
@@ -104,7 +112,7 @@ public class Tabuleiro {
 
     /**
      * @deprecated
-     *
+     * 
      * @param cor
      */
     @Deprecated
@@ -121,19 +129,19 @@ public class Tabuleiro {
     /**
      * Move uma peça nessa instância de tabuleiro para um ponto de destino
      * representado por (destI, destJ).
-     *
+     * 
      * @param peca
      *            Peça a ser movida.
-     *
+     * 
      * @param destI
      *            Linha de destino para a peça.
-     *
+     * 
      * @param destJ
      *            Coluna de destino para a peça.
-     *
+     * 
      * @throws MovimentoInvalido
      *             Caso o movimento seja considerado inválido.
-     *
+     * 
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
      */
     public void mover(IPeca peca, int destI, int destJ) throws JogadaException {
@@ -155,10 +163,13 @@ public class Tabuleiro {
     }
 
     /**
-     *
+     * @throws MovimentoInvalido
+     * 
      */
-    protected void onTomada(IPeca peca, IPeca outra) {
-        marcarPonto(peca);
+    protected void onTomada(IJogada jogada, Peca outra) throws JogadaException {
+        jogada.tomar(outra);
+
+        // marcarPonto(peca);
     }
 
     /**
@@ -194,9 +205,9 @@ public class Tabuleiro {
     /**
      * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
      * só deve ser chamado após as validações do movimento da peça.
-     *
+     * 
      * @param jogada
-     *
+     * 
      * @return <code>true</code> caso haja peça no caminho da jogada,
      *         <code>false</code> caso contrário.
      */
@@ -212,9 +223,9 @@ public class Tabuleiro {
     // }
 
     /**
-     *
+     * 
      * @param jogada
-     *
+     * 
      * @return
      */
     private boolean pecaNoCaminho(IJogada jogada) {
@@ -228,7 +239,7 @@ public class Tabuleiro {
         int j = peca.getJ() + jinc;
 
         while ((i != jogada.getDestI() || j != jogada.getDestJ())
-                && pecas[i][j] == null) {
+            && pecas[i][j] == null) {
             i += iinc;
             j += jinc;
         }
@@ -237,41 +248,25 @@ public class Tabuleiro {
     }
 
     /**
-     * @param jogada
-     * @return
-     */
-    private boolean pecaNoCaminhoHorizontal(IJogada jogada) {
-        return false;
-    }
-
-    /**
-     * @param jogada
-     * @return
-     */
-    private boolean pecaNoCaminhoVertical(IJogada jogada) {
-        return false;
-    }
-
-    /**
      * Valida o movimento desta peça de acordo com as coordenadas de destino
      * informadas e realiza o movimento da mesma.
-     *
+     * 
      * @param jogada
-     *
+     * 
      * @throws MovimentoInvalido
-     *
+     * 
      * @todo Adicionar suporte a jogadas especiais.
      */
     /**
      * Realiza operações para realizar o movimento de uma peça da jogada neste
      * tabuleiro.
-     *
+     * 
      * @param jogada
      *            Jogada em questão.
-     *
+     * 
      * @throws MovimentoInvalido
      *             Caso o movimento da peça não seja válido.
-     *
+     * 
      * @throws JogadaInvalida
      *             Caso a jogada em questão não seja válida.
      */
@@ -284,7 +279,7 @@ public class Tabuleiro {
         IPeca outra = outra(jogada);
 
         boolean isOutraOponente = outra == null
-                || peca.getCor() != outra.getCor();
+            || peca.getCor() != outra.getCor();
 
         boolean ok = false;
 
@@ -293,25 +288,25 @@ public class Tabuleiro {
         // Peças que tem o movimento limitado
         // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
-        case Rei:
+            case Rei :
             break;
-        case Rainha:
+            case Rainha :
             break;
-        case Peao:
+            case Peao :
             break;
-        case Torre:
+            case Torre :
             break;
-        case Cavalo:
-            // Validação por parte do tabuleiro vazia para o caso do Cavalo.
-            ok = outra == null || outra.getCor() != peca.getCor();
+            case Cavalo :
+                // Validação por parte do tabuleiro vazia para o caso do Cavalo.
+                ok = outra == null || outra.getCor() != peca.getCor();
             break;
-        default:
+            default :
             break;
         }
 
         boolean hasPecaNoCaminho = !ok && pecaNoCaminho(jogada);
 
-        ok = isOutraOponente && !hasPecaNoCaminho;
+        ok = isOutraOponente || !hasPecaNoCaminho;
 
         if (!ok) {
             throw new JogadaInvalida(jogada);
@@ -322,9 +317,8 @@ public class Tabuleiro {
 
         jogada.realizar();
 
-        // TODO O set para null e depois dest para peça deve ser feito dentro do
-        // método tomar(...) ?
-        tomar(jogada);
+        if (outra != null)
+            tomar(jogada);
 
         // Refletindo alterações da jogada no tabuleiro.
         pecas[i][j] = null;
@@ -333,12 +327,15 @@ public class Tabuleiro {
 
     /**
      * @param jogada
+     * 
+     * @throws MovimentoInvalido
+     * 
      * @throws PecaNaoEncontrada
      */
-    private void tomar(IJogada jogada) {
-        IPeca outra = outra(jogada);
+    private void tomar(IJogada jogada) throws JogadaException {
+        Peca outra = (Peca) outra(jogada);
 
         if (outra != null && jogada.getPeca().getCor() != outra.getCor())
-            onTomada(jogada.getPeca(), outra);
+            onTomada(jogada, outra);
     }
 }

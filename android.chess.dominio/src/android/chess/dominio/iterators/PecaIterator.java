@@ -3,46 +3,29 @@
  */
 package android.chess.dominio.iterators;
 
-import java.util.Iterator;
-
 import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
  */
-public class PecaIterator implements Iterator<IPeca> {
-    private IPeca[][] pecas;
-    private int i = 0;
-    private int j = -1;
-
+public class PecaIterator extends MatrixIterator<IPeca> {
     /**
      *
      */
     public PecaIterator(IPeca[][] pecas) {
-
-        this.pecas = pecas;
+        super(pecas);
     }
 
     /*
      * (non-Javadoc)
-     *
-     * @see java.util.Iterator#hasNext()
-     */
-    @Override
-    public boolean hasNext() {
-        return i < pecas.length - 1 || j < pecas[0].length - 1;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
+     * 
      * @see java.util.Iterator#next()
      */
     @Override
     public IPeca next() {
         j++;
 
-        if (j > 7) {
+        if (j > matrix.length - 1) {
             i++;
 
             if (i == 2) {
@@ -52,17 +35,6 @@ public class PecaIterator implements Iterator<IPeca> {
             j = 0;
         }
 
-        return pecas[i][j];
+        return current();
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.Iterator#remove()
-     */
-    @Override
-    public void remove() {
-        // TODO Jogar uma exceção!?
-    }
-
 }

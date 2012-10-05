@@ -8,7 +8,7 @@ import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class PartidaControle {
     private Partida partida;
@@ -31,10 +31,11 @@ public class PartidaControle {
      * @param destI
      * @param destJ
      * @throws PecaNaoEncontrada
-     *
+     * 
      * @throws Exception
      */
-    public void mover(IPeca peca, int destI, int destJ) throws JogadaException, PecaNaoEncontrada {
+    public void mover(IPeca peca, int destI, int destJ) throws JogadaException,
+        PecaNaoEncontrada {
         partida.jogada(peca, destI, destJ);
     }
 }

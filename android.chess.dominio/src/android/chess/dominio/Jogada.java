@@ -1,6 +1,7 @@
 package android.chess.dominio;
 
 import static java.lang.Math.signum;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IJogada;
@@ -10,14 +11,14 @@ import android.chess.dominio.pecas.Peca;
 /**
  * Representação de uma jogada realizada com uma peça e tendo uma posição de
  * destino.
- *
+ * 
  * @author augusteiner
- *
+ * 
  */
 public class Jogada implements IJogada {
     /**
      * @author augusteiner
-     *
+     * 
      */
     // public class Movimento {
     // /**
@@ -80,7 +81,7 @@ public class Jogada implements IJogada {
     /**
      * Retorna se a jogada está sendo realizada no sentido inverso do tabuleiro
      * (de baixo para cima).
-     *
+     * 
      * @return
      */
     public boolean invertida() {
@@ -89,7 +90,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     *
+     * 
      * @see IPeca#movimentoDiagonal(Jogada)
      */
     @Override
@@ -99,7 +100,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     *
+     * 
      * @see IPeca#movimentoHorizDiag(Jogada)
      */
     public boolean movimentoHorizDiag() {
@@ -108,7 +109,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     *
+     * 
      * @see IPeca#movimentoHorizontal(Jogada)
      */
     @Override
@@ -118,7 +119,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     *
+     * 
      * @see Peca#movimentoHorizVert(Jogada)
      */
     public boolean movimentoHorizVert() {
@@ -127,7 +128,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     *
+     * 
      * @see Peca#movimentoVertical(Jogada)
      */
     @Override
@@ -149,7 +150,7 @@ public class Jogada implements IJogada {
 
     /**
      * Sentido da jogada (de baixo para cima ou de cima para baixo).
-     *
+     * 
      * @return Um <code>int</code> sinalizando o sentido do movimento.
      */
     @Override
@@ -159,7 +160,7 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogada#sentidoJ()
      */
     @Override
@@ -169,12 +170,24 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     *
+     * 
+     * @see android.chess.dominio.interfaces.IJogada#tomar()
+     */
+    @Override
+    public void tomar(Peca outra) throws JogadaException {
+        // TODO Auto-generated method stub
+
+        getPeca().tomar(outra);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return String.format("%s (%d:%d)", getPeca().getTipo().toString(),
-                getDestI(), getDestJ());
+            getDestI(), getDestJ());
     }
 }

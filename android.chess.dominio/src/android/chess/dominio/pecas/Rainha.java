@@ -7,7 +7,7 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Rainha extends Peca {
 
@@ -22,13 +22,13 @@ public class Rainha extends Peca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
     public void validar(int destI, int destJ) throws MovimentoInvalido {
         if (!movimentoHorizDiag(destI, destJ)
-                && !movimentoVertical(destI, destJ))
+            && !movimentoVertical(destI, destJ))
             throw new MovimentoInvalido(this);
     }
 }

@@ -5,7 +5,7 @@ package android.chess.test;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public abstract class Test {
     /**
