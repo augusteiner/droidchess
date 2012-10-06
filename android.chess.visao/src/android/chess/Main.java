@@ -51,7 +51,7 @@ public class Main extends Activity {
      * @param view
      */
     public void menuExitOnClick(View v) {
-        // finish();
+        finish();
     }
 
     /*
@@ -81,7 +81,11 @@ public class Main extends Activity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+        try {
+            getMenuInflater().inflate(R.menu.main, menu);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return true;
     }

@@ -11,7 +11,7 @@ import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Partida {
     private Tabuleiro tabuleiro;
@@ -43,7 +43,7 @@ public class Partida {
 
     /**
      * Retorna o tabuleiro desta partida.
-     * 
+     *
      * @return {@link Tabuleiro}
      */
     public Tabuleiro getTabuleiro() {
@@ -70,9 +70,7 @@ public class Partida {
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
         throws JogadaException, PecaNaoEncontrada {
-        IPeca orig = tabuleiro.peca(origI, origJ);
-
-        tabuleiro.mover(orig, destI, destJ);
+        tabuleiro.mover(origI, origJ, destI, destJ);
     }
 
     /**

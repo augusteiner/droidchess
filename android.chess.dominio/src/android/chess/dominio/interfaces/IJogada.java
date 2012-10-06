@@ -6,7 +6,7 @@ import android.chess.dominio.pecas.Peca;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public interface IJogada {
     /**
@@ -46,8 +46,8 @@ public interface IJogada {
      */
     public float sentidoJ();
     /**
+     * @param outra
      * @throws JogadaException
-     * 
      */
     public void tomar(Peca outra) throws JogadaException;
 }

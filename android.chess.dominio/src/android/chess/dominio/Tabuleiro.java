@@ -28,13 +28,17 @@ import android.chess.dominio.pecas.Torre;
 /**
  * Classe de domínio para prover validação de jogadas e modelagem geral do jogo
  * de xadrez.
- * 
+ *
  * @author augusteiner
+ */
+/**
+ * @author augusteiner
+ *
  */
 public class Tabuleiro {
 
     private Cor atual;
-    private IPeca[][] pecas;
+    private Peca[][] pecas;
 
     // private Jogador[] jogadores;
     // private Partida partida;
@@ -112,14 +116,13 @@ public class Tabuleiro {
 
     /**
      * @deprecated
-     * 
+     *
      * @param cor
      */
     @Deprecated
     private void marcarPonto(IPeca peca) {
         // Índice do jogador a marcar pontos.
 
-        @SuppressWarnings("unused")
         int jIndex = abs(peca.getCor().compareTo(Cor.Branca));
 
         // partida.marcar(jIndex);
@@ -127,32 +130,47 @@ public class Tabuleiro {
     }
 
     /**
+     * @param origI
+     * @param origJ
+     * @param destI
+     * @param destJ
+     * @throws JogadaException
+     * @throws PecaNaoEncontrada
+     */
+    public void mover(int origI, int origJ, int destI, int destJ)
+        throws JogadaException, PecaNaoEncontrada {
+        mover(peca(origI, origJ), destI, destJ);
+
+    }
+
+    /**
      * Move uma peça nessa instância de tabuleiro para um ponto de destino
      * representado por (destI, destJ).
-     * 
+     *
      * @param peca
      *            Peça a ser movida.
-     * 
+     *
      * @param destI
      *            Linha de destino para a peça.
-     * 
+     *
      * @param destJ
      *            Coluna de destino para a peça.
-     * 
+     * @throws PecaNaoEncontrada
+     *
      * @throws MovimentoInvalido
      *             Caso o movimento seja considerado inválido.
-     * 
+     *
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
      */
-    public void mover(IPeca peca, int destI, int destJ) throws JogadaException {
+    private void mover(Peca peca, int destI, int destJ) throws JogadaException {
 
         if (peca.getCor().outra() == atual)
             throw new VezInvalida(atual);
 
-        IJogada jogada = new Jogada(peca, destI, destJ);
+        Jogada jogada = new Jogada(peca, destI, destJ);
 
         try {
-            realizar(jogada);
+            realizar(peca, jogada);
 
             atual = atual.outra();
         } catch (JogadaInvalida e) {
@@ -163,8 +181,9 @@ public class Tabuleiro {
     }
 
     /**
-     * @throws MovimentoInvalido
-     * 
+     * @param jogada
+     * @param outra
+     * @throws JogadaException
      */
     protected void onTomada(IJogada jogada, Peca outra) throws JogadaException {
         jogada.tomar(outra);
@@ -177,7 +196,7 @@ public class Tabuleiro {
      * @return
      * @throws PecaNaoEncontrada
      */
-    private IPeca outra(IJogada jogada) {
+    private Peca outra(IJogada jogada) {
         try {
             return peca(jogada.getDestI(), jogada.getDestJ());
         } catch (PecaNaoEncontrada e) {
@@ -186,28 +205,11 @@ public class Tabuleiro {
     }
 
     /**
-     * @param i
-     * @param j
-     * @return
-     */
-    IPeca peca(int i, int j) throws PecaNaoEncontrada {
-        if (i < 0 || j < 0 || i > 7 || j > 7)
-            throw new PecaNaoEncontrada();
-
-        IPeca peca = pecas[i][j];
-
-        if (peca == null)
-            throw new PecaNaoEncontrada();
-
-        return peca;
-    }
-
-    /**
      * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
      * só deve ser chamado após as validações do movimento da peça.
-     * 
+     *
      * @param jogada
-     * 
+     *
      * @return <code>true</code> caso haja peça no caminho da jogada,
      *         <code>false</code> caso contrário.
      */
@@ -223,9 +225,37 @@ public class Tabuleiro {
     // }
 
     /**
-     * 
+     * @param i
+     * @param j
+     * @return
+     */
+    private Peca peca(int i, int j) throws PecaNaoEncontrada {
+        if (i < 0 || j < 0 || i > 7 || j > 7)
+            throw new PecaNaoEncontrada();
+
+        Peca peca = pecas[i][j];
+
+        if (peca == null)
+            throw new PecaNaoEncontrada();
+
+        return peca;
+    }
+
+    /**
      * @param jogada
-     * 
+     * @return
+     * @throws PecaNaoEncontrada
+     */
+    private Peca peca(Jogada jogada) throws PecaNaoEncontrada {
+        IPeca peca = jogada.getPeca();
+
+        return peca(peca.getI(), peca.getJ());
+    }
+
+    /**
+     *
+     * @param jogada
+     *
      * @return
      */
     private boolean pecaNoCaminho(IJogada jogada) {
@@ -250,33 +280,32 @@ public class Tabuleiro {
     /**
      * Valida o movimento desta peça de acordo com as coordenadas de destino
      * informadas e realiza o movimento da mesma.
-     * 
+     *
      * @param jogada
-     * 
+     *
      * @throws MovimentoInvalido
-     * 
+     *
      * @todo Adicionar suporte a jogadas especiais.
      */
     /**
      * Realiza operações para realizar o movimento de uma peça da jogada neste
      * tabuleiro.
-     * 
+     *
      * @param jogada
      *            Jogada em questão.
-     * 
+     * @throws PecaNaoEncontrada
+     *
      * @throws MovimentoInvalido
      *             Caso o movimento da peça não seja válido.
-     * 
+     *
      * @throws JogadaInvalida
      *             Caso a jogada em questão não seja válida.
      */
-    private void realizar(IJogada jogada) throws JogadaException {
+    private void realizar(Peca peca, Jogada jogada) throws JogadaException {
 
-        IPeca peca = jogada.getPeca();
+        // peca.validar(jogada);
 
-        peca.validar(jogada);
-
-        IPeca outra = outra(jogada);
+        Peca outra = outra(jogada);
 
         boolean isOutraOponente = outra == null
             || peca.getCor() != outra.getCor();
@@ -318,7 +347,7 @@ public class Tabuleiro {
         jogada.realizar();
 
         if (outra != null)
-            tomar(jogada);
+            tomar(jogada, outra);
 
         // Refletindo alterações da jogada no tabuleiro.
         pecas[i][j] = null;
@@ -327,15 +356,14 @@ public class Tabuleiro {
 
     /**
      * @param jogada
-     * 
+     * @param outra
+     *
      * @throws MovimentoInvalido
-     * 
+     *
      * @throws PecaNaoEncontrada
      */
-    private void tomar(IJogada jogada) throws JogadaException {
-        Peca outra = (Peca) outra(jogada);
-
-        if (outra != null && jogada.getPeca().getCor() != outra.getCor())
+    private void tomar(Jogada jogada, Peca outra) throws JogadaException {
+        if (jogada.getPeca().getCor() != outra.getCor())
             onTomada(jogada, outra);
     }
 }

@@ -11,14 +11,14 @@ import android.chess.dominio.pecas.Peca;
 /**
  * Representação de uma jogada realizada com uma peça e tendo uma posição de
  * destino.
- * 
+ *
  * @author augusteiner
- * 
+ *
  */
 public class Jogada implements IJogada {
     /**
      * @author augusteiner
-     * 
+     *
      */
     // public class Movimento {
     // /**
@@ -81,7 +81,7 @@ public class Jogada implements IJogada {
     /**
      * Retorna se a jogada está sendo realizada no sentido inverso do tabuleiro
      * (de baixo para cima).
-     * 
+     *
      * @return
      */
     public boolean invertida() {
@@ -90,7 +90,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     * 
+     *
      * @see IPeca#movimentoDiagonal(Jogada)
      */
     @Override
@@ -100,7 +100,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     * 
+     *
      * @see IPeca#movimentoHorizDiag(Jogada)
      */
     public boolean movimentoHorizDiag() {
@@ -109,7 +109,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     * 
+     *
      * @see IPeca#movimentoHorizontal(Jogada)
      */
     @Override
@@ -119,7 +119,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     * 
+     *
      * @see Peca#movimentoHorizVert(Jogada)
      */
     public boolean movimentoHorizVert() {
@@ -128,7 +128,7 @@ public class Jogada implements IJogada {
 
     /**
      * @return
-     * 
+     *
      * @see Peca#movimentoVertical(Jogada)
      */
     @Override
@@ -150,7 +150,7 @@ public class Jogada implements IJogada {
 
     /**
      * Sentido da jogada (de baixo para cima ou de cima para baixo).
-     * 
+     *
      * @return Um <code>int</code> sinalizando o sentido do movimento.
      */
     @Override
@@ -160,7 +160,7 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IJogada#sentidoJ()
      */
     @Override
@@ -170,19 +170,19 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see android.chess.dominio.interfaces.IJogada#tomar()
+     *
+     * @see
+     * android.chess.dominio.interfaces.IJogada#tomar(android.chess.dominio.
+     * pecas.Peca)
      */
     @Override
     public void tomar(Peca outra) throws JogadaException {
-        // TODO Auto-generated method stub
-
         getPeca().tomar(outra);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
