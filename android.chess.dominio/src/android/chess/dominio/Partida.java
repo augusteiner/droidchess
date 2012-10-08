@@ -61,12 +61,19 @@ public class Partida {
     }
 
     /**
+     *
      * @param origI
+     *
      * @param origJ
+     *
      * @param destI
+     *
      * @param destJ
+     *
      * @throws MovimentoInvalido
+     *
      * @throws PecaNaoEncontrada
+     *
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
         throws JogadaException, PecaNaoEncontrada {
@@ -74,12 +81,20 @@ public class Partida {
     }
 
     /**
+     *
      * @param peca
+     *
      * @param destI
+     *
      * @param destJ
+     *
      * @throws PecaNaoEncontrada
+     *
      * @throws JogadaInvalida
+     *
+     * @deprecated
      */
+    @Deprecated
     public void jogada(IPeca peca, int destI, int destJ)
         throws JogadaException, PecaNaoEncontrada {
         jogada(peca.getI(), peca.getJ(), destI, destJ);

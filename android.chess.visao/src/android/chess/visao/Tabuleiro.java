@@ -33,7 +33,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Tabuleiro extends View implements ITomadaHandler {
 
@@ -125,7 +125,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /**
      * @param contentView
-     * 
+     *
      */
     protected void initPecas(ViewGroup contentView) {
 
@@ -164,7 +164,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
     @TargetApi(11)
@@ -188,7 +188,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -244,7 +244,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -261,7 +261,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.interfaces.IEventoTomada)
@@ -273,7 +273,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     public boolean onTouchEvent(MotionEvent event, Peca peca) {
@@ -329,10 +329,10 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     @TargetApi(11)
     private boolean performOnDragEvent(DragEvent event) throws Exception {
-        Peca peca = (Peca) event.getLocalState();
+        Peca vPeca = (Peca) event.getLocalState();
 
         // Caso o evento seja realizado muito rápido, peca vem nulo.
-        if (peca == null)
+        if (vPeca == null)
             return false;
 
         switch (event.getAction()) {
@@ -343,20 +343,22 @@ public class Tabuleiro extends View implements ITomadaHandler {
                 Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
 
                 try {
-                    controle.mover((IPeca) peca.getTag(), destI, destJ);
+                    IPeca peca = (IPeca) vPeca.getTag();
+
+                    controle.mover(peca.getI(), peca.getJ(), destI, destJ);
                 } catch (JogadaException e) {
                     throw e;
                 }
 
-                performDrag(destI, destJ, peca);
+                performDrag(destI, destJ, vPeca);
 
                 return true;
             case DragEvent.ACTION_DRAG_STARTED :
-                peca.hide();
+                vPeca.hide();
 
                 return true;
             case DragEvent.ACTION_DRAG_ENDED :
-                peca.show();
+                vPeca.show();
                 invalidate();
 
                 return true;

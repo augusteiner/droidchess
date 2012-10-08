@@ -7,6 +7,7 @@ import static java.lang.Math.abs;
 import android.chess.dominio.Jogada;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.excecao.TurnoInvalidoException;
 import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
@@ -166,7 +167,10 @@ public abstract class Peca implements IPeca {
      * )
      */
     @Override
-    public void mover(Jogada jogada) throws MovimentoInvalido {
+    public void mover(Jogada jogada, Peca outra) throws JogadaException {
+        if (outra != null)
+            tomar(outra);
+
         mover(jogada.getDestI(), jogada.getDestJ());
     }
 
@@ -306,19 +310,20 @@ public abstract class Peca implements IPeca {
         this.onTomadaHandler = onTomadaHandler;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Valida a ação da tomada de uma peça de acordo com a peça tomando esta.
      *
-     * @see
-     * android.chess.dominio.interfaces.IPeca#tomar(android.chess.dominio.pecas
-     * .Peca)
+     * @param outra
+     *
+     * @throws JogadaException
+     *
+     * @todo Adicionar validação de tomada de outra peça.
      */
-    @Override
-    public void tomar(Peca outra) throws JogadaException {
-
-        outra.onTomada(new EventoTomada(this, outra));
-
-        // throw new MovimentoInvalido(this);
+    private void tomar(Peca outra) throws JogadaException {
+        if (getCor() != outra.getCor())
+            outra.onTomada(new EventoTomada(this, outra));
+        else
+            throw new MovimentoInvalido(this);
     }
 
     /*

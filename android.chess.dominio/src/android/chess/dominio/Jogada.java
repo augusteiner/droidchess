@@ -140,9 +140,9 @@ public class Jogada implements IJogada {
      * @throws JogadaInvalida
      */
     @Override
-    public void realizar() throws JogadaInvalida {
+    public void realizar(Peca outra) throws JogadaException {
         try {
-            peca.mover(destI, destJ);
+            peca.mover(this, outra);
         } catch (MovimentoInvalido e) {
             throw new JogadaInvalida(this, e);
         }
@@ -166,18 +166,6 @@ public class Jogada implements IJogada {
     @Override
     public float sentidoJ() {
         return signum(getDestJ() - getPeca().getJ());
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.interfaces.IJogada#tomar(android.chess.dominio.
-     * pecas.Peca)
-     */
-    @Override
-    public void tomar(Peca outra) throws JogadaException {
-        getPeca().tomar(outra);
     }
 
     /*

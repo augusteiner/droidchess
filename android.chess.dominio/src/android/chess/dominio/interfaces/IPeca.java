@@ -75,11 +75,11 @@ public interface IPeca {
     /**
      * @param jogada
      *
-     * @throws MovimentoInvalido
+     * @throws JogadaException
      *
-     * @see {@link IPeca#mover(int, int)}
+     * @see IPeca#mover(int, int)
      */
-    void mover(Jogada jogada) throws MovimentoInvalido;
+    void mover(Jogada jogada, Peca outra) throws JogadaException;
 
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
@@ -146,15 +146,6 @@ public interface IPeca {
      * @todo Melhor setOnVisualFeedbackHandler?
      */
     void setOnTomadaHandler(ITomadaHandler onTomadaHandler);
-
-    /**
-     * Valida a ação da tomada de uma peça de acordo com a peça tomando esta.
-     *
-     * @param outra
-     *
-     * @throws JogadaException
-     */
-    void tomar(Peca outra) throws JogadaException;
 
     /**
      * @return Representação desta peça como {@link String}

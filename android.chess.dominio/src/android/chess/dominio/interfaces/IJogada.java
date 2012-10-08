@@ -34,9 +34,10 @@ public interface IJogada {
      */
     public boolean movimentoVertical();
     /**
+     * @throws JogadaException
      *
      */
-    public void realizar() throws JogadaInvalida;
+    public void realizar(Peca outra) throws JogadaException;
     /**
      * @return
      */
@@ -45,9 +46,4 @@ public interface IJogada {
      * @return
      */
     public float sentidoJ();
-    /**
-     * @param outra
-     * @throws JogadaException
-     */
-    public void tomar(Peca outra) throws JogadaException;
 }

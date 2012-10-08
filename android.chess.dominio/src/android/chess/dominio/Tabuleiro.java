@@ -11,7 +11,7 @@ import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
-import android.chess.dominio.excecao.VezInvalida;
+import android.chess.dominio.excecao.TurnoInvalidoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
 import android.chess.dominio.interfaces.IPeca.Cor;
@@ -140,7 +140,6 @@ public class Tabuleiro {
     public void mover(int origI, int origJ, int destI, int destJ)
         throws JogadaException, PecaNaoEncontrada {
         mover(peca(origI, origJ), destI, destJ);
-
     }
 
     /**
@@ -165,7 +164,7 @@ public class Tabuleiro {
     private void mover(Peca peca, int destI, int destJ) throws JogadaException {
 
         if (peca.getCor().outra() == atual)
-            throw new VezInvalida(atual);
+            throw new TurnoInvalidoException(atual);
 
         Jogada jogada = new Jogada(peca, destI, destJ);
 
@@ -178,17 +177,6 @@ public class Tabuleiro {
         } catch (JogadaException e) {
             throw new JogadaInvalida(jogada, e);
         }
-    }
-
-    /**
-     * @param jogada
-     * @param outra
-     * @throws JogadaException
-     */
-    protected void onTomada(IJogada jogada, Peca outra) throws JogadaException {
-        jogada.tomar(outra);
-
-        // marcarPonto(peca);
     }
 
     /**
@@ -344,26 +332,10 @@ public class Tabuleiro {
         int i = peca.getI();
         int j = peca.getJ();
 
-        jogada.realizar();
-
-        if (outra != null)
-            tomar(jogada, outra);
+        jogada.realizar(outra);
 
         // Refletindo alterações da jogada no tabuleiro.
         pecas[i][j] = null;
         pecas[jogada.getDestI()][jogada.getDestJ()] = peca;
-    }
-
-    /**
-     * @param jogada
-     * @param outra
-     *
-     * @throws MovimentoInvalido
-     *
-     * @throws PecaNaoEncontrada
-     */
-    private void tomar(Jogada jogada, Peca outra) throws JogadaException {
-        if (jogada.getPeca().getCor() != outra.getCor())
-            onTomada(jogada, outra);
     }
 }
