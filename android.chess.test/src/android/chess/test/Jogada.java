@@ -169,7 +169,8 @@ public class Jogada extends Test {
         // bispo();
         // rainha();
         // peaoTorre();
-        tentarMate();
+        // tentarMate();
+        promocao();
     }
 
     /**
