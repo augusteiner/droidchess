@@ -1,12 +1,8 @@
 package android.chess.dominio;
 
 import static java.lang.Math.signum;
-import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.JogadaInvalida;
-import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.pecas.Peca;
 
 /**
  * Representação de uma jogada realizada com uma peça e tendo uma posição de
@@ -16,42 +12,33 @@ import android.chess.dominio.pecas.Peca;
  *
  */
 public class Jogada implements IJogada {
-    /**
-     * @author augusteiner
-     *
-     */
-    // public class Movimento {
-    // /**
-    // * Identifica o movimento de uma peça como sendo horizontal.
-    // */
-    // public static final char HORIZONTAL = 1;
-    // /**
-    // * Identifica o movimento de uma peça como sendo vertical.
-    // */
-    // public static final char VERTICAL = 2;
-    // /**
-    // * Identifica o movimento de uma peça como sendo diagonal.
-    // */
-    // public static final char DIAGONAL = 4;
-    // /**
-    // * Identifica o movimento de uma peça como sendo de outra modalidade.
-    // */
-    // public static final char OUTRO = 0;
-    // }
-    private int destI, destJ;
+    private int destI;
 
-    private IPeca peca;
+    private int destJ;
+
+    private int origJ;
+
+    private int origI;
 
     /**
      * @param peca
      * @param destI
      * @param destJ
      */
-    public Jogada(IPeca peca, int destI, int destJ) {
-        this.peca = peca;
+    public Jogada(int origI, int origJ, int destI, int destJ) {
+        this.origI = origI;
+        this.origJ = origJ;
 
         this.destI = destI;
         this.destJ = destJ;
+    }
+
+    /**
+     * @param peca
+     * @param outra
+     */
+    public Jogada(IPeca peca, IPeca outra) {
+        this(peca.getI(), peca.getJ(), outra.getI(), outra.getJ());
     }
 
     /**
@@ -71,11 +58,19 @@ public class Jogada implements IJogada {
     }
 
     /**
-     * @return Peça que está sendo alvo da jogada.
+     * @return
      */
     @Override
-    public IPeca getPeca() {
-        return peca;
+    public int getOrigI() {
+        return origI;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int getOrigJ() {
+        return origJ;
     }
 
     /**
@@ -85,67 +80,7 @@ public class Jogada implements IJogada {
      * @return
      */
     public boolean invertida() {
-        return getDestI() - peca.getI() > 0 && getDestJ() - peca.getJ() > 0;
-    }
-
-    /**
-     * @return
-     *
-     * @see IPeca#movimentoDiagonal(Jogada)
-     */
-    @Override
-    public boolean movimentoDiagonal() {
-        return Peca.movimentoDiagonal(this);
-    }
-
-    /**
-     * @return
-     *
-     * @see IPeca#movimentoHorizDiag(Jogada)
-     */
-    public boolean movimentoHorizDiag() {
-        return Peca.movimentoHorizDiag(this);
-    }
-
-    /**
-     * @return
-     *
-     * @see IPeca#movimentoHorizontal(Jogada)
-     */
-    @Override
-    public boolean movimentoHorizontal() {
-        return Peca.movimentoHorizontal(this);
-    }
-
-    /**
-     * @return
-     *
-     * @see Peca#movimentoHorizVert(Jogada)
-     */
-    public boolean movimentoHorizVert() {
-        return Peca.movimentoHorizVert(this);
-    }
-
-    /**
-     * @return
-     *
-     * @see Peca#movimentoVertical(Jogada)
-     */
-    @Override
-    public boolean movimentoVertical() {
-        return Peca.movimentoVertical(this);
-    }
-
-    /**
-     * @throws JogadaInvalida
-     */
-    @Override
-    public void realizar(Peca outra) throws JogadaException {
-        try {
-            peca.mover(this, outra);
-        } catch (MovimentoInvalido e) {
-            throw new JogadaInvalida(this, e);
-        }
+        return getDestI() - getOrigI() > 0 && getDestJ() - getOrigJ() > 0;
     }
 
     /**
@@ -155,7 +90,7 @@ public class Jogada implements IJogada {
      */
     @Override
     public float sentidoI() {
-        return signum(getDestI() - getPeca().getI());
+        return signum(getDestI() - getOrigI());
     }
 
     /*
@@ -165,7 +100,7 @@ public class Jogada implements IJogada {
      */
     @Override
     public float sentidoJ() {
-        return signum(getDestJ() - getPeca().getJ());
+        return signum(getDestJ() - getOrigJ());
     }
 
     /*
@@ -175,7 +110,7 @@ public class Jogada implements IJogada {
      */
     @Override
     public String toString() {
-        return String.format("%s (%d:%d)", getPeca().getTipo().toString(),
+        return String.format("(%d:%d) -> (%d:%d)", getOrigI(), getOrigJ(),
             getDestI(), getDestJ());
     }
 }

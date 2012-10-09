@@ -2,9 +2,9 @@ package android.chess.dominio.excecao;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public abstract class JogadaException extends Exception {
+public abstract class JogadaException extends ChessException {
 
     /**
      *
@@ -12,9 +12,9 @@ public abstract class JogadaException extends Exception {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      * @param message
-     * 
+     *
      * @param cause
      */
     public JogadaException(String message, Throwable cause) {

@@ -7,6 +7,7 @@ import static java.lang.Math.abs;
 
 import java.util.Iterator;
 
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
@@ -119,6 +120,7 @@ public class Tabuleiro {
      *
      * @param cor
      */
+    @SuppressWarnings("unused")
     @Deprecated
     private void marcarPonto(IPeca peca) {
         // Índice do jogador a marcar pontos.
@@ -127,19 +129,6 @@ public class Tabuleiro {
 
         // partida.marcar(jIndex);
         // jogadores[jIndex].marcar();
-    }
-
-    /**
-     * @param origI
-     * @param origJ
-     * @param destI
-     * @param destJ
-     * @throws JogadaException
-     * @throws PecaNaoEncontrada
-     */
-    public void mover(int origI, int origJ, int destI, int destJ)
-        throws JogadaException, PecaNaoEncontrada {
-        mover(peca(origI, origJ), destI, destJ);
     }
 
     /**
@@ -161,15 +150,16 @@ public class Tabuleiro {
      *
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
      */
-    private void mover(Peca peca, int destI, int destJ) throws JogadaException {
+    public void mover(int origI, int origJ, int destI, int destJ)
+        throws ChessException {
+        Jogada jogada = new Jogada(origI, origJ, destI, destJ);
+        IPeca peca = peca(jogada);
 
         if (peca.getCor().outra() == atual)
             throw new TurnoInvalidoException(atual);
 
-        Jogada jogada = new Jogada(peca, destI, destJ);
-
         try {
-            realizar(peca, jogada);
+            realizar(jogada);
 
             atual = atual.outra();
         } catch (JogadaInvalida e) {
@@ -193,24 +183,13 @@ public class Tabuleiro {
     }
 
     /**
-     * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
-     * só deve ser chamado após as validações do movimento da peça.
-     *
      * @param jogada
-     *
-     * @return <code>true</code> caso haja peça no caminho da jogada,
-     *         <code>false</code> caso contrário.
+     * @return
+     * @throws PecaNaoEncontrada
      */
-    // private boolean pecaNoCaminho(IJogada jogada) {
-    // if (jogada.movimentoDiagonal())
-    // return pecaNoCaminho(jogada);
-    // else if (jogada.movimentoHorizontal())
-    // return pecaNoCaminhoHorizontal(jogada);
-    // else if (jogada.movimentoVertical())
-    // return pecaNoCaminhoVertical(jogada);
-    // else
-    // return false;
-    // }
+    private Peca peca(IJogada jogada) throws ChessException {
+        return peca(jogada.getOrigI(), jogada.getOrigJ());
+    }
 
     /**
      * @param i
@@ -230,25 +209,15 @@ public class Tabuleiro {
     }
 
     /**
-     * @param jogada
-     * @return
-     * @throws PecaNaoEncontrada
-     */
-    private Peca peca(Jogada jogada) throws PecaNaoEncontrada {
-        IPeca peca = jogada.getPeca();
-
-        return peca(peca.getI(), peca.getJ());
-    }
-
-    /**
+     * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
+     * só deve ser chamado após as validações do movimento da peça.
      *
      * @param jogada
      *
-     * @return
+     * @return <code>true</code> caso haja peça no caminho da jogada,
+     *         <code>false</code> caso contrário.
      */
-    private boolean pecaNoCaminho(IJogada jogada) {
-
-        IPeca peca = jogada.getPeca();
+    private boolean pecaNoCaminho(IPeca peca, IJogada jogada) {
 
         int iinc = (int) jogada.sentidoI();
         int jinc = (int) jogada.sentidoJ();
@@ -289,7 +258,14 @@ public class Tabuleiro {
      * @throws JogadaInvalida
      *             Caso a jogada em questão não seja válida.
      */
-    private void realizar(Peca peca, Jogada jogada) throws JogadaException {
+    private void realizar(Jogada jogada) throws ChessException {
+        Peca peca;
+
+        try {
+            peca = peca(jogada);
+        } catch (PecaNaoEncontrada e) {
+            throw new JogadaInvalida(jogada);
+        }
 
         // peca.validar(jogada);
 
@@ -321,7 +297,7 @@ public class Tabuleiro {
             break;
         }
 
-        boolean hasPecaNoCaminho = !ok && pecaNoCaminho(jogada);
+        boolean hasPecaNoCaminho = !ok && pecaNoCaminho(peca, jogada);
 
         ok = isOutraOponente || !hasPecaNoCaminho;
 
@@ -329,13 +305,13 @@ public class Tabuleiro {
             throw new JogadaInvalida(jogada);
         }
 
-        int i = peca.getI();
-        int j = peca.getJ();
+        int prevI = peca.getI();
+        int prevJ = peca.getJ();
 
-        jogada.realizar(outra);
+        peca.mover(jogada, outra);
 
         // Refletindo alterações da jogada no tabuleiro.
-        pecas[i][j] = null;
-        pecas[jogada.getDestI()][jogada.getDestJ()] = peca;
+        pecas[peca.getI()][peca.getJ()] = peca;
+        pecas[prevI][prevJ] = null;
     }
 }

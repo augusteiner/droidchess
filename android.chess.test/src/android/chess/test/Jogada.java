@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
@@ -12,7 +13,7 @@ import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 @SuppressWarnings("unused")
 public class Jogada extends Test {
@@ -20,12 +21,12 @@ public class Jogada extends Test {
 
     /**
      * Testa jogadas com um bispo.
-     * 
+     *
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
-     * 
+     *
      */
-    private void bispo() throws JogadaException, PecaNaoEncontrada {
+    private void bispo() throws ChessException {
         novaPartida();
 
         // Removendo os peões do caminho.
@@ -37,11 +38,11 @@ public class Jogada extends Test {
 
     /**
      * Testa jogadas com um cavalo.
-     * 
+     *
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
-    private void cavalo() throws JogadaException, PecaNaoEncontrada {
+    private void cavalo() throws ChessException {
 
         novaPartida();
 
@@ -56,7 +57,7 @@ public class Jogada extends Test {
 
     /**
      * @deprecated
-     * 
+     *
      * @return
      */
     @Deprecated
@@ -69,7 +70,7 @@ public class Jogada extends Test {
 
     /**
      * Realiza uma jogada no tabuleiro da partida atual e imprime-o logo após.
-     * 
+     *
      * @param origI
      * @param origJ
      * @param destI
@@ -78,7 +79,7 @@ public class Jogada extends Test {
      * @throws PecaNaoEncontrada
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
-        throws JogadaException, PecaNaoEncontrada {
+        throws ChessException {
         Partida p = getPartida();
 
         p.jogada(origI, origJ, destI, destJ);
@@ -95,11 +96,11 @@ public class Jogada extends Test {
 
     /**
      * Jogada simples entre dois peões.
-     * 
+     *
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
      */
-    private void peao() throws JogadaException, PecaNaoEncontrada {
+    private void peao() throws ChessException {
         jogada(1, 0, 3, 0);
         jogada(6, 1, 4, 1);
         jogada(3, 0, 4, 1);
@@ -109,14 +110,14 @@ public class Jogada extends Test {
      * @throws JogadaException
      * @throws PecaNaoEncontrada
      */
-    private void peaoTorre() throws JogadaException, PecaNaoEncontrada {
+    private void peaoTorre() throws ChessException {
         jogada(6, 0, 4, 0);
         jogada(7, 0, 3, 0);
     }
 
     /**
      * Imprime uma representação gráfica do tabuleiro dado.
-     * 
+     *
      * @param tabuleiro
      *            Tabuleiro a ser impresso.
      */
@@ -147,7 +148,7 @@ public class Jogada extends Test {
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
-    private void rainha() throws JogadaException, PecaNaoEncontrada {
+    private void rainha() throws ChessException {
         // Peão na frente da rainha.
         jogada(1, 4, 2, 4);
         jogada(0, 3, 2, 5);
@@ -157,12 +158,12 @@ public class Jogada extends Test {
 
     /**
      * Realiza o teste com algumas jogadas
-     * 
+     *
      * @throws MovimentoInvalido
      * @throws PecaNaoEncontrada
      */
     @Override
-    public void run() throws JogadaException, PecaNaoEncontrada {
+    public void run() throws ChessException {
         // peao();
         // cavalo();
         // bispo();

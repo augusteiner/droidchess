@@ -3,12 +3,11 @@
  */
 package android.chess.dominio.interfaces;
 
-import android.chess.dominio.Jogada;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.pecas.Peca;
-import android.chess.dominio.pecas.handlers.EventoTomada;
 
 /**
  * Interface básica para as peças que compõem o tabuleiro do jogo de xadrez.
@@ -66,20 +65,20 @@ public interface IPeca {
     Tipo getTipo();
 
     /**
-     * @param destI
-     * @param destJ
-     * @throws MovimentoInvalido
-     */
-    void mover(int destI, int destJ) throws MovimentoInvalido;
-
-    /**
      * @param jogada
      *
      * @throws JogadaException
      *
      * @see IPeca#mover(int, int)
      */
-    void mover(Jogada jogada, Peca outra) throws JogadaException;
+    void mover(IJogada jogada, Peca outra) throws ChessException;
+
+    /**
+     * @param destI
+     * @param destJ
+     * @throws ChessException
+     */
+    void mover(int destI, int destJ) throws ChessException;
 
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
@@ -160,10 +159,10 @@ public interface IPeca {
      * @param jogada
      *            Jogada a ser realizada com a peça em questão.
      *
-     * @throws MovimentoInvalido
+     * @throws ChessException
      *             Caso o movimento seja inválido esta exceção será jogada.
      */
-    void validar(IJogada jogada) throws MovimentoInvalido;
+    void validarJogada(IJogada jogada) throws ChessException;
 
     /**
      * Valida o movimento da peça em questão de acordo com as posições de
@@ -178,5 +177,5 @@ public interface IPeca {
      * @throws MovimentoInvalido
      *             Caso o movimento seja inválido esta exceção será jogada.
      */
-    void validar(int destI, int destJ) throws MovimentoInvalido;
+    void validarJogada(int destI, int destJ) throws MovimentoInvalido;
 }

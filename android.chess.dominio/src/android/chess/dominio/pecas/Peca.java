@@ -4,10 +4,9 @@
 package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
-import android.chess.dominio.Jogada;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.excecao.TurnoInvalidoException;
 import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
@@ -20,59 +19,6 @@ import android.chess.dominio.pecas.handlers.EventoTomada;
  *
  */
 public abstract class Peca implements IPeca {
-
-    /**
-     * Retorna se o movimento da peça na jogada é na diagonal. Útil para
-     * validação de movimentos de bispos.
-     *
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoDiagonal(Jogada jogada) {
-        return jogada.getPeca().movimentoDiagonal(jogada.getDestI(),
-            jogada.getDestJ());
-    }
-
-    /**
-     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
-     * para validação de movimentos de bispos, torres e rainhas.
-     *
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoHorizDiag(Jogada jogada) {
-        return movimentoHorizontal(jogada) || movimentoDiagonal(jogada);
-    }
-
-    /**
-     * Retorna se o movimento da peça na jogada é horizontal. Útil para
-     * validação de movimentos de torres.
-     *
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoHorizontal(Jogada jogada) {
-        return jogada.getPeca().movimentoHorizontal(jogada.getDestI());
-    }
-
-    /**
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoHorizVert(Jogada jogada) {
-        return jogada.getPeca().movimentoHorizVert(jogada.getDestI(),
-            jogada.getDestJ());
-    }
-
-    /**
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoVertical(Jogada jogada) {
-        return jogada.getPeca().movimentoVertical(jogada.getDestI(),
-            jogada.getDestJ());
-    }
-
     private Cor cor;
 
     private int i;
@@ -97,7 +43,6 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public Cor getCor() {
-        // TODO Auto-generated method stub
         return cor;
     }
 
@@ -108,7 +53,6 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public int getI() {
-        // TODO Auto-generated method stub
         return i;
     }
 
@@ -119,7 +63,6 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public int getJ() {
-        // TODO Auto-generated method stub
         return j;
     }
 
@@ -143,22 +86,12 @@ public abstract class Peca implements IPeca {
     }
 
     /**
-     * Move a peça da posição atual para a nova posição definida pelos pontos
-     * destI e destJ.
-     *
-     * @param destI
-     * @param destJ
-     * @throws MovimentoInvalido
+     * @param jogada
+     * @throws ChessException
      */
-    @Override
-    public final void mover(int destI, int destJ) throws MovimentoInvalido {
-        validar(destI, destJ);
-
-        moveu = true;
-
-        set(destI, destJ);
+    private void mover(IJogada jogada) throws ChessException {
+        mover(jogada.getDestI(), jogada.getDestJ());
     }
-
     /*
      * (non-Javadoc)
      *
@@ -167,11 +100,29 @@ public abstract class Peca implements IPeca {
      * )
      */
     @Override
-    public void mover(Jogada jogada, Peca outra) throws JogadaException {
-        if (outra != null)
+    public void mover(IJogada jogada, Peca outra) throws ChessException {
+        if (outra != null) {
             tomar(outra);
+        } else {
+            mover(jogada);
+        }
+    }
 
-        mover(jogada.getDestI(), jogada.getDestJ());
+    /**
+     * Move a peça da posição atual para a nova posição definida pelos pontos
+     * destI e destJ.
+     *
+     * @param destI
+     * @param destJ
+     * @throws MovimentoInvalido
+     */
+    @Override
+    public final void mover(int destI, int destJ) throws ChessException {
+        validarJogada(destI, destJ);
+
+        moveu = true;
+
+        set(destI, destJ);
     }
 
     /**
@@ -311,19 +262,23 @@ public abstract class Peca implements IPeca {
     }
 
     /**
-     * Valida a ação da tomada de uma peça de acordo com a peça tomando esta.
+     * Valida a ação da tomada de outra peça de acordo com esta.
      *
      * @param outra
      *
      * @throws JogadaException
-     *
-     * @todo Adicionar validação de tomada de outra peça.
      */
-    private void tomar(Peca outra) throws JogadaException {
-        if (getCor() != outra.getCor())
-            outra.onTomada(new EventoTomada(this, outra));
-        else
+    private void tomar(Peca outra) throws ChessException {
+        if (getCor() == outra.getCor()) {
             throw new MovimentoInvalido(this);
+        } else {
+            validarTomada(outra);
+
+            i = outra.i;
+            j = outra.j;
+
+            outra.onTomada(new EventoTomada(this, outra));
+        }
     }
 
     /*
@@ -348,7 +303,20 @@ public abstract class Peca implements IPeca {
      * Jogada)
      */
     @Override
-    public final void validar(IJogada jogada) throws MovimentoInvalido {
-        validar(jogada.getDestI(), jogada.getDestJ());
+    public final void validarJogada(IJogada jogada) throws ChessException {
+        validarJogada(jogada.getDestI(), jogada.getDestJ());
+    }
+
+    /**
+     * Valida a tomada de outra peça sendo realizada por esta peça.
+     *
+     * @param outra
+     *            Peça a ser tomada.
+     *
+     * @throws MovimentoInvalido
+     *             Caso a tomada não seja válida.
+     */
+    protected void validarTomada(IPeca outra) throws ChessException {
+        // throw new MovimentoInvalido(this);
     }
 }

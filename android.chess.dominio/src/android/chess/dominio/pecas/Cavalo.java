@@ -27,7 +27,7 @@ public class Cavalo extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validar(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
 

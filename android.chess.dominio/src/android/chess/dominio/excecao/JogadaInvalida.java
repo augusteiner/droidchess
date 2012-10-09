@@ -7,7 +7,7 @@ import android.chess.dominio.interfaces.IJogada;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class JogadaInvalida extends JogadaException {
 
@@ -28,7 +28,6 @@ public class JogadaInvalida extends JogadaException {
      * @param cause
      */
     public JogadaInvalida(IJogada jogada, Throwable cause) {
-        super(String.format("Jogada inválida %s -> (%d:%d)", jogada.getPeca(),
-            jogada.getDestI(), jogada.getDestJ()), cause);
+        super(String.format("Jogada inválida %s", jogada), cause);
     }
 }

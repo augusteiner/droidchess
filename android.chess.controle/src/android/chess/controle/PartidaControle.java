@@ -2,18 +2,21 @@ package android.chess.controle;
 
 import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
-import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.PecaNaoEncontrada;
-import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.excecao.ChessException;
 
 /**
  * @author augusteiner
  *
  */
 public class PartidaControle {
-    private Partida partida;
     /**
      *
+     */
+    private Partida partida;
+
+    /**
+     *
+     * @todo Adicionar jogadores como parametro.
      */
     public PartidaControle() {
         partida = new Partida();
@@ -26,8 +29,20 @@ public class PartidaControle {
         return partida.getTabuleiro();
     }
 
+    /**
+     *
+     * @param origI
+     *
+     * @param origJ
+     *
+     * @param destI
+     *
+     * @param destJ
+     *
+     * @throws ChessException
+     */
     public void mover(int origI, int origJ, int destI, int destJ)
-        throws JogadaException, PecaNaoEncontrada {
+        throws ChessException {
         partida.jogada(origI, origJ, destI, destJ);
     }
 }

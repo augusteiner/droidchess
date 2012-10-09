@@ -26,7 +26,7 @@ public class Rainha extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validar(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
         if (!movimentoHorizDiag(destI, destJ)
             && !movimentoVertical(destI, destJ))
             throw new MovimentoInvalido(this);
