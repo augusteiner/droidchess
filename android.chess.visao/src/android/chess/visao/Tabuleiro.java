@@ -128,6 +128,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
      *
      */
     protected void initPecas(ViewGroup contentView) {
+        controle.novaPartida();
 
         Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
         IPeca next = null;

@@ -168,6 +168,33 @@ public class Jogada extends Test {
         // cavalo();
         // bispo();
         // rainha();
-        peaoTorre();
+        // peaoTorre();
+        tentarMate();
+    }
+
+    /**
+     * @throws ChessException
+     */
+    private void tentarMate() throws ChessException {
+        // Saindo da frente da rainha branca.
+        jogada(1, 4, 3, 4);
+        // Liberando caminho para tentativa de xeque.
+        jogada(6, 5, 4, 5);
+        // Jogando a rainha
+        jogada(0, 3, 4, 7);
+        // Passando a vez para a branca.
+        jogada(6, 0, 4, 0);
+
+        try {
+            // Tentando o xeque.
+            jogada(4, 7, 7, 4);
+        } catch (Exception e) {
+            // Doing nothing.
+        }
+
+        jogada(4, 7, 5, 7);
+
+        // Só reimprimindo tabuleiro.
+        // print(getPartida().getTabuleiro());
     }
 }

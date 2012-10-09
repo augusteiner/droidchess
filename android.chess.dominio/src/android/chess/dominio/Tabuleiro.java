@@ -271,8 +271,8 @@ public class Tabuleiro {
 
         Peca outra = outra(jogada);
 
-        boolean isOutraOponente = outra == null
-            || peca.getCor() != outra.getCor();
+        boolean isOutraOponente = outra != null
+            && peca.getCor() != outra.getCor();
 
         boolean ok = false;
 

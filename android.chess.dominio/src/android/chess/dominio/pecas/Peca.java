@@ -116,8 +116,7 @@ public abstract class Peca implements IPeca {
      * @param destJ
      * @throws MovimentoInvalido
      */
-    @Override
-    public final void mover(int destI, int destJ) throws ChessException {
+    private final void mover(int destI, int destJ) throws ChessException {
         validarJogada(destI, destJ);
 
         moveu = true;
@@ -274,10 +273,10 @@ public abstract class Peca implements IPeca {
         } else {
             validarTomada(outra);
 
+            outra.onTomada(new EventoTomada(this, outra));
+
             i = outra.i;
             j = outra.j;
-
-            outra.onTomada(new EventoTomada(this, outra));
         }
     }
 
@@ -317,6 +316,6 @@ public abstract class Peca implements IPeca {
      *             Caso a tomada não seja válida.
      */
     protected void validarTomada(IPeca outra) throws ChessException {
-        // throw new MovimentoInvalido(this);
+        validarJogada(outra.getI(), outra.getJ());
     }
 }

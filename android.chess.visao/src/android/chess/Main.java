@@ -48,10 +48,24 @@ public class Main extends Activity {
     }
 
     /**
+     * @param contentView
+     */
+    private void initTabuleiro(ViewGroup contentView) {
+        ((Tabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
+    }
+
+    /**
      * @param view
      */
     public void menuExitOnClick(View v) {
         finish();
+    }
+
+    /**
+     * @param v
+     */
+    public void menuRestartOnClick(View v) {
+        //
     }
 
     /*
@@ -71,7 +85,7 @@ public class Main extends Activity {
 
         ViewGroup contentView = (ViewGroup) findViewById(R.id.layout_main);
 
-        ((Tabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
+        initTabuleiro(contentView);
     }
 
     /*

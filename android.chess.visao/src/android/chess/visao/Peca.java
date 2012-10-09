@@ -17,12 +17,13 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Representa graficamente uma peça de um tabuleiro.
- * 
+ *
  * @author augusteiner
- * 
+ *
  */
 @TargetApi(11)
 public class Peca extends View implements ITomadaHandler {
@@ -63,9 +64,9 @@ public class Peca extends View implements ITomadaHandler {
     /**
      * Retorna o resid de acordo com a cor e nome da peça configurada com o
      * setTag.
-     * 
+     *
      * @return Id do recurso associado com a imagem da peça de chadrez.
-     * 
+     *
      * @see View#setTag(Object)
      */
     public int backgroundResId() {
@@ -87,7 +88,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /**
      * Retorna a linha desta peça em relação ao tabuleiro.
-     * 
+     *
      * @return
      */
     public int getCoordI() {
@@ -97,7 +98,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /**
      * Retorna a coordenada y desta peça em relação ao tabuleiro.
-     * 
+     *
      * @return
      */
     public int getCoordJ() {
@@ -136,7 +137,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -153,7 +154,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -163,7 +164,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.interfaces.IEventoTomada)
@@ -174,6 +175,8 @@ public class Peca extends View implements ITomadaHandler {
         invalidate();
 
         // TODO Utilizar handler para remover peça do tabuleiro?
+        ViewGroup g = (ViewGroup) getParent();
+
         if (onTomadaHandler != null) {
             onTomadaHandler.onTomada(new EventoTomada(evento, this));
         }
@@ -181,7 +184,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     @Override
@@ -238,7 +241,7 @@ public class Peca extends View implements ITomadaHandler {
 
     /**
      * @deprecated
-     * 
+     *
      * @return
      */
     @Deprecated

@@ -4,7 +4,6 @@
 package android.chess.dominio.interfaces;
 
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.pecas.Peca;
@@ -65,20 +64,22 @@ public interface IPeca {
     Tipo getTipo();
 
     /**
-     * @param jogada
+     * Move esta peça de acordo com as coordenadas de destino e origem da
+     * jogada.
      *
-     * @throws JogadaException
+     * @param jogada
+     *            Objeto para fornecer informações das coordenadas da jogada.
+     *
+     * @param outra
+     *            Caso a jogada seja uma tomada de peça, este objeto deve ser
+     *            diferente de <code>null</code>.
+     *
+     * @throws ChessException
+     *             Caso algum erro ocorra.
      *
      * @see IPeca#mover(int, int)
      */
     void mover(IJogada jogada, Peca outra) throws ChessException;
-
-    /**
-     * @param destI
-     * @param destJ
-     * @throws ChessException
-     */
-    void mover(int destI, int destJ) throws ChessException;
 
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para

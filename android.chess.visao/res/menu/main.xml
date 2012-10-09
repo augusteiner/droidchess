@@ -10,5 +10,6 @@
         android:onClick="@string/menu_exit_click"
         android:title="@string/menu_exit">
     </item>
+    <item android:id="@+id/menu_restart" android:onClick="@string/menu_restart_click"></item>
 
 </menu>

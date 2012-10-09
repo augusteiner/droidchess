@@ -19,7 +19,7 @@ public class PartidaControle {
      * @todo Adicionar jogadores como parametro.
      */
     public PartidaControle() {
-        partida = new Partida();
+        // novaPartida();
     }
 
     /**
@@ -44,5 +44,12 @@ public class PartidaControle {
     public void mover(int origI, int origJ, int destI, int destJ)
         throws ChessException {
         partida.jogada(origI, origJ, destI, destJ);
+    }
+
+    /**
+     *
+     */
+    public void novaPartida() {
+        partida = new Partida();
     }
 }
