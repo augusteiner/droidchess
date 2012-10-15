@@ -7,7 +7,7 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Rainha extends Peca {
 
@@ -17,12 +17,18 @@ public class Rainha extends Peca {
      */
     public Rainha(Cor cor) {
         super(cor);
-        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @param peao
+     */
+    Rainha(Peao peao) {
+        super(peao);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override

@@ -5,6 +5,7 @@ package android.chess.dominio.interfaces;
 
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.pecas.Peca;
 
@@ -44,9 +45,31 @@ public interface IPeca {
     }
 
     /**
+     * @param onMovimentoHandler
+     */
+    void addOnMovimentoHandler(IMovimentoHandler onMovimentoHandler);
+
+    /**
+     * @param onTomadaHandler
+     *
+     * @todo Melhor setOnVisualFeedbackHandler?
+     */
+    void addOnTomadaHandler(ITomadaHandler onTomadaHandler);
+
+    /**
      * @return Cor desta peça.
      */
     Cor getCor();
+
+    /**
+     * @return
+     */
+    // IMovimentoHandler getOnMovimentoHandler();
+
+    /**
+     * @return
+     */
+    // ITomadaHandler getOnTomadaHandler();
 
     /**
      * @return Linha atual desta peça.
@@ -139,13 +162,6 @@ public interface IPeca {
      * @param j
      */
     void setJ(int j);
-
-    /**
-     * @param onTomadaHandler
-     *
-     * @todo Melhor setOnVisualFeedbackHandler?
-     */
-    void setOnTomadaHandler(ITomadaHandler onTomadaHandler);
 
     /**
      * @return Representação desta peça como {@link String}

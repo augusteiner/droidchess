@@ -3,7 +3,7 @@
  */
 package android.chess.visao.handlers;
 
-import android.chess.dominio.interfaces.IEventoTomada;
+import android.chess.dominio.interfaces.ITomadaInfo;
 import android.chess.visao.Peca;
 
 /**
@@ -18,7 +18,7 @@ public class EventoTomada
     /**
      * 
      */
-    public EventoTomada(IEventoTomada parent, Peca peca) {
+    public EventoTomada(ITomadaInfo parent, Peca peca) {
         super(parent);
 
         this.peca = peca;

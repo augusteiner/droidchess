@@ -19,7 +19,7 @@ public class PartidaControle {
      * @todo Adicionar jogadores como parametro.
      */
     public PartidaControle() {
-        // novaPartida();
+        novaPartida();
     }
 
     /**
@@ -47,7 +47,7 @@ public class PartidaControle {
     }
 
     /**
-     *
+     * @todo Criar evento para repassar a UI?
      */
     public void novaPartida() {
         partida = new Partida();

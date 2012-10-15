@@ -145,6 +145,28 @@ public class Jogada extends Test {
     }
 
     /**
+     * @throws ChessException
+     */
+    private void promocao() throws ChessException {
+        jogada(1, 4, 3, 4);
+        jogada(6, 3, 4, 3);
+
+        jogada(3, 4, 4, 3);
+        jogada(6, 4, 5, 4);
+
+        jogada(4, 3, 5, 3);
+        jogada(7, 3, 3, 7);
+
+        jogada(5, 3, 6, 3);
+        jogada(6, 0, 5, 0);
+
+        jogada(6, 3, 7, 3);
+        jogada(5, 0, 4, 0);
+
+        jogada(7, 3, 3, 7);
+    }
+
+    /**
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */

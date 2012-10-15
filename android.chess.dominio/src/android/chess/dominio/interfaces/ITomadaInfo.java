@@ -5,7 +5,7 @@ package android.chess.dominio.interfaces;
  * @author augusteiner
  * 
  */
-public interface IEventoTomada {
+public interface ITomadaInfo {
 
     /**
      * @return

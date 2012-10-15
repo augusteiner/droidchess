@@ -1,23 +1,23 @@
 package android.chess.dominio.pecas.handlers;
 
-import android.chess.dominio.interfaces.IEventoPromocao;
+import android.chess.dominio.interfaces.IPromocaoInfo;
+import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
 import android.chess.dominio.interfaces.IPeca.Tipo;
 import android.chess.dominio.pecas.Peao;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public class EventoPromocao implements IEventoPromocao {
-    private IPeca alvo;
+public class EventoPromocao extends EventoMover implements IPromocaoInfo {
     private Tipo tipo;
 
     /**
      * @param alvo
      */
-    public EventoPromocao(Peao alvo) {
-        this.alvo = alvo;
+    public EventoPromocao(Peao alvo, IJogada jogada) {
+        super(alvo, jogada.getDestI(), jogada.getDestJ());
 
         // Valor padrão é a teoricamente "melhor" peça do jogo.
         tipo = Tipo.Rainha;
@@ -26,13 +26,7 @@ public class EventoPromocao implements IEventoPromocao {
     /**
      * @return
      */
-    public IPeca getAlvo() {
-        return alvo;
-    }
-
-    /**
-     * @return
-     */
+    @Override
     public Tipo getTipoPromocao() {
         return tipo;
     }
@@ -40,7 +34,8 @@ public class EventoPromocao implements IEventoPromocao {
     /**
      * @param alvo
      */
-    void setAlvo(IPeca alvo) {
+    @Override
+    public void setAlvo(IPeca alvo) {
         this.alvo = alvo;
     }
 

@@ -10,19 +10,24 @@ import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.interfaces.IJogada;
+import android.chess.dominio.interfaces.IPeao;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.interfaces.IPromocaoInfo;
 import android.chess.dominio.interfaces.handlers.IPromocaoHandler;
-import android.chess.dominio.pecas.handlers.EventoMover;
 import android.chess.dominio.pecas.handlers.EventoPromocao;
+import android.chess.util.events.Event;
+import android.chess.util.events.interfaces.IHandler;
 
 /**
+ * Classe de implementação do peão no xadrez.
+ *
  * @author augusteiner
- * 
+ *
  */
-public class Peao extends Peca {
-    private IPromocaoHandler onAntesPromocaoHandler;
-    private IPromocaoHandler onDepoisPromocaoHandler;
+public class Peao extends Peca implements IPeao {
+    private IPromocaoHandler onPromocaoHandler;
     private int prevI;
+    private Event<IPromocaoInfo> onPromocao;
 
     /**
      * @param tabuleiro
@@ -35,8 +40,27 @@ public class Peao extends Peca {
     }
 
     /**
+     * @param onPromocaoHandler
+     */
+    @Override
+    public void addOnPromocaoHandler(final IPromocaoHandler onPromocaoHandler) {
+        onPromocao.addHandler(new IHandler<IPromocaoInfo>() {
+
+            @Override
+            public void onMovimento(Object sender, IPromocaoInfo info)
+                throws Exception {
+                onPromocaoHandler.onAntesPromocao(info);
+
+                promover(info.getTipoPromocao());
+
+                onPromocaoHandler.onDepoisPromocao(info);
+            }
+        });
+    }
+
+    /**
      * Retorna o índice anterior inicial do movimento deste peão.
-     * 
+     *
      * @return
      */
     private int getInitialPreviousI() {
@@ -46,7 +70,7 @@ public class Peao extends Peca {
     /**
      * Verifica se a direção do movimento deste peão está conforme as regras de
      * movimento do mesmo.
-     * 
+     *
      * @return True caso ok, False caso contrário.
      */
     private boolean isDirecaoOk(int destI) {
@@ -61,38 +85,25 @@ public class Peao extends Peca {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.pecas.Peca#mover(android.chess.dominio.interfaces
      * .IJogada, android.chess.dominio.pecas.Peca)
      */
+    @Override
     public void mover(IJogada jogada, Peca outra) throws ChessException {
         super.mover(jogada, outra);
 
-        int di = getI() - getInitialPreviousI();
+        int di = jogada.getDestI() - getInitialPreviousI();
 
         if (di == 0 || di == 7) {
-            onAntesPromocao(new EventoPromocao(this));
-        }
-    }
+            EventoPromocao evento = new EventoPromocao(this, jogada);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.chess.dominio.pecas.Peca#onBeforeSet(int, int)
-     */
-    @Override
-    protected void onAntesMovimento(EventoMover evento) {
-        prevI = getI();
-    }
+            onAntesPromocao(evento);
 
-    /**
-     * @param evento
-     * @throws ChessException
-     */
-    protected void onAntesPromocao(EventoPromocao evento) throws ChessException {
-        if (onAntesPromocaoHandler != null) {
-            onAntesPromocaoHandler.onAntesPromocao(evento);
+            evento.setAlvo(promover(evento.getTipoPromocao()));
+
+            onDepoisPromocao(evento);
         }
     }
 
@@ -100,38 +111,45 @@ public class Peao extends Peca {
      * @param evento
      * @throws ChessException
      */
-    protected void onDepoisPromocao(EventoPromocao evento)
-            throws ChessException {
-        if (onDepoisPromocaoHandler != null) {
-            onDepoisPromocaoHandler.onDepoisPromocao(evento);
+    protected void onAntesPromocao(IPromocaoInfo evento) throws ChessException {
+        if (onPromocaoHandler != null) {
+            onPromocaoHandler.onMovimento(this, evento);
+        }
+    }
+
+    /**
+     * @param evento
+     * @throws ChessException
+     */
+    protected void onDepoisPromocao(IPromocaoInfo evento) throws ChessException {
+        if (onPromocaoHandler != null) {
+            onPromocaoHandler.onMovimento(this, evento);
         }
     }
 
     /**
      * @param tipo
      * @return
+     * @throws MovimentoInvalido
      */
-    protected IPeca promover(Tipo tipo) {
-        return null;
-    }
-
-    /**
-     * @param onPromocaoHandler
-     */
-    public void setOnAntesPromocaoHandler(IPromocaoHandler onPromocaoHandler) {
-        this.onAntesPromocaoHandler = onPromocaoHandler;
-    }
-
-    /**
-     * @param onPromocaoHandler
-     */
-    public void setOnDepoisPromocaoHandler(IPromocaoHandler onPromocaoHandler) {
-        this.onDepoisPromocaoHandler = onPromocaoHandler;
+    protected IPeca promover(Tipo tipo) throws ChessException {
+        switch (tipo) {
+            case Bispo :
+                return new Bispo(this);
+            case Rainha :
+                return new Rainha(this);
+            case Cavalo :
+                return new Cavalo(this);
+            case Torre :
+                return new Torre(this);
+            default :
+                throw new MovimentoInvalido(this);
+        }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
@@ -161,7 +179,7 @@ public class Peao extends Peca {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.pecas.Peca#validarTomada(android.chess.dominio.
      * interfaces.IPeca)

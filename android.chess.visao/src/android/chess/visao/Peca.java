@@ -3,11 +3,18 @@ package android.chess.visao;
 import static java.lang.Math.min;
 import android.annotation.TargetApi;
 import android.chess.Main;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.interfaces.IEventoTomada;
+import android.chess.dominio.interfaces.IMovimentoInfo;
+import android.chess.dominio.interfaces.IPeao;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.interfaces.IPromocaoInfo;
+import android.chess.dominio.interfaces.ITomadaInfo;
+import android.chess.dominio.interfaces.IPeca.Tipo;
+import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
+import android.chess.dominio.interfaces.handlers.IPromocaoHandler;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
-import android.chess.visao.handlers.EventoTomada;
+import android.chess.dominio.pecas.Peao;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,7 +24,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * Representa graficamente uma peça de um tabuleiro.
@@ -26,18 +32,19 @@ import android.view.ViewGroup;
  *
  */
 @TargetApi(11)
-public class Peca extends View implements ITomadaHandler {
+public class Peca extends View
+    implements
+        ITomadaHandler,
+        IPromocaoHandler,
+        IMovimentoHandler {
 
-    private static final String TAG = View.class.getSimpleName();
-    private ITomadaHandler onTomadaHandler;
+    private static final String TAG = Peca.class.getSimpleName();
 
     /**
      * @param context
      */
     public Peca(Context context) {
         super(context);
-
-        initPeca();
     }
 
     /**
@@ -46,8 +53,6 @@ public class Peca extends View implements ITomadaHandler {
      */
     public Peca(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        initPeca();
     }
 
     /**
@@ -57,10 +62,21 @@ public class Peca extends View implements ITomadaHandler {
      */
     public Peca(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        initPeca();
     }
 
+    /**
+     * @param onPromocaoHandler
+     */
+    public void addOnPromocaoHandler(IPromocaoHandler onPromocaoHandler) {
+        ((Peao) getPeca()).addOnPromocaoHandler(onPromocaoHandler);
+    }
+
+    /**
+     * @param onTomadaHandler
+     */
+    public void addOnTomadaHandler(ITomadaHandler onTomadaHandler) {
+        getPeca().addOnTomadaHandler(onTomadaHandler);
+    }
     /**
      * Retorna o resid de acordo com a cor e nome da peça configurada com o
      * setTag.
@@ -115,6 +131,13 @@ public class Peca extends View implements ITomadaHandler {
     /**
      * @return
      */
+    private IPeca getPeca() {
+        return (IPeca) getTag();
+    }
+
+    /**
+     * @return
+     */
     public int getSide() {
         return (min(getDisplayMetrics().widthPixels,
             getDisplayMetrics().heightPixels) / 8);
@@ -131,8 +154,48 @@ public class Peca extends View implements ITomadaHandler {
     /**
      *
      */
-    private void initPeca() {
+    public void init() {
+        setBackgroundResource(backgroundResId());
 
+        // Peça da camada de modelo.
+        IPeca peca = getPeca();
+
+        // TODO Melhorar abordagem!
+        if (getPeca().getTipo() == Tipo.Peao) {
+            ((IPeao) peca).addOnPromocaoHandler(this);
+        }
+
+        peca.addOnTomadaHandler(this);
+        peca.addOnMovimentoHandler(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
+     * (android.chess.dominio.interfaces.IPromocaoInfo)
+     */
+    @Override
+    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+        Log.d(TAG, String.format("Promoção da peça %s.", info.getAlvo()));
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
+     * (android.chess.dominio.interfaces.IPromocaoInfo)
+     */
+    @Override
+    public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+        Log.d(TAG, String.format("Peão promovido a %s.", info.getAlvo()));
+
+        setTag(info.getAlvo());
+
+        init();
+        invalidate();
     }
 
     /*
@@ -162,6 +225,13 @@ public class Peca extends View implements ITomadaHandler {
         setMeasuredDimension(getSide(), getSide());
     }
 
+    @Override
+    public void onMovimento(Object sender, IMovimentoInfo evento)
+        throws ChessException {
+        // TODO Auto-generated method stub
+
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -170,16 +240,12 @@ public class Peca extends View implements ITomadaHandler {
      * .chess.dominio.interfaces.IEventoTomada)
      */
     @Override
-    public void onTomada(IEventoTomada evento) throws JogadaException {
+    public void onTomada(ITomadaInfo evento) throws JogadaException {
         setVisibility(INVISIBLE);
         invalidate();
 
         // TODO Utilizar handler para remover peça do tabuleiro?
-        ViewGroup g = (ViewGroup) getParent();
-
-        if (onTomadaHandler != null) {
-            onTomadaHandler.onTomada(new EventoTomada(evento, this));
-        }
+        // ViewGroup g = (ViewGroup) getParent();
     }
 
     /*
@@ -208,13 +274,6 @@ public class Peca extends View implements ITomadaHandler {
         } else {
             return startDragOlder(event);
         }
-    }
-
-    /**
-     * @param onTomadaHandler
-     */
-    public void setOnTomadaHandler(ITomadaHandler onTomadaHandler) {
-        this.onTomadaHandler = onTomadaHandler;
     }
 
     /**

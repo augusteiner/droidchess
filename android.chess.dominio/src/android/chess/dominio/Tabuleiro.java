@@ -13,12 +13,16 @@ import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
 import android.chess.dominio.excecao.TurnoInvalidoException;
-import android.chess.dominio.interfaces.IEventoPromocao;
+import android.chess.dominio.interfaces.IMovimentoInfo;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeca;
 import android.chess.dominio.interfaces.IPeca.Cor;
 import android.chess.dominio.interfaces.IPeca.Tipo;
+import android.chess.dominio.interfaces.IPromocaoInfo;
+import android.chess.dominio.interfaces.ITomadaInfo;
+import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
 import android.chess.dominio.interfaces.handlers.IPromocaoHandler;
+import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.iterators.MatrixIterator;
 import android.chess.dominio.iterators.PecaIterator;
 import android.chess.dominio.pecas.Bispo;
@@ -37,14 +41,16 @@ import android.chess.dominio.pecas.Torre;
  */
 /**
  * @author augusteiner
- * 
+ *
  */
-public class Tabuleiro implements IPromocaoHandler {
+public class Tabuleiro
+    implements
+        IPromocaoHandler,
+        IMovimentoHandler,
+        ITomadaHandler {
 
     private Cor atual;
-    private IPromocaoHandler onAntesPromocaoHandler;
-    private IPromocaoHandler onDepoisPromocaoHandler;
-    private Peca[][] pecas;
+    private IPeca[][] pecas;
 
     // private Jogador[] jogadores;
     // private Partida partida;
@@ -68,7 +74,10 @@ public class Tabuleiro implements IPromocaoHandler {
     }
 
     /**
-     * @return
+     * Retorna um iterator para as peças deste tabuleiro garantindo que as
+     * mesmas não sejam nulas.
+     *
+     * @return {@link Iterator} para as peças deste tabuleiro.
      */
     public Iterator<IPeca> getPecas() {
         return new PecaIterator(pecas);
@@ -98,7 +107,7 @@ public class Tabuleiro implements IPromocaoHandler {
 
             for (int j = 0; j < 8; j++) {
                 atual = new Peao(cor);
-                atual.setOnAntesPromocaoHandler(this);
+                atual.addOnPromocaoHandler(this);
 
                 pecas[abs(fLinha - 1)][j] = atual;
             }
@@ -115,6 +124,12 @@ public class Tabuleiro implements IPromocaoHandler {
                 pecas[7 - i][j].setJ(j);
             }
         }
+
+        Iterator<IPeca> pecas = getPecas();
+
+        while (pecas.hasNext()) {
+            pecas.next().addOnMovimentoHandler(this);
+        }
     }
 
     /**
@@ -126,7 +141,7 @@ public class Tabuleiro implements IPromocaoHandler {
 
     /**
      * @deprecated
-     * 
+     *
      * @param cor
      */
     @SuppressWarnings("unused")
@@ -143,24 +158,24 @@ public class Tabuleiro implements IPromocaoHandler {
     /**
      * Move uma peça nessa instância de tabuleiro para um ponto de destino
      * representado por (destI, destJ).
-     * 
+     *
      * @param peca
      *            Peça a ser movida.
-     * 
+     *
      * @param destI
      *            Linha de destino para a peça.
-     * 
+     *
      * @param destJ
      *            Coluna de destino para a peça.
      * @throws PecaNaoEncontrada
-     * 
+     *
      * @throws MovimentoInvalido
      *             Caso o movimento seja considerado inválido.
-     * 
+     *
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
      */
     public void mover(int origI, int origJ, int destI, int destJ)
-            throws ChessException {
+        throws ChessException {
         Jogada jogada = new Jogada(origI, origJ, destI, destJ);
         IPeca peca = peca(jogada);
 
@@ -180,37 +195,52 @@ public class Tabuleiro implements IPromocaoHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
-     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onPromocao
-     * (android.chess.dominio.interfaces.IEventoPromocao)
+     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
+     * (android.chess.dominio.interfaces.IPromocaoInfo)
      */
     @Override
-    public void onAntesPromocao(IEventoPromocao evento) throws ChessException {
-        if (evento.getAlvo().getTipo() != Tipo.Peao) {
-            throw new MovimentoInvalido(evento.getAlvo());
-        }
-        IPeca peao = evento.getAlvo();
+    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
 
-        pecas[peao.getI()][peao.getJ()] = null;
-
-        if (onAntesPromocaoHandler != null) {
-            onAntesPromocaoHandler.onAntesPromocao(evento);
+        if (info.getAlvo().getTipo() != Tipo.Peao) {
+            throw new MovimentoInvalido(info.getAlvo());
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
-     * (android.chess.dominio.interfaces.IEventoPromocao)
+     * (android.chess.dominio.interfaces.IPromocaoInfo)
      */
     @Override
-    public void onDepoisPromocao(IEventoPromocao evento) throws ChessException {
-        if (onDepoisPromocaoHandler != null) {
-            onDepoisPromocaoHandler.onDepoisPromocao(evento);
-        }
+    public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+
+        pecas[info.getDestI()][info.getDestJ()] = info.getAlvo();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.handlers.IMovimentoHandler#onMovimento
+     * (android.chess.dominio.interfaces.IEventoMover)
+     */
+    @Override
+    public void onMovimento(Object sender, IMovimentoInfo info)
+        throws ChessException {
+        IPeca peca = info.getAlvo();
+
+        // Refletindo alterações da jogada no tabuleiro.
+        pecas[info.getDestI()][info.getDestJ()] = peca;
+        pecas[peca.getI()][peca.getJ()] = null;
+    }
+
+    @Override
+    public void onTomada(ITomadaInfo evento) throws JogadaException {
+
     }
 
     /**
@@ -218,7 +248,7 @@ public class Tabuleiro implements IPromocaoHandler {
      * @return
      * @throws PecaNaoEncontrada
      */
-    private Peca outra(IJogada jogada) {
+    private IPeca outra(IJogada jogada) {
         try {
             return peca(jogada.getDestI(), jogada.getDestJ());
         } catch (PecaNaoEncontrada e) {
@@ -231,7 +261,7 @@ public class Tabuleiro implements IPromocaoHandler {
      * @return
      * @throws PecaNaoEncontrada
      */
-    private Peca peca(IJogada jogada) throws ChessException {
+    private IPeca peca(IJogada jogada) throws ChessException {
         return peca(jogada.getOrigI(), jogada.getOrigJ());
     }
 
@@ -240,11 +270,11 @@ public class Tabuleiro implements IPromocaoHandler {
      * @param j
      * @return
      */
-    private Peca peca(int i, int j) throws PecaNaoEncontrada {
+    private IPeca peca(int i, int j) throws PecaNaoEncontrada {
         if (i < 0 || j < 0 || i > 7 || j > 7)
             throw new PecaNaoEncontrada();
 
-        Peca peca = pecas[i][j];
+        Peca peca = (Peca) pecas[i][j];
 
         if (peca == null)
             throw new PecaNaoEncontrada();
@@ -255,9 +285,9 @@ public class Tabuleiro implements IPromocaoHandler {
     /**
      * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
      * só deve ser chamado após as validações do movimento da peça.
-     * 
+     *
      * @param jogada
-     * 
+     *
      * @return <code>true</code> caso haja peça no caminho da jogada,
      *         <code>false</code> caso contrário.
      */
@@ -270,7 +300,7 @@ public class Tabuleiro implements IPromocaoHandler {
         int j = peca.getJ() + jinc;
 
         while ((i != jogada.getDestI() || j != jogada.getDestJ())
-                && pecas[i][j] == null) {
+            && pecas[i][j] == null) {
             i += iinc;
             j += jinc;
         }
@@ -281,29 +311,29 @@ public class Tabuleiro implements IPromocaoHandler {
     /**
      * Valida o movimento desta peça de acordo com as coordenadas de destino
      * informadas e realiza o movimento da mesma.
-     * 
+     *
      * @param jogada
-     * 
+     *
      * @throws MovimentoInvalido
-     * 
+     *
      * @todo Adicionar suporte a jogadas especiais.
      */
     /**
      * Realiza operações para realizar o movimento de uma peça da jogada neste
      * tabuleiro.
-     * 
+     *
      * @param jogada
      *            Jogada em questão.
      * @throws PecaNaoEncontrada
-     * 
+     *
      * @throws MovimentoInvalido
      *             Caso o movimento da peça não seja válido.
-     * 
+     *
      * @throws JogadaInvalida
      *             Caso a jogada em questão não seja válida.
      */
     private void realizar(Jogada jogada) throws ChessException {
-        Peca peca;
+        IPeca peca;
 
         try {
             peca = peca(jogada);
@@ -313,10 +343,10 @@ public class Tabuleiro implements IPromocaoHandler {
 
         // peca.validar(jogada);
 
-        Peca outra = outra(jogada);
+        IPeca outra = outra(jogada);
 
         boolean isOutraOponente = outra != null
-                && peca.getCor() != outra.getCor();
+            && peca.getCor() != outra.getCor();
 
         boolean ok = false;
 
@@ -325,19 +355,19 @@ public class Tabuleiro implements IPromocaoHandler {
         // Peças que tem o movimento limitado
         // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
-        case Rei:
+            case Rei :
             break;
-        case Rainha:
+            case Rainha :
             break;
-        case Peao:
+            case Peao :
             break;
-        case Torre:
+            case Torre :
             break;
-        case Cavalo:
-            // Validação por parte do tabuleiro vazia para o caso do Cavalo.
-            ok = outra == null || outra.getCor() != peca.getCor();
+            case Cavalo :
+                // Validação por parte do tabuleiro vazia para o caso do Cavalo.
+                ok = outra == null || outra.getCor() != peca.getCor();
             break;
-        default:
+            default :
             break;
         }
 
@@ -349,20 +379,6 @@ public class Tabuleiro implements IPromocaoHandler {
             throw new JogadaInvalida(jogada);
         }
 
-        int prevI = peca.getI();
-        int prevJ = peca.getJ();
-
-        peca.mover(jogada, outra);
-
-        // Refletindo alterações da jogada no tabuleiro.
-        pecas[peca.getI()][peca.getJ()] = peca;
-        pecas[prevI][prevJ] = null;
-    }
-
-    /**
-     * @param onPromocaoHandler
-     */
-    public void setOnPromocaoHandler(IPromocaoHandler onPromocaoHandler) {
-        this.onAntesPromocaoHandler = onPromocaoHandler;
+        peca.mover(jogada, (Peca) outra);
     }
 }
