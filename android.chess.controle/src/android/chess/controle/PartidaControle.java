@@ -48,6 +48,9 @@ public class PartidaControle {
 
     /**
      * @todo Criar evento para repassar a UI?
+     *
+     * @todo Deve requisitar à aplicação servidora uma nova partida.
+     * @todo Implementar escolha/convite de adversário.
      */
     public void novaPartida() {
         partida = new Partida();
