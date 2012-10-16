@@ -1,5 +1,6 @@
 package android.chess.test;
 
+import java.io.PrintStream;
 import java.util.Iterator;
 
 import android.chess.dominio.Partida;
@@ -10,6 +11,7 @@ import android.chess.dominio.excecao.JogadaInvalida;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
@@ -116,6 +118,13 @@ public class Jogada extends Test {
     }
 
     /**
+     *
+     */
+    private void print() {
+        print(getPartida().getTabuleiro());
+    }
+
+    /**
      * Imprime uma representação gráfica do tabuleiro dado.
      *
      * @param tabuleiro
@@ -125,19 +134,27 @@ public class Jogada extends Test {
         Iterator<IPeca> pecas = tabuleiro.getMatrizPecas();
         IPeca peca = null;
 
+        PrintStream ps = System.out;
         for (int i = 0, j; i < 8; i++) {
-            System.out.print("\n|");
+            ps.print("\n|");
 
             for (j = 0; j < 8; j++) {
                 peca = pecas.next();
 
-                if (peca != null)
-                    System.out.print(peca.getClass().getSimpleName()
-                        .substring(0, 2));
-                else
-                    System.out.print("  ");
+                if (peca != null) {
+                    if (peca.getCor() == Cor.Branca) {
+                        ps = System.out;
+                    } else {
+                        ps = System.err;
+                    }
 
-                System.out.print("|");
+                    ps.print(peca.getClass().getSimpleName().substring(0, 2));
+                    ps.flush();
+                } else {
+                    ps.print("  ");
+                }
+
+                ps.print("|");
             }
         }
 
@@ -190,9 +207,11 @@ public class Jogada extends Test {
         // cavalo();
         // bispo();
         // rainha();
+
         // peaoTorre();
         // tentarMate();
-        promocao();
+        // promocao();
+        tomadaInvalida();
     }
 
     /**
@@ -219,5 +238,16 @@ public class Jogada extends Test {
 
         // Só reimprimindo tabuleiro.
         // print(getPartida().getTabuleiro());
+    }
+
+    /**
+     * Testa um exemplo de tomada inválida com peça no caminho da jogada.
+     *
+     * @throws ChessException
+     */
+    private void tomadaInvalida() throws ChessException {
+        print();
+
+        jogada(0, 3, 1, 3);
     }
 }

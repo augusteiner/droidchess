@@ -290,7 +290,7 @@ public class Tabuleiro
      * @return <code>true</code> caso haja peça no caminho da jogada,
      *         <code>false</code> caso contrário.
      */
-    private boolean pecaNoCaminho(IPeca peca, IJogada jogada) {
+    private IPeca pecaNoCaminho(IPeca peca, IJogada jogada) {
 
         int iinc = (int) jogada.sentidoI();
         int jinc = (int) jogada.sentidoJ();
@@ -304,7 +304,7 @@ public class Tabuleiro
             j += jinc;
         }
 
-        return pecas[i][j] != null;
+        return pecas[i][j];
     }
 
     /**
@@ -344,10 +344,7 @@ public class Tabuleiro
 
         IPeca outra = outra(jogada);
 
-        boolean isOutraOponente = outra != null
-            && peca.getCor() != outra.getCor();
-
-        boolean ok = false;
+        boolean ok = true;
 
         // TODO Checar condições de cheque e cheque mate
 
@@ -370,9 +367,14 @@ public class Tabuleiro
             break;
         }
 
-        boolean hasPecaNoCaminho = !ok && pecaNoCaminho(peca, jogada);
+        if (ok) {
+            IPeca pecaNoCaminho = pecaNoCaminho(peca, jogada);
 
-        ok = isOutraOponente || !hasPecaNoCaminho;
+            boolean hasPecaNoCaminho = pecaNoCaminho != null
+                && pecaNoCaminho != outra;
+
+            ok &= !hasPecaNoCaminho;
+        }
 
         if (!ok) {
             throw new JogadaInvalida(jogada);
