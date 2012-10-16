@@ -41,6 +41,9 @@ public abstract class Peca implements IPeca {
      */
     protected Peca(Cor cor) {
         this(cor, false);
+
+        onTomada = new Event<ITomadaInfo>();
+        onMovimento = new Event<IMovimentoInfo>();
     }
 
     /**
@@ -56,11 +59,15 @@ public abstract class Peca implements IPeca {
     /**
      * @param outra
      */
-    protected Peca(IPeca outra) {
+    protected Peca(Peca outra) {
         this(outra.getCor(), true);
 
-        onTomada = new Event<ITomadaInfo>();
-        onMovimento = new Event<IMovimentoInfo>();
+        // Repassando eventos (e handlers).
+        onTomada = outra.onTomada;
+        onMovimento = outra.onMovimento;
+
+        outra.onTomada = null;
+        outra.onMovimento = null;
 
         i = outra.getI();
         j = outra.getJ();

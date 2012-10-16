@@ -12,9 +12,10 @@ import android.chess.dominio.interfaces.IPromocaoInfo;
 import android.chess.dominio.interfaces.ITomadaInfo;
 import android.chess.dominio.interfaces.IPeca.Tipo;
 import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
-import android.chess.dominio.interfaces.handlers.IPromocaoHandler;
+import android.chess.dominio.interfaces.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.pecas.Peao;
+import android.chess.dominio.pecas.handlers.IDepoisPromocaoHandler;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -34,8 +35,9 @@ import android.view.View;
 @TargetApi(11)
 public class Peca extends View
     implements
+        IAntesPromocaoHandler,
+        IDepoisPromocaoHandler,
         ITomadaHandler,
-        IPromocaoHandler,
         IMovimentoHandler {
 
     private static final String TAG = Peca.class.getSimpleName();
@@ -67,8 +69,8 @@ public class Peca extends View
     /**
      * @param onPromocaoHandler
      */
-    public void addOnPromocaoHandler(IPromocaoHandler onPromocaoHandler) {
-        ((Peao) getPeca()).addOnPromocaoHandler(onPromocaoHandler);
+    public void addOnPromocaoHandler(IAntesPromocaoHandler onPromocaoHandler) {
+        ((Peao) getPeca()).addOnAntesPromocaoHandler(onPromocaoHandler);
     }
 
     /**
@@ -162,13 +164,15 @@ public class Peca extends View
 
         // TODO Melhorar abordagem!
         if (getPeca().getTipo() == Tipo.Peao) {
-            ((IPeao) peca).addOnPromocaoHandler(this);
+            IPeao peao = (IPeao) peca;
+
+            peao.addOnAntesPromocaoHandler(this);
+            peao.addOnDepoisPromocaoHandler(this);
         }
 
         peca.addOnTomadaHandler(this);
         peca.addOnMovimentoHandler(this);
     }
-
     /*
      * (non-Javadoc)
      *

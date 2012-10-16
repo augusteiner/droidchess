@@ -4,7 +4,6 @@
 package android.chess.dominio.pecas;
 
 import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
@@ -23,7 +22,7 @@ public class Bispo extends Peca {
     /**
      * @param peca
      */
-    Bispo(IPeca peca) {
+    Bispo(Peao peca) {
         super(peca);
     }
 

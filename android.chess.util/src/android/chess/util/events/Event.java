@@ -17,7 +17,7 @@ public class Event<I> implements IEvent<I> {
     private Queue<IHandler<I>> handlers;
 
     /**
-     *
+     * @todo Possivelmente adicionar sender como argumento.
      */
     public Event() {
         handlers = new LinkedList<IHandler<I>>();

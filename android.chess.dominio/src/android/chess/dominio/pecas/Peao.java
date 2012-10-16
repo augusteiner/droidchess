@@ -13,8 +13,9 @@ import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IPeao;
 import android.chess.dominio.interfaces.IPeca;
 import android.chess.dominio.interfaces.IPromocaoInfo;
-import android.chess.dominio.interfaces.handlers.IPromocaoHandler;
+import android.chess.dominio.interfaces.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.pecas.handlers.EventoPromocao;
+import android.chess.dominio.pecas.handlers.IDepoisPromocaoHandler;
 import android.chess.util.events.Event;
 import android.chess.util.events.interfaces.IHandler;
 
@@ -25,9 +26,9 @@ import android.chess.util.events.interfaces.IHandler;
  *
  */
 public class Peao extends Peca implements IPeao {
-    private IPromocaoHandler onPromocaoHandler;
     private int prevI;
-    private Event<IPromocaoInfo> onPromocao;
+    private Event<IPromocaoInfo> onAntesPromocao;
+    private Event<IPromocaoInfo> onDepoisPromocao;
 
     /**
      * @param tabuleiro
@@ -37,24 +38,45 @@ public class Peao extends Peca implements IPeao {
         super(cor);
 
         prevI = getInitialPreviousI();
+
+        onAntesPromocao = new Event<IPromocaoInfo>();
+        onDepoisPromocao = new Event<IPromocaoInfo>();
     }
 
     /**
      * @param onPromocaoHandler
      */
     @Override
-    public void addOnPromocaoHandler(final IPromocaoHandler onPromocaoHandler) {
-        onPromocao.addHandler(new IHandler<IPromocaoInfo>() {
+    public void addOnAntesPromocaoHandler(
+        final IAntesPromocaoHandler onPromocaoHandler) {
+        onAntesPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
             @Override
             public void onMovimento(Object sender, IPromocaoInfo info)
                 throws Exception {
                 onPromocaoHandler.onAntesPromocao(info);
-
-                promover(info.getTipoPromocao());
-
-                onPromocaoHandler.onDepoisPromocao(info);
             }
+        });
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeao#addOnDepoisPromocaoHandler(android
+     * .chess.dominio.pecas.handlers.IDepoisPromocaoHandler)
+     */
+    @Override
+    public void addOnDepoisPromocaoHandler(
+        final IDepoisPromocaoHandler onDepoisPromocaoHandler) {
+        onDepoisPromocao.addHandler(new IHandler<IPromocaoInfo>() {
+
+            @Override
+            public void onMovimento(Object sender, IPromocaoInfo info)
+                throws Exception {
+                onDepoisPromocaoHandler.onDepoisPromocao(info);
+            }
+
         });
     }
 
@@ -94,7 +116,7 @@ public class Peao extends Peca implements IPeao {
     public void mover(IJogada jogada, Peca outra) throws ChessException {
         super.mover(jogada, outra);
 
-        int di = jogada.getDestI() - getInitialPreviousI();
+        int di = abs(jogada.getDestI() - getInitialPreviousI());
 
         if (di == 0 || di == 7) {
             EventoPromocao evento = new EventoPromocao(this, jogada);
@@ -108,22 +130,28 @@ public class Peao extends Peca implements IPeao {
     }
 
     /**
-     * @param evento
+     * @param info
      * @throws ChessException
      */
-    protected void onAntesPromocao(IPromocaoInfo evento) throws ChessException {
-        if (onPromocaoHandler != null) {
-            onPromocaoHandler.onMovimento(this, evento);
+    protected void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+        try {
+            onAntesPromocao.raise(info);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
     /**
-     * @param evento
+     * @param info
      * @throws ChessException
      */
-    protected void onDepoisPromocao(IPromocaoInfo evento) throws ChessException {
-        if (onPromocaoHandler != null) {
-            onPromocaoHandler.onMovimento(this, evento);
+    protected void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+        try {
+            onDepoisPromocao.raise(info);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

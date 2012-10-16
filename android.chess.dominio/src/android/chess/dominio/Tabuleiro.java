@@ -21,7 +21,7 @@ import android.chess.dominio.interfaces.IPeca.Tipo;
 import android.chess.dominio.interfaces.IPromocaoInfo;
 import android.chess.dominio.interfaces.ITomadaInfo;
 import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
-import android.chess.dominio.interfaces.handlers.IPromocaoHandler;
+import android.chess.dominio.interfaces.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.iterators.MatrixIterator;
 import android.chess.dominio.iterators.PecaIterator;
@@ -32,6 +32,7 @@ import android.chess.dominio.pecas.Peca;
 import android.chess.dominio.pecas.Rainha;
 import android.chess.dominio.pecas.Rei;
 import android.chess.dominio.pecas.Torre;
+import android.chess.dominio.pecas.handlers.IDepoisPromocaoHandler;
 
 /**
  * Classe de domínio para prover validação de jogadas e modelagem geral do jogo
@@ -39,13 +40,10 @@ import android.chess.dominio.pecas.Torre;
  *
  * @author augusteiner
  */
-/**
- * @author augusteiner
- *
- */
 public class Tabuleiro
     implements
-        IPromocaoHandler,
+        IAntesPromocaoHandler,
+        IDepoisPromocaoHandler,
         IMovimentoHandler,
         ITomadaHandler {
 
@@ -107,7 +105,8 @@ public class Tabuleiro
 
             for (int j = 0; j < 8; j++) {
                 atual = new Peao(cor);
-                atual.addOnPromocaoHandler(this);
+                atual.addOnAntesPromocaoHandler(this);
+                atual.addOnDepoisPromocaoHandler(this);
 
                 pecas[abs(fLinha - 1)][j] = atual;
             }
