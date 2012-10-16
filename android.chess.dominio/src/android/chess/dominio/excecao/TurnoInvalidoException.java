@@ -6,7 +6,7 @@ import android.chess.dominio.interfaces.IPeca.Cor;
  * @author augusteiner
  * 
  */
-public class VezInvalida extends JogadaException {
+public class TurnoInvalidoException extends JogadaException {
 
     /**
      *
@@ -16,7 +16,7 @@ public class VezInvalida extends JogadaException {
     /**
      * @param atual
      */
-    public VezInvalida(Cor atual) {
+    public TurnoInvalidoException(Cor atual) {
         this(String.format("O turno é da %s", atual.toString()), null);
     }
 
@@ -24,7 +24,7 @@ public class VezInvalida extends JogadaException {
      * @param message
      * @param cause
      */
-    public VezInvalida(String message, Throwable cause) {
+    public TurnoInvalidoException(String message, Throwable cause) {
         super(message, cause);
     }
 }

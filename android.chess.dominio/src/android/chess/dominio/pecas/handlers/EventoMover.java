@@ -1,15 +1,16 @@
 package android.chess.dominio.pecas.handlers;
 
+import android.chess.dominio.interfaces.IMovimentoInfo;
 import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public class EventoMover {
+public class EventoMover implements IMovimentoInfo {
     private int destI;
     private int destJ;
-    private IPeca alvo;
+    protected IPeca alvo;
 
     /**
      * @param alvo
@@ -26,6 +27,7 @@ public class EventoMover {
     /**
      * @return
      */
+    @Override
     public IPeca getAlvo() {
         return alvo;
     }
@@ -33,6 +35,7 @@ public class EventoMover {
     /**
      * @return
      */
+    @Override
     public int getDestI() {
         return destI;
     }
@@ -40,6 +43,7 @@ public class EventoMover {
     /**
      * @return
      */
+    @Override
     public int getDestJ() {
         return destJ;
     }

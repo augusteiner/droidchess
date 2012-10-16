@@ -4,3 +4,5 @@
 *.dex
 *.ap_
 */bin/*
+.classpath
+.project

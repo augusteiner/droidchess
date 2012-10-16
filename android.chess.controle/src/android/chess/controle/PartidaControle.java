@@ -2,21 +2,24 @@ package android.chess.controle;
 
 import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
-import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.PecaNaoEncontrada;
-import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.excecao.ChessException;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class PartidaControle {
-    private Partida partida;
     /**
      *
      */
+    private Partida partida;
+
+    /**
+     *
+     * @todo Adicionar jogadores como parametro.
+     */
     public PartidaControle() {
-        partida = new Partida();
+        novaPartida();
     }
 
     /**
@@ -27,15 +30,29 @@ public class PartidaControle {
     }
 
     /**
-     * @param peca
+     *
+     * @param origI
+     *
+     * @param origJ
+     *
      * @param destI
+     *
      * @param destJ
-     * @throws PecaNaoEncontrada
-     * 
-     * @throws Exception
+     *
+     * @throws ChessException
      */
-    public void mover(IPeca peca, int destI, int destJ) throws JogadaException,
-        PecaNaoEncontrada {
-        partida.jogada(peca, destI, destJ);
+    public void mover(int origI, int origJ, int destI, int destJ)
+        throws ChessException {
+        partida.jogada(origI, origJ, destI, destJ);
+    }
+
+    /**
+     * @todo Criar evento para repassar a UI?
+     *
+     * @todo Deve requisitar à aplicação servidora uma nova partida.
+     * @todo Implementar escolha/convite de adversário.
+     */
+    public void novaPartida() {
+        partida = new Partida();
     }
 }

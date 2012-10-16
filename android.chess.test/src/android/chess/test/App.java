@@ -14,11 +14,12 @@ public class App {
 
     /**
      * @throws Exception
-     * 
+     *
      */
     private static void run() throws Exception {
         Test[] tests = new Test[]{
-            new Jogada()
+            new Jogada(),
+        // new EventTest()
         };
 
         for (Test t : tests) {

@@ -7,7 +7,7 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Bispo extends Peca {
 
@@ -17,16 +17,22 @@ public class Bispo extends Peca {
      */
     public Bispo(Cor cor) {
         super(cor);
-        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @param peca
+     */
+    Bispo(Peao peca) {
+        super(peca);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validar(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
         if (!super.movimentoDiagonal(destI, destJ))
             throw new MovimentoInvalido(this);
     }

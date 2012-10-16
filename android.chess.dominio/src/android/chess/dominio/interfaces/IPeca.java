@@ -3,12 +3,11 @@
  */
 package android.chess.dominio.interfaces;
 
-import android.chess.dominio.Jogada;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.pecas.Peca;
-import android.chess.dominio.pecas.handlers.EventoTomada;
 
 /**
  * Interface básica para as peças que compõem o tabuleiro do jogo de xadrez.
@@ -46,9 +45,31 @@ public interface IPeca {
     }
 
     /**
+     * @param onMovimentoHandler
+     */
+    void addOnMovimentoHandler(IMovimentoHandler onMovimentoHandler);
+
+    /**
+     * @param onTomadaHandler
+     *
+     * @todo Melhor setOnVisualFeedbackHandler?
+     */
+    void addOnTomadaHandler(ITomadaHandler onTomadaHandler);
+
+    /**
      * @return Cor desta peça.
      */
     Cor getCor();
+
+    /**
+     * @return
+     */
+    // IMovimentoHandler getOnMovimentoHandler();
+
+    /**
+     * @return
+     */
+    // ITomadaHandler getOnTomadaHandler();
 
     /**
      * @return Linha atual desta peça.
@@ -66,20 +87,22 @@ public interface IPeca {
     Tipo getTipo();
 
     /**
-     * @param destI
-     * @param destJ
-     * @throws MovimentoInvalido
-     */
-    void mover(int destI, int destJ) throws MovimentoInvalido;
-
-    /**
+     * Move esta peça de acordo com as coordenadas de destino e origem da
+     * jogada.
+     *
      * @param jogada
+     *            Objeto para fornecer informações das coordenadas da jogada.
      *
-     * @throws MovimentoInvalido
+     * @param outra
+     *            Caso a jogada seja uma tomada de peça, este objeto deve ser
+     *            diferente de <code>null</code>.
      *
-     * @see {@link IPeca#mover(int, int)}
+     * @throws ChessException
+     *             Caso algum erro ocorra.
+     *
+     * @see IPeca#mover(int, int)
      */
-    void mover(Jogada jogada) throws MovimentoInvalido;
+    void mover(IJogada jogada, Peca outra) throws ChessException;
 
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
@@ -141,22 +164,6 @@ public interface IPeca {
     void setJ(int j);
 
     /**
-     * @param onTomadaHandler
-     *
-     * @todo Melhor setOnVisualFeedbackHandler?
-     */
-    void setOnTomadaHandler(ITomadaHandler onTomadaHandler);
-
-    /**
-     * Valida a ação da tomada de uma peça de acordo com a peça tomando esta.
-     *
-     * @param outra
-     *
-     * @throws JogadaException
-     */
-    void tomar(Peca outra) throws JogadaException;
-
-    /**
      * @return Representação desta peça como {@link String}
      */
     @Override
@@ -169,10 +176,10 @@ public interface IPeca {
      * @param jogada
      *            Jogada a ser realizada com a peça em questão.
      *
-     * @throws MovimentoInvalido
+     * @throws ChessException
      *             Caso o movimento seja inválido esta exceção será jogada.
      */
-    void validar(IJogada jogada) throws MovimentoInvalido;
+    void validarJogada(IJogada jogada) throws ChessException;
 
     /**
      * Valida o movimento da peça em questão de acordo com as posições de
@@ -187,5 +194,5 @@ public interface IPeca {
      * @throws MovimentoInvalido
      *             Caso o movimento seja inválido esta exceção será jogada.
      */
-    void validar(int destI, int destJ) throws MovimentoInvalido;
+    void validarJogada(int destI, int destJ) throws MovimentoInvalido;
 }

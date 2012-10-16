@@ -8,7 +8,7 @@ import android.chess.dominio.excecao.MovimentoInvalido;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Cavalo extends Peca {
 
@@ -21,13 +21,20 @@ public class Cavalo extends Peca {
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * @param peao
+     */
+    Cavalo(Peao peao) {
+        super(peao);
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validar(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
 

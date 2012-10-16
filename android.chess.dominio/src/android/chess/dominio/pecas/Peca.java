@@ -4,74 +4,27 @@
 package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
-import android.chess.dominio.Jogada;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IJogada;
+import android.chess.dominio.interfaces.IMovimentoInfo;
 import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.interfaces.ITomadaInfo;
+import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
 import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.pecas.handlers.EventoMover;
 import android.chess.dominio.pecas.handlers.EventoTomada;
+import android.chess.util.events.Event;
+import android.chess.util.events.interfaces.IHandler;
 
 /**
+ * Classe base para todas as peças envolvidas no xadrez.
+ *
  * @author augusteiner
  *
  */
 public abstract class Peca implements IPeca {
-
-    /**
-     * Retorna se o movimento da peça na jogada é na diagonal. Útil para
-     * validação de movimentos de bispos.
-     *
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoDiagonal(Jogada jogada) {
-        return jogada.getPeca().movimentoDiagonal(jogada.getDestI(),
-            jogada.getDestJ());
-    }
-
-    /**
-     * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
-     * para validação de movimentos de bispos, torres e rainhas.
-     *
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoHorizDiag(Jogada jogada) {
-        return movimentoHorizontal(jogada) || movimentoDiagonal(jogada);
-    }
-
-    /**
-     * Retorna se o movimento da peça na jogada é horizontal. Útil para
-     * validação de movimentos de torres.
-     *
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoHorizontal(Jogada jogada) {
-        return jogada.getPeca().movimentoHorizontal(jogada.getDestI());
-    }
-
-    /**
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoHorizVert(Jogada jogada) {
-        return jogada.getPeca().movimentoHorizVert(jogada.getDestI(),
-            jogada.getDestJ());
-    }
-
-    /**
-     * @param jogada
-     * @return
-     */
-    public static boolean movimentoVertical(Jogada jogada) {
-        return jogada.getPeca().movimentoVertical(jogada.getDestI(),
-            jogada.getDestJ());
-    }
-
     private Cor cor;
 
     private int i;
@@ -80,15 +33,92 @@ public abstract class Peca implements IPeca {
 
     private boolean moveu;
 
-    private ITomadaHandler onTomadaHandler;
+    private Event<ITomadaInfo> onTomada;
+    private Event<IMovimentoInfo> onMovimento;
 
     /**
      * @param tabuleiro
      */
     protected Peca(Cor cor) {
+        this(cor, false);
+
+        onTomada = new Event<ITomadaInfo>();
+        onMovimento = new Event<IMovimentoInfo>();
+    }
+
+    /**
+     * @param cor
+     * @param moveu
+     */
+    protected Peca(Cor cor, boolean moveu) {
         this.cor = cor;
 
-        moveu = false;
+        this.moveu = moveu;
+    }
+
+    /**
+     * @param outra
+     */
+    protected Peca(Peca outra) {
+        this(outra.getCor(), true);
+
+        // Repassando eventos (e handlers).
+        onTomada = outra.onTomada;
+        onMovimento = outra.onMovimento;
+
+        outra.onTomada = null;
+        outra.onMovimento = null;
+
+        i = outra.getI();
+        j = outra.getJ();
+    }
+
+    /**
+     * @param destI
+     * @param destJ
+     */
+    protected void acionarMovimento(EventoMover evento) {
+        onMovimento(evento);
+
+        setI(evento.getDestI());
+        setJ(evento.getDestJ());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeca#addOnMovimentoHandler(android.
+     * chess.dominio.interfaces.handlers.IMovimentoHandler)
+     */
+    @Override
+    public void addOnMovimentoHandler(final IMovimentoHandler onMovimentoHandler) {
+        onMovimento.addHandler(new IHandler<IMovimentoInfo>() {
+
+            @Override
+            public void onMovimento(Object sender, IMovimentoInfo info)
+                throws Exception {
+                onMovimentoHandler.onMovimento(sender, info);
+            }
+        });
+    }
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeca#setOnTomadaHandler(android.chess
+     * .dominio.interfaces.handlers.ITomadaHandler)
+     */
+    @Override
+    public void addOnTomadaHandler(final ITomadaHandler onTomadaHandler) {
+        onTomada.addHandler(new IHandler<ITomadaInfo>() {
+
+            @Override
+            public void onMovimento(Object sender, ITomadaInfo info)
+                throws Exception {
+                onTomadaHandler.onTomada(info);
+            }
+        });
     }
 
     /**
@@ -96,7 +126,6 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public Cor getCor() {
-        // TODO Auto-generated method stub
         return cor;
     }
 
@@ -107,7 +136,6 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public int getI() {
-        // TODO Auto-generated method stub
         return i;
     }
 
@@ -118,7 +146,6 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public int getJ() {
-        // TODO Auto-generated method stub
         return j;
     }
 
@@ -142,20 +169,16 @@ public abstract class Peca implements IPeca {
     }
 
     /**
-     * Move a peça da posição atual para a nova posição definida pelos pontos
-     * destI e destJ.
+     * Movimenta esta peça de acordo com o destino do movimento/jogada.
      *
-     * @param destI
-     * @param destJ
-     * @throws MovimentoInvalido
+     * @param jogada
+     *            Jogada guardando as informações de destino para esta peça.
+     *
+     * @throws ChessException
+     *             No caso do movimento não ser válido.
      */
-    @Override
-    public final void mover(int destI, int destJ) throws MovimentoInvalido {
-        validar(destI, destJ);
-
-        moveu = true;
-
-        set(destI, destJ);
+    private void mover(IJogada jogada) throws ChessException {
+        mover(jogada.getDestI(), jogada.getDestJ());
     }
 
     /*
@@ -166,8 +189,30 @@ public abstract class Peca implements IPeca {
      * )
      */
     @Override
-    public void mover(Jogada jogada) throws MovimentoInvalido {
-        mover(jogada.getDestI(), jogada.getDestJ());
+    public void mover(IJogada jogada, Peca outra) throws ChessException {
+        if (outra != null) {
+            tomar(outra);
+        } else {
+            mover(jogada);
+        }
+    }
+
+    /**
+     * Move a peça da posição atual para a nova posição definida pelos pontos
+     * destI e destJ.
+     *
+     * @param destI
+     *
+     * @param destJ
+     *
+     * @throws ChessException
+     */
+    private final void mover(int destI, int destJ) throws ChessException {
+        validarJogada(destI, destJ);
+
+        moveu = true;
+
+        realizarMovimento(destI, destJ);
     }
 
     /**
@@ -225,14 +270,6 @@ public abstract class Peca implements IPeca {
     }
 
     /**
-     * @param destI
-     * @param destJ
-     */
-    protected void onAntesMovimento(EventoMover evento) {
-        //
-    }
-
-    /**
      * Pseudo evento a ser chamado após a posição da peça ser alterada.
      *
      * @param destI
@@ -242,16 +279,25 @@ public abstract class Peca implements IPeca {
      *            Coordenada j de destino.
      */
     protected void onMovimento(EventoMover evento) {
-        // Do nothing!
+        try {
+            onMovimento.raise(evento);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * @param evento
      * @throws JogadaException
      */
-    protected void onTomada(IEventoTomada evento) throws JogadaException {
-        if (onTomadaHandler != null) {
-            onTomadaHandler.onTomada(evento);
+    protected void onTomada(ITomadaInfo evento) throws JogadaException {
+        try {
+            onTomada.raise(evento);
+        } catch (JogadaException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            // throw new MovimentoInvalido(evento.getOrig());
         }
     }
 
@@ -261,17 +307,19 @@ public abstract class Peca implements IPeca {
      * @param destI
      * @param destJ
      */
-    protected void set(int destI, int destJ) {
+    protected void realizarMovimento(int destI, int destJ) {
         EventoMover evento = new EventoMover(this, destI, destJ);
 
-        onAntesMovimento(evento);
-
-        setI(destI);
-        setJ(destJ);
-
-        onMovimento(evento);
+        acionarMovimento(evento);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeca#setOnMovimentoHandler(android.
+     * chess.dominio.interfaces.handlers.IMovimentoHandler)
+     */
     /**
      * Altera a linha atual desta peça.
      *
@@ -282,7 +330,6 @@ public abstract class Peca implements IPeca {
     public void setI(int i) {
         this.i = i;
     }
-
     /**
      * Altera a coordenada y atual desta peça.
      *
@@ -294,31 +341,27 @@ public abstract class Peca implements IPeca {
         this.j = j;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Valida a ação da tomada de outra peça de acordo com esta.
      *
-     * @see
-     * android.chess.dominio.interfaces.IPeca#setOnTomadaHandler(android.chess
-     * .dominio.interfaces.handlers.ITomadaHandler)
-     */
-    @Override
-    public void setOnTomadaHandler(ITomadaHandler onTomadaHandler) {
-        this.onTomadaHandler = onTomadaHandler;
-    }
-
-    /*
-     * (non-Javadoc)
+     * @param outra
      *
-     * @see
-     * android.chess.dominio.interfaces.IPeca#tomar(android.chess.dominio.pecas
-     * .Peca)
+     * @throws JogadaException
      */
-    @Override
-    public void tomar(Peca outra) throws JogadaException {
+    private void tomar(Peca outra) throws ChessException {
+        if (getCor() == outra.getCor()) {
+            throw new MovimentoInvalido(this);
+        } else {
+            validarTomada(outra);
 
-        outra.onTomada(new EventoTomada(this, outra));
+            EventoTomada evento = new EventoTomada(this, outra);
 
-        // throw new MovimentoInvalido(this);
+            outra.onTomada(evento);
+            onMovimento(evento);
+
+            i = outra.i;
+            j = outra.j;
+        }
     }
 
     /*
@@ -343,7 +386,20 @@ public abstract class Peca implements IPeca {
      * Jogada)
      */
     @Override
-    public final void validar(IJogada jogada) throws MovimentoInvalido {
-        validar(jogada.getDestI(), jogada.getDestJ());
+    public final void validarJogada(IJogada jogada) throws ChessException {
+        validarJogada(jogada.getDestI(), jogada.getDestJ());
+    }
+
+    /**
+     * Valida a tomada de outra peça sendo realizada por esta peça.
+     *
+     * @param outra
+     *            Peça a ser tomada.
+     *
+     * @throws MovimentoInvalido
+     *             Caso a tomada não seja válida.
+     */
+    protected void validarTomada(IPeca outra) throws ChessException {
+        validarJogada(outra.getI(), outra.getJ());
     }
 }

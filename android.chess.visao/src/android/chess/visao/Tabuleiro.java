@@ -11,10 +11,11 @@ import java.util.Iterator;
 import android.annotation.TargetApi;
 import android.chess.Main;
 import android.chess.controle.PartidaControle;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.interfaces.IEventoTomada;
 import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.interfaces.handlers.ITomadaHandler;
+import android.chess.dominio.interfaces.IPromocaoInfo;
+import android.chess.dominio.interfaces.ITomadaInfo;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,9 +34,9 @@ import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public class Tabuleiro extends View implements ITomadaHandler {
+public class Tabuleiro extends View {
 
     private static final String TAG = Tabuleiro.class.getSimpleName();
     private PartidaControle controle;
@@ -120,14 +121,18 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
         inicializado = true;
 
+        // controle.getTabuleiro().setOnPromocaoHandler(this);
+        // controle.getTabuleiro().setOnDepoisPromocaoHandler(this);
+
         initPecas(contentView);
     }
 
     /**
      * @param contentView
-     * 
+     *
      */
     protected void initPecas(ViewGroup contentView) {
+        // controle.novaPartida();
 
         Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
         IPeca next = null;
@@ -139,14 +144,11 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
         while (pecas.hasNext()) {
             peca = new Peca(context);
+            // peca.setOnTomadaHandler(this);
 
             next = pecas.next();
-            next.setOnTomadaHandler(peca);
-
             peca.setTag(next);
-
-            peca.setBackgroundResource(peca.backgroundResId());
-            // peca.setBackgroundResource()
+            peca.init();
 
             lp = new LayoutParams(lp);
 
@@ -156,15 +158,23 @@ public class Tabuleiro extends View implements ITomadaHandler {
             lp.topMargin = peca.getSide() * next.getI();
             lp.leftMargin = peca.getSide() * next.getJ();
 
-            // peca.setBackgroundResource(context.getResources().get)
-
             contentView.addView(peca, lp);
         }
     }
 
+    public void onAntesPromocao(Object sender, IPromocaoInfo evento)
+        throws ChessException {
+        //
+    }
+
+    public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
+        throws ChessException {
+        //
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
     @TargetApi(11)
@@ -188,7 +198,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -244,7 +254,7 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -259,21 +269,13 @@ public class Tabuleiro extends View implements ITomadaHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
-     * .chess.dominio.interfaces.IEventoTomada)
-     */
-    @Override
-    public void onTomada(IEventoTomada evento) throws JogadaException {
+    public void onTomada(ITomadaInfo evento) throws JogadaException {
         //
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     public boolean onTouchEvent(MotionEvent event, Peca peca) {
@@ -318,9 +320,6 @@ public class Tabuleiro extends View implements ITomadaHandler {
         lp.leftMargin = leftMargin;
         lp.topMargin = topMargin;
 
-        // p.setTranslationX(x);
-        // p.setTranslationY(y);
-
         peca.setLayoutParams(lp);
         peca.invalidate();
 
@@ -329,10 +328,10 @@ public class Tabuleiro extends View implements ITomadaHandler {
 
     @TargetApi(11)
     private boolean performOnDragEvent(DragEvent event) throws Exception {
-        Peca peca = (Peca) event.getLocalState();
+        Peca vPeca = (Peca) event.getLocalState();
 
         // Caso o evento seja realizado muito rápido, peca vem nulo.
-        if (peca == null)
+        if (vPeca == null)
             return false;
 
         switch (event.getAction()) {
@@ -343,20 +342,22 @@ public class Tabuleiro extends View implements ITomadaHandler {
                 Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
 
                 try {
-                    controle.mover((IPeca) peca.getTag(), destI, destJ);
+                    IPeca peca = (IPeca) vPeca.getTag();
+
+                    controle.mover(peca.getI(), peca.getJ(), destI, destJ);
                 } catch (JogadaException e) {
                     throw e;
                 }
 
-                performDrag(destI, destJ, peca);
+                performDrag(destI, destJ, vPeca);
 
                 return true;
             case DragEvent.ACTION_DRAG_STARTED :
-                peca.hide();
+                vPeca.hide();
 
                 return true;
             case DragEvent.ACTION_DRAG_ENDED :
-                peca.show();
+                vPeca.show();
                 invalidate();
 
                 return true;

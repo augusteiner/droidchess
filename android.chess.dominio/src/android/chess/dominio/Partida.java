@@ -3,11 +3,9 @@
  */
 package android.chess.dominio;
 
-import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.JogadaInvalida;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalido;
 import android.chess.dominio.excecao.PecaNaoEncontrada;
-import android.chess.dominio.interfaces.IPeca;
 
 /**
  * @author augusteiner
@@ -61,27 +59,21 @@ public class Partida {
     }
 
     /**
+     *
      * @param origI
+     *
      * @param origJ
+     *
      * @param destI
+     *
      * @param destJ
+     *
      * @throws MovimentoInvalido
+     *
      * @throws PecaNaoEncontrada
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
-        throws JogadaException, PecaNaoEncontrada {
+        throws ChessException {
         tabuleiro.mover(origI, origJ, destI, destJ);
-    }
-
-    /**
-     * @param peca
-     * @param destI
-     * @param destJ
-     * @throws PecaNaoEncontrada
-     * @throws JogadaInvalida
-     */
-    public void jogada(IPeca peca, int destI, int destJ)
-        throws JogadaException, PecaNaoEncontrada {
-        jogada(peca.getI(), peca.getJ(), destI, destJ);
     }
 }
