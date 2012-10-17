@@ -27,7 +27,7 @@ public final class R {
         public static final int p_torre=0x7f02000d;
     }
     public static final class id {
-        public static final int layout_main=0x7f070000;
+        public static final int mainLayout=0x7f070000;
         public static final int menu_exit=0x7f070003;
         public static final int menu_restart=0x7f070004;
         public static final int menu_settings=0x7f070002;

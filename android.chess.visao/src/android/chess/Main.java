@@ -43,14 +43,14 @@ public class Main extends Activity {
      * @return
      */
     public int getMainLayoutResource() {
-        return R.id.layout_main;
+        return R.id.mainLayout;
     }
 
     /**
      * @param contentView
      */
     private void initTabuleiro() {
-        ViewGroup contentView = (ViewGroup) findViewById(R.id.layout_main);
+        ViewGroup contentView = (ViewGroup) findViewById(getMainLayoutResource());
 
         ((Tabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
     }

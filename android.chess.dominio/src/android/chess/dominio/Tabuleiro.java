@@ -23,7 +23,6 @@ import android.chess.dominio.iterators.PecaIterator;
 import android.chess.dominio.pecas.Bispo;
 import android.chess.dominio.pecas.Cavalo;
 import android.chess.dominio.pecas.Peao;
-import android.chess.dominio.pecas.Peca;
 import android.chess.dominio.pecas.Rainha;
 import android.chess.dominio.pecas.Rei;
 import android.chess.dominio.pecas.Torre;

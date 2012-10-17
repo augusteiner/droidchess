@@ -1,7 +1,7 @@
 /**
  *
  */
-package android.chess.dominio.pecas;
+package android.chess.dominio;
 
 import static java.lang.Math.abs;
 import android.chess.dominio.events.handlers.IMovimentoHandler;

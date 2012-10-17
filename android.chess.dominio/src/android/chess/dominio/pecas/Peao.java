@@ -1,11 +1,9 @@
-/**
- *
- */
 package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.signum;
 import android.chess.dominio.Jogada;
+import android.chess.dominio.Peca;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
 import android.chess.dominio.events.info.PromocaoInfo;
@@ -13,6 +11,7 @@ import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaInvalidaException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.excecao.PromocaoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.interfaces.IPeao;
 import android.chess.dominio.pecas.interfaces.IPeca;
@@ -117,14 +116,15 @@ public class Peao extends Peca implements IPeao {
 
         int di = abs(jogada.getDestI() - getInitialPreviousI());
 
+        // Checando condição de promoção.
         if (di == 0 || di == 7) {
-            PromocaoInfo evento = new PromocaoInfo(this, jogada);
+            IPromocaoInfo info = new PromocaoInfo(this, jogada);
 
-            onAntesPromocao(evento);
+            onAntesPromocao(info);
 
-            evento.setAlvo(promover(evento.getTipoPromocao()));
+            info.setAlvo(promover(info.getTipoPromocao()));
 
-            onDepoisPromocao(evento);
+            onDepoisPromocao(info);
         }
     }
 
@@ -136,8 +136,7 @@ public class Peao extends Peca implements IPeao {
         try {
             onAntesPromocao.raise(info);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new PromocaoException(info, e);
         }
     }
 
@@ -180,7 +179,8 @@ public class Peao extends Peca implements IPeao {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ) throws MovimentoInvalidoException {
+    public void validarJogada(int destI, int destJ)
+        throws MovimentoInvalidoException {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
         boolean ok = true;

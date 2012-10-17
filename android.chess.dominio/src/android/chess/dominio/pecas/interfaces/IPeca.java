@@ -3,12 +3,12 @@
  */
 package android.chess.dominio.pecas.interfaces;
 
+import android.chess.dominio.Peca;
 import android.chess.dominio.events.handlers.IMovimentoHandler;
 import android.chess.dominio.events.handlers.ITomadaHandler;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.interfaces.IJogada;
-import android.chess.dominio.pecas.Peca;
 
 /**
  * Interface básica para as peças que compõem o tabuleiro do jogo de xadrez.

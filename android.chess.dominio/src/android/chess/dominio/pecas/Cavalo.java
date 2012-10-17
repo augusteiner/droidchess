@@ -4,6 +4,7 @@
 package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
+import android.chess.dominio.Peca;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**

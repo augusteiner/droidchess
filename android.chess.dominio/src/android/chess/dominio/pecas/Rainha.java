@@ -3,6 +3,7 @@
  */
 package android.chess.dominio.pecas;
 
+import android.chess.dominio.Peca;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**
