@@ -1,9 +1,6 @@
-/**
- *
- */
 package android.chess.dominio.iterators;
 
-import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * @author augusteiner
@@ -18,7 +15,7 @@ public class PecaIterator extends MatrixIterator<IPeca> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.Iterator#next()
      */
     @Override

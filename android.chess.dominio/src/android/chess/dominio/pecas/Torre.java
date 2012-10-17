@@ -3,7 +3,7 @@
  */
 package android.chess.dominio.pecas;
 
-import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**
  * @author augusteiner
@@ -32,9 +32,9 @@ public class Torre extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalidoException {
 
         if (!movimentoHorizVert(destI, destJ))
-            throw new MovimentoInvalido(this);
+            throw new MovimentoInvalidoException(this);
     }
 }

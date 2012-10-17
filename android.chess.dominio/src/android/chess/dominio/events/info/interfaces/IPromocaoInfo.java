@@ -1,6 +1,7 @@
-package android.chess.dominio.interfaces;
+package android.chess.dominio.events.info.interfaces;
 
-import android.chess.dominio.interfaces.IPeca.Tipo;
+import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
 
 /**
  * Interface base para objetos que armazenarão informações sobre o evento da

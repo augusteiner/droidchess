@@ -3,7 +3,7 @@
  */
 package android.chess.visao.handlers;
 
-import android.chess.dominio.interfaces.ITomadaInfo;
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.visao.Peca;
 
 /**
@@ -12,7 +12,7 @@ import android.chess.visao.Peca;
  */
 public class EventoTomada
     extends
-        android.chess.dominio.pecas.handlers.EventoTomada {
+        android.chess.dominio.events.info.TomadaInfo {
     private Peca peca;
 
     /**

@@ -1,28 +1,23 @@
-/**
- *
- */
 package android.chess.dominio;
 
 import static java.lang.Math.abs;
 
 import java.util.Iterator;
 
+import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
+import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
+import android.chess.dominio.events.handlers.IMovimentoHandler;
+import android.chess.dominio.events.handlers.ITomadaHandler;
+import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
+import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.JogadaInvalida;
-import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.excecao.PecaNaoEncontrada;
+import android.chess.dominio.excecao.JogadaInvalidaException;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.excecao.PecaNaoEncontradaException;
 import android.chess.dominio.excecao.TurnoInvalidoException;
-import android.chess.dominio.interfaces.IMovimentoInfo;
 import android.chess.dominio.interfaces.IJogada;
-import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.interfaces.IPeca.Cor;
-import android.chess.dominio.interfaces.IPeca.Tipo;
-import android.chess.dominio.interfaces.IPromocaoInfo;
-import android.chess.dominio.interfaces.ITomadaInfo;
-import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
-import android.chess.dominio.interfaces.handlers.IAntesPromocaoHandler;
-import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 import android.chess.dominio.iterators.MatrixIterator;
 import android.chess.dominio.iterators.PecaIterator;
 import android.chess.dominio.pecas.Bispo;
@@ -32,7 +27,9 @@ import android.chess.dominio.pecas.Peca;
 import android.chess.dominio.pecas.Rainha;
 import android.chess.dominio.pecas.Rei;
 import android.chess.dominio.pecas.Torre;
-import android.chess.dominio.pecas.handlers.IDepoisPromocaoHandler;
+import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.dominio.pecas.interfaces.IPeca.Cor;
+import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
 
 /**
  * Classe de domínio para prover validação de jogadas e modelagem geral do jogo
@@ -166,9 +163,9 @@ public class Tabuleiro
      *
      * @param destJ
      *            Coluna de destino para a peça.
-     * @throws PecaNaoEncontrada
+     * @throws PecaNaoEncontradaException
      *
-     * @throws MovimentoInvalido
+     * @throws MovimentoInvalidoException
      *             Caso o movimento seja considerado inválido.
      *
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
@@ -185,10 +182,10 @@ public class Tabuleiro
             realizar(jogada);
 
             atual = atual.outra();
-        } catch (JogadaInvalida e) {
+        } catch (JogadaInvalidaException e) {
             throw e;
         } catch (JogadaException e) {
-            throw new JogadaInvalida(jogada, e);
+            throw new JogadaInvalidaException(jogada, e);
         }
     }
 
@@ -203,7 +200,7 @@ public class Tabuleiro
     public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
 
         if (info.getAlvo().getTipo() != Tipo.Peao) {
-            throw new MovimentoInvalido(info.getAlvo());
+            throw new MovimentoInvalidoException(info.getAlvo());
         }
     }
 
@@ -245,12 +242,12 @@ public class Tabuleiro
     /**
      * @param jogada
      * @return
-     * @throws PecaNaoEncontrada
+     * @throws PecaNaoEncontradaException
      */
     private IPeca outra(IJogada jogada) {
         try {
             return peca(jogada.getDestI(), jogada.getDestJ());
-        } catch (PecaNaoEncontrada e) {
+        } catch (PecaNaoEncontradaException e) {
             return null;
         }
     }
@@ -258,7 +255,7 @@ public class Tabuleiro
     /**
      * @param jogada
      * @return
-     * @throws PecaNaoEncontrada
+     * @throws PecaNaoEncontradaException
      */
     private IPeca peca(IJogada jogada) throws ChessException {
         return peca(jogada.getOrigI(), jogada.getOrigJ());
@@ -269,14 +266,14 @@ public class Tabuleiro
      * @param j
      * @return
      */
-    private IPeca peca(int i, int j) throws PecaNaoEncontrada {
+    private IPeca peca(int i, int j) throws PecaNaoEncontradaException {
         if (i < 0 || j < 0 || i > 7 || j > 7)
-            throw new PecaNaoEncontrada();
+            throw new PecaNaoEncontradaException();
 
         Peca peca = (Peca) pecas[i][j];
 
         if (peca == null)
-            throw new PecaNaoEncontrada();
+            throw new PecaNaoEncontradaException();
 
         return peca;
     }
@@ -340,8 +337,8 @@ public class Tabuleiro
 
         try {
             peca = peca(jogada);
-        } catch (PecaNaoEncontrada e) {
-            throw new JogadaInvalida(jogada);
+        } catch (PecaNaoEncontradaException e) {
+            throw new JogadaInvalidaException(jogada);
         }
 
         // peca.validar(jogada);
@@ -374,7 +371,7 @@ public class Tabuleiro
         }
 
         if (jogadaInvalida) {
-            throw new JogadaInvalida(jogada);
+            throw new JogadaInvalidaException(jogada);
         }
 
         peca.mover(jogada, (Peca) outra);

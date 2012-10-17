@@ -4,17 +4,17 @@
 package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
+import android.chess.dominio.events.handlers.IMovimentoHandler;
+import android.chess.dominio.events.handlers.ITomadaHandler;
+import android.chess.dominio.events.info.MovimentoInfo;
+import android.chess.dominio.events.info.TomadaInfo;
+import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.interfaces.IJogada;
-import android.chess.dominio.interfaces.IMovimentoInfo;
-import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.interfaces.ITomadaInfo;
-import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
-import android.chess.dominio.interfaces.handlers.ITomadaHandler;
-import android.chess.dominio.pecas.handlers.EventoMover;
-import android.chess.dominio.pecas.handlers.EventoTomada;
+import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.util.events.Event;
 import android.chess.util.events.interfaces.IHandler;
 
@@ -77,7 +77,7 @@ public abstract class Peca implements IPeca {
      * @param destI
      * @param destJ
      */
-    protected void acionarMovimento(EventoMover evento) {
+    protected void acionarMovimento(MovimentoInfo evento) {
         onMovimento(evento);
 
         setI(evento.getDestI());
@@ -278,7 +278,7 @@ public abstract class Peca implements IPeca {
      * @param destJ
      *            Coordenada j de destino.
      */
-    protected void onMovimento(EventoMover evento) {
+    protected void onMovimento(MovimentoInfo evento) {
         try {
             onMovimento.raise(evento);
         } catch (Exception e) {
@@ -308,7 +308,7 @@ public abstract class Peca implements IPeca {
      * @param destJ
      */
     protected void realizarMovimento(int destI, int destJ) {
-        EventoMover evento = new EventoMover(this, destI, destJ);
+        MovimentoInfo evento = new MovimentoInfo(this, destI, destJ);
 
         acionarMovimento(evento);
     }
@@ -350,11 +350,11 @@ public abstract class Peca implements IPeca {
      */
     private void tomar(Peca outra) throws ChessException {
         if (getCor() == outra.getCor()) {
-            throw new MovimentoInvalido(this);
+            throw new MovimentoInvalidoException(this);
         } else {
             validarTomada(outra);
 
-            EventoTomada evento = new EventoTomada(this, outra);
+            TomadaInfo evento = new TomadaInfo(this, outra);
 
             outra.onTomada(evento);
             onMovimento(evento);
@@ -396,7 +396,7 @@ public abstract class Peca implements IPeca {
      * @param outra
      *            Peça a ser tomada.
      *
-     * @throws MovimentoInvalido
+     * @throws MovimentoInvalidoException
      *             Caso a tomada não seja válida.
      */
     protected void validarTomada(IPeca outra) throws ChessException {

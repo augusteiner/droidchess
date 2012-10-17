@@ -6,17 +6,18 @@ package android.chess.dominio.pecas;
 import static java.lang.Math.abs;
 import static java.lang.Math.signum;
 import android.chess.dominio.Jogada;
+import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
+import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
+import android.chess.dominio.events.info.PromocaoInfo;
+import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.JogadaInvalida;
-import android.chess.dominio.excecao.MovimentoInvalido;
+import android.chess.dominio.excecao.JogadaInvalidaException;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.interfaces.IJogada;
-import android.chess.dominio.interfaces.IPeao;
-import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.interfaces.IPromocaoInfo;
-import android.chess.dominio.interfaces.handlers.IAntesPromocaoHandler;
-import android.chess.dominio.pecas.handlers.EventoPromocao;
-import android.chess.dominio.pecas.handlers.IDepoisPromocaoHandler;
+import android.chess.dominio.pecas.interfaces.IPeao;
+import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.util.events.Event;
+import android.chess.util.events.interfaces.IEvent;
 import android.chess.util.events.interfaces.IHandler;
 
 /**
@@ -27,8 +28,8 @@ import android.chess.util.events.interfaces.IHandler;
  */
 public class Peao extends Peca implements IPeao {
     private int prevI;
-    private Event<IPromocaoInfo> onAntesPromocao;
-    private Event<IPromocaoInfo> onDepoisPromocao;
+    private IEvent<IPromocaoInfo> onAntesPromocao;
+    private IEvent<IPromocaoInfo> onDepoisPromocao;
 
     /**
      * @param tabuleiro
@@ -44,17 +45,16 @@ public class Peao extends Peca implements IPeao {
     }
 
     /**
-     * @param onPromocaoHandler
+     * @param handler
      */
     @Override
-    public void addOnAntesPromocaoHandler(
-        final IAntesPromocaoHandler onPromocaoHandler) {
+    public void addOnAntesPromocaoHandler(final IAntesPromocaoHandler handler) {
         onAntesPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
             @Override
             public void handle(Object sender, IPromocaoInfo info)
                 throws Exception {
-                onPromocaoHandler.onAntesPromocao(info);
+                handler.onAntesPromocao(info);
             }
         });
     }
@@ -67,14 +67,13 @@ public class Peao extends Peca implements IPeao {
      * .chess.dominio.pecas.handlers.IDepoisPromocaoHandler)
      */
     @Override
-    public void addOnDepoisPromocaoHandler(
-        final IDepoisPromocaoHandler onDepoisPromocaoHandler) {
+    public void addOnDepoisPromocaoHandler(final IDepoisPromocaoHandler handler) {
         onDepoisPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
             @Override
             public void handle(Object sender, IPromocaoInfo info)
                 throws Exception {
-                onDepoisPromocaoHandler.onDepoisPromocao(info);
+                handler.onDepoisPromocao(info);
             }
 
         });
@@ -119,7 +118,7 @@ public class Peao extends Peca implements IPeao {
         int di = abs(jogada.getDestI() - getInitialPreviousI());
 
         if (di == 0 || di == 7) {
-            EventoPromocao evento = new EventoPromocao(this, jogada);
+            PromocaoInfo evento = new PromocaoInfo(this, jogada);
 
             onAntesPromocao(evento);
 
@@ -158,7 +157,7 @@ public class Peao extends Peca implements IPeao {
     /**
      * @param tipo
      * @return
-     * @throws MovimentoInvalido
+     * @throws MovimentoInvalidoException
      */
     protected IPeca promover(Tipo tipo) throws ChessException {
         switch (tipo) {
@@ -171,7 +170,7 @@ public class Peao extends Peca implements IPeao {
             case Torre :
                 return new Torre(this);
             default :
-                throw new MovimentoInvalido(this);
+                throw new MovimentoInvalidoException(this);
         }
     }
 
@@ -181,7 +180,7 @@ public class Peao extends Peca implements IPeao {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalidoException {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
         boolean ok = true;
@@ -202,7 +201,7 @@ public class Peao extends Peca implements IPeao {
         }
 
         if (!ok)
-            throw new MovimentoInvalido(this);
+            throw new MovimentoInvalidoException(this);
     }
 
     /*
@@ -220,7 +219,7 @@ public class Peao extends Peca implements IPeao {
         if (di == dj && di == 1 && isDirecaoOk(outra.getI())) {
             // Everything ok!
         } else {
-            throw new JogadaInvalida(new Jogada(this, outra));
+            throw new JogadaInvalidaException(new Jogada(this, outra));
         }
     }
 }

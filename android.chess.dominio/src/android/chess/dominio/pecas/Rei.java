@@ -4,9 +4,9 @@
 package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.interfaces.ITomadaInfo;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**
  * @author augusteiner
@@ -31,7 +31,7 @@ public class Rei extends Peca {
     @Override
     protected void onTomada(ITomadaInfo evento) throws JogadaException {
 
-        throw new MovimentoInvalido(evento.getOrig());
+        throw new MovimentoInvalidoException(evento.getOrig());
     }
 
     /*
@@ -40,12 +40,12 @@ public class Rei extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ) throws MovimentoInvalido {
+    public void validarJogada(int destI, int destJ) throws MovimentoInvalidoException {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
 
         if (di > 1 || dj > 1)
-            throw new MovimentoInvalido(this);
+            throw new MovimentoInvalidoException(this);
     }
 
 }

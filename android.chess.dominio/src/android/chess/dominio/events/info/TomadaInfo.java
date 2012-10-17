@@ -1,32 +1,32 @@
-package android.chess.dominio.pecas.handlers;
+package android.chess.dominio.events.info;
 
-import android.chess.dominio.interfaces.ITomadaInfo;
-import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
+import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * @author augusteiner
  *
  */
-public class EventoTomada extends EventoMover implements ITomadaInfo {
+public class TomadaInfo extends MovimentoInfo implements ITomadaInfo {
     private IPeca dest;
     private IPeca orig;
-
-    /**
-     * @param parent
-     */
-    public EventoTomada(ITomadaInfo parent) {
-        this(parent.getOrig(), parent.getDest());
-    }
 
     /**
      * @param orig
      * @param dest
      */
-    public EventoTomada(IPeca orig, IPeca dest) {
+    public TomadaInfo(IPeca orig, IPeca dest) {
         super(orig, dest.getI(), dest.getJ());
 
         this.orig = orig;
         this.dest = dest;
+    }
+
+    /**
+     * @param parent
+     */
+    public TomadaInfo(ITomadaInfo parent) {
+        this(parent.getOrig(), parent.getDest());
     }
 
     /*

@@ -1,7 +1,7 @@
-package android.chess.dominio.interfaces.handlers;
+package android.chess.dominio.events.handlers;
 
+import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.interfaces.IPromocaoInfo;
 
 /**
  * @author augusteiner

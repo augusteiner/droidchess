@@ -4,8 +4,8 @@
 package android.chess.dominio;
 
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.excecao.PecaNaoEncontrada;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.excecao.PecaNaoEncontradaException;
 
 /**
  * @author augusteiner
@@ -68,9 +68,9 @@ public class Partida {
      *
      * @param destJ
      *
-     * @throws MovimentoInvalido
+     * @throws MovimentoInvalidoException
      *
-     * @throws PecaNaoEncontrada
+     * @throws PecaNaoEncontradaException
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
         throws ChessException {

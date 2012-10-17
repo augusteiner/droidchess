@@ -7,7 +7,7 @@ package android.chess.dominio.excecao;
  * @author augusteiner
  *
  */
-public class PecaNaoEncontrada extends ChessException {
+public class PecaNaoEncontradaException extends ChessException {
 
     /**
      *
@@ -17,14 +17,14 @@ public class PecaNaoEncontrada extends ChessException {
     /**
      *
      */
-    public PecaNaoEncontrada() {
+    public PecaNaoEncontradaException() {
         this(null);
     }
 
     /**
      * @param cause
      */
-    public PecaNaoEncontrada(Throwable cause) {
+    public PecaNaoEncontradaException(Throwable cause) {
         super("Peca não encontrada na posição informada.", cause);
         // TODO Auto-generated constructor stub
     }

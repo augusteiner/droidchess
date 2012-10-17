@@ -1,22 +1,22 @@
-package android.chess.dominio.pecas.handlers;
+package android.chess.dominio.events.info;
 
-import android.chess.dominio.interfaces.IPromocaoInfo;
+import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.interfaces.IJogada;
-import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.interfaces.IPeca.Tipo;
 import android.chess.dominio.pecas.Peao;
+import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
 
 /**
  * @author augusteiner
  *
  */
-public class EventoPromocao extends EventoMover implements IPromocaoInfo {
+public class PromocaoInfo extends MovimentoInfo implements IPromocaoInfo {
     private Tipo tipo;
 
     /**
      * @param alvo
      */
-    public EventoPromocao(Peao alvo, IJogada jogada) {
+    public PromocaoInfo(Peao alvo, IJogada jogada) {
         super(alvo, jogada.getDestI(), jogada.getDestJ());
 
         // Valor padrão é a teoricamente "melhor" peça do jogo.

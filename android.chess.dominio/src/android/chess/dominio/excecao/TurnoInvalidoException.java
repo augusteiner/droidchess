@@ -1,6 +1,6 @@
 package android.chess.dominio.excecao;
 
-import android.chess.dominio.interfaces.IPeca.Cor;
+import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner

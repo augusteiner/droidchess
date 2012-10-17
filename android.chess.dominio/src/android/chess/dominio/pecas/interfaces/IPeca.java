@@ -1,12 +1,13 @@
 /**
  *
  */
-package android.chess.dominio.interfaces;
+package android.chess.dominio.pecas.interfaces;
 
+import android.chess.dominio.events.handlers.IMovimentoHandler;
+import android.chess.dominio.events.handlers.ITomadaHandler;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.interfaces.handlers.IMovimentoHandler;
-import android.chess.dominio.interfaces.handlers.ITomadaHandler;
+import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.Peca;
 
 /**
@@ -191,8 +192,8 @@ public interface IPeca {
      * @param destJ
      *            Coluna de destino.
      *
-     * @throws MovimentoInvalido
+     * @throws MovimentoInvalidoException
      *             Caso o movimento seja inválido esta exceção será jogada.
      */
-    void validarJogada(int destI, int destJ) throws MovimentoInvalido;
+    void validarJogada(int destI, int destJ) throws MovimentoInvalidoException;
 }

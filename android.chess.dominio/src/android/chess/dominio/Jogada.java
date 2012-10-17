@@ -2,7 +2,7 @@ package android.chess.dominio;
 
 import static java.lang.Math.signum;
 import android.chess.dominio.interfaces.IJogada;
-import android.chess.dominio.interfaces.IPeca;
+import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * Representação de uma jogada realizada com uma peça e tendo uma posição de

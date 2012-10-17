@@ -1,7 +1,7 @@
-package android.chess.dominio.interfaces.handlers;
+package android.chess.dominio.events.handlers;
 
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.interfaces.ITomadaInfo;
 
 /**
  * Handler para execução de ações .

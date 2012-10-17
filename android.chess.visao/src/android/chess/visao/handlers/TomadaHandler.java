@@ -1,8 +1,8 @@
 package android.chess.visao.handlers;
 
+import android.chess.dominio.events.handlers.ITomadaHandler;
+import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.interfaces.ITomadaInfo;
-import android.chess.dominio.interfaces.handlers.ITomadaHandler;
 
 public class TomadaHandler implements ITomadaHandler {
 
