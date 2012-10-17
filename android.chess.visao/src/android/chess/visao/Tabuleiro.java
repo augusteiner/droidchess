@@ -14,7 +14,7 @@ import android.chess.controle.PartidaControle;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -263,7 +263,7 @@ public class Tabuleiro extends View {
         }
     }
 
-    public void onTomada(ITomadaInfo evento) throws JogadaException {
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
         //
     }
 
@@ -339,7 +339,7 @@ public class Tabuleiro extends View {
                     IPeca peca = (IPeca) vPeca.getTag();
 
                     controle.mover(peca.getI(), peca.getJ(), destI, destJ);
-                } catch (JogadaException e) {
+                } catch (MovimentoException e) {
                     throw e;
                 }
 

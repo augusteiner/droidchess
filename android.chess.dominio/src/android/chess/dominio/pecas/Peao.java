@@ -9,7 +9,7 @@ import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
 import android.chess.dominio.events.info.PromocaoInfo;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.JogadaInvalidaException;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.excecao.PromocaoException;
 import android.chess.dominio.interfaces.IJogada;
@@ -219,7 +219,7 @@ public class Peao extends Peca implements IPeao {
         if (di == dj && di == 1 && isDirecaoOk(outra.getI())) {
             // Everything ok!
         } else {
-            throw new JogadaInvalidaException(new Jogada(this, outra));
+            throw new JogadaException(new Jogada(this, outra));
         }
     }
 }

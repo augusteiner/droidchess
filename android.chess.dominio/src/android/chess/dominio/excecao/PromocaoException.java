@@ -6,12 +6,19 @@ import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
  * @author augusteiner
  *
  */
-public class PromocaoException extends ChessException {
+public class PromocaoException extends MovimentoException {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * @param info
+     */
+    public PromocaoException(IPromocaoInfo info) {
+        this(info, null);
+    }
 
     /**
      * @param info

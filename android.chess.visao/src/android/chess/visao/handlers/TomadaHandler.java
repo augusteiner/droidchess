@@ -2,7 +2,7 @@ package android.chess.visao.handlers;
 
 import android.chess.dominio.events.handlers.ITomadaHandler;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.MovimentoException;
 
 public class TomadaHandler implements ITomadaHandler {
 
@@ -14,7 +14,7 @@ public class TomadaHandler implements ITomadaHandler {
      * .chess.dominio.interfaces.IEventoTomada)
      */
     @Override
-    public void onTomada(ITomadaInfo evento) throws JogadaException {
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
         // TODO Auto-generated method stub
 
     }

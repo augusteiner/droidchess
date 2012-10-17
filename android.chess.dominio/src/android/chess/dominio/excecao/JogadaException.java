@@ -1,10 +1,15 @@
+/**
+ *
+ */
 package android.chess.dominio.excecao;
+
+import android.chess.dominio.interfaces.IJogada;
 
 /**
  * @author augusteiner
  *
  */
-public abstract class JogadaException extends ChessException {
+public class JogadaException extends MovimentoException {
 
     /**
      *
@@ -13,12 +18,16 @@ public abstract class JogadaException extends ChessException {
 
     /**
      *
-     * @param message
-     *
-     * @param cause
      */
-    public JogadaException(String message, Throwable cause) {
-        super(message, cause);
+    public JogadaException(IJogada jogada) {
+        this(jogada, null);
     }
 
+    /**
+     * @param jogada
+     * @param cause
+     */
+    public JogadaException(IJogada jogada, Throwable cause) {
+        super(String.format("Jogada inválida %s.", jogada), cause);
+    }
 }

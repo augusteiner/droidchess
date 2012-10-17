@@ -6,7 +6,7 @@ package android.chess.dominio.pecas;
 import static java.lang.Math.abs;
 import android.chess.dominio.Peca;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**
@@ -30,7 +30,7 @@ public class Rei extends Peca {
      * .EventoTomada)
      */
     @Override
-    protected void onTomada(ITomadaInfo evento) throws JogadaException {
+    protected void onTomada(ITomadaInfo evento) throws MovimentoException {
 
         throw new MovimentoInvalidoException(evento.getOrig());
     }

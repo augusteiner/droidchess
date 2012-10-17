@@ -11,7 +11,7 @@ import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.Peao;
 import android.chess.dominio.pecas.interfaces.IPeao;
 import android.chess.dominio.pecas.interfaces.IPeca;
@@ -244,7 +244,7 @@ public class Peca extends View
      * .chess.dominio.interfaces.IEventoTomada)
      */
     @Override
-    public void onTomada(ITomadaInfo evento) throws JogadaException {
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
         setVisibility(INVISIBLE);
         invalidate();
 

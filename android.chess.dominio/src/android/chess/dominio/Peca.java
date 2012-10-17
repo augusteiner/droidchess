@@ -11,7 +11,7 @@ import android.chess.dominio.events.info.TomadaInfo;
 import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.interfaces.IPeca;
@@ -288,12 +288,12 @@ public abstract class Peca implements IPeca {
 
     /**
      * @param evento
-     * @throws JogadaException
+     * @throws MovimentoException
      */
-    protected void onTomada(ITomadaInfo evento) throws JogadaException {
+    protected void onTomada(ITomadaInfo evento) throws MovimentoException {
         try {
             onTomada.raise(evento);
-        } catch (JogadaException e) {
+        } catch (MovimentoException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -346,7 +346,7 @@ public abstract class Peca implements IPeca {
      *
      * @param outra
      *
-     * @throws JogadaException
+     * @throws MovimentoException
      */
     private void tomar(Peca outra) throws ChessException {
         if (getCor() == outra.getCor()) {

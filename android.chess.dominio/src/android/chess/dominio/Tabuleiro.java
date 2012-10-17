@@ -12,11 +12,12 @@ import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.JogadaInvalidaException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
-import android.chess.dominio.excecao.TurnoInvalidoException;
+import android.chess.dominio.excecao.PromocaoException;
+import android.chess.dominio.excecao.TurnoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.iterators.MatrixIterator;
 import android.chess.dominio.iterators.PecaIterator;
@@ -175,16 +176,16 @@ public class Tabuleiro
         IPeca peca = peca(jogada);
 
         if (peca.getCor().outra() == atual)
-            throw new TurnoInvalidoException(atual);
+            throw new TurnoException(atual);
 
         try {
             realizar(jogada);
 
             atual = atual.outra();
-        } catch (JogadaInvalidaException e) {
-            throw e;
         } catch (JogadaException e) {
-            throw new JogadaInvalidaException(jogada, e);
+            throw e;
+        } catch (MovimentoException e) {
+            throw new JogadaException(jogada, e);
         }
     }
 
@@ -199,7 +200,7 @@ public class Tabuleiro
     public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
 
         if (info.getAlvo().getTipo() != Tipo.Peao) {
-            throw new MovimentoInvalidoException(info.getAlvo());
+            throw new PromocaoException(info);
         }
     }
 
@@ -234,7 +235,7 @@ public class Tabuleiro
     }
 
     @Override
-    public void onTomada(ITomadaInfo evento) throws JogadaException {
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
 
     }
 
@@ -337,7 +338,7 @@ public class Tabuleiro
         try {
             peca = peca(jogada);
         } catch (PecaNaoEncontradaException e) {
-            throw new JogadaInvalidaException(jogada);
+            throw new JogadaException(jogada);
         }
 
         // peca.validar(jogada);
@@ -370,7 +371,7 @@ public class Tabuleiro
         }
 
         if (jogadaInvalida) {
-            throw new JogadaInvalidaException(jogada);
+            throw new JogadaException(jogada);
         }
 
         peca.mover(jogada, (Peca) outra);

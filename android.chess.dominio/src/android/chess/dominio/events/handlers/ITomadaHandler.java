@@ -1,7 +1,7 @@
 package android.chess.dominio.events.handlers;
 
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
-import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.excecao.MovimentoException;
 
 /**
  * Handler para execução de ações .
@@ -13,7 +13,7 @@ public interface ITomadaHandler {
     /**
      * @param evento
      * 
-     * @throws JogadaException
+     * @throws MovimentoException
      */
-    public void onTomada(ITomadaInfo evento) throws JogadaException;
+    public void onTomada(ITomadaInfo evento) throws MovimentoException;
 }

@@ -4,6 +4,7 @@
 package android.chess.dominio.pecas;
 
 import android.chess.dominio.Peca;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**
@@ -33,7 +34,7 @@ public class Bispo extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ) throws MovimentoInvalidoException {
+    public void validarJogada(int destI, int destJ) throws ChessException {
         if (!super.movimentoDiagonal(destI, destJ))
             throw new MovimentoInvalidoException(this);
     }

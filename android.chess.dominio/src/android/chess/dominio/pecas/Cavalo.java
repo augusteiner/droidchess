@@ -5,6 +5,7 @@ package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
 import android.chess.dominio.Peca;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 
 /**
@@ -35,7 +36,7 @@ public class Cavalo extends Peca {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ) throws MovimentoInvalidoException {
+    public void validarJogada(int destI, int destJ) throws ChessException {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
 
