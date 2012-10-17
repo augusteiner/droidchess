@@ -1,6 +1,5 @@
 package android.chess.dominio.interfaces;
 
-
 /**
  * @author augusteiner
  *
@@ -23,7 +22,9 @@ public interface IJogada {
      */
     public int getOrigJ();
     /**
-     * @return
+     * Sentido da jogada (de baixo para cima ou de cima para baixo).
+     *
+     * @return Um <code>int</code> simbolizando o sentido do movimento.
      */
     public float sentidoI();
     /**

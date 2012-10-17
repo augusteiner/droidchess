@@ -6,6 +6,7 @@
     <string name="title_activity_main">Android Chess</string>
     <string name="menu_exit">Exit</string>
     <string name="menu_exit_click">menuExitOnClick</string>
+    <string name="menu_restart">Restart</string>
     <string name="menu_restart_click">menuRestartOnClick</string>
 
 </resources>

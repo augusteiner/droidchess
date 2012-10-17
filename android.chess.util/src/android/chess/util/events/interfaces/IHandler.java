@@ -16,5 +16,5 @@ public interface IHandler<I> {
      *            Informações adicionais do evento.
      * @throws Exception
      */
-    public void onMovimento(Object sender, I info) throws Exception;
+    public void handle(Object sender, I info) throws Exception;
 }

@@ -49,7 +49,7 @@ public class Event<I> implements IEvent<I> {
     @Override
     public void raise(I info) throws Exception {
         for (IHandler<I> handler : getHandlers()) {
-            handler.onMovimento(this, info);
+            handler.handle(this, info);
         }
     }
 }

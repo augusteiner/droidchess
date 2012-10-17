@@ -96,7 +96,7 @@ public abstract class Peca implements IPeca {
         onMovimento.addHandler(new IHandler<IMovimentoInfo>() {
 
             @Override
-            public void onMovimento(Object sender, IMovimentoInfo info)
+            public void handle(Object sender, IMovimentoInfo info)
                 throws Exception {
                 onMovimentoHandler.onMovimento(sender, info);
             }
@@ -114,7 +114,7 @@ public abstract class Peca implements IPeca {
         onTomada.addHandler(new IHandler<ITomadaInfo>() {
 
             @Override
-            public void onMovimento(Object sender, ITomadaInfo info)
+            public void handle(Object sender, ITomadaInfo info)
                 throws Exception {
                 onTomadaHandler.onTomada(info);
             }

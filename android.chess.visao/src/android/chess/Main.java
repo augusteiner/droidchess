@@ -1,7 +1,5 @@
 package android.chess;
 
-import javax.swing.text.View;
-
 import android.app.Activity;
 import android.chess.visao.R;
 import android.chess.visao.Tabuleiro;
@@ -9,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,22 +49,24 @@ public class Main extends Activity {
     /**
      * @param contentView
      */
-    private void initTabuleiro(ViewGroup contentView) {
+    private void initTabuleiro() {
+        ViewGroup contentView = (ViewGroup) findViewById(R.id.layout_main);
+
         ((Tabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
     }
 
     /**
      * @param view
      */
-    public void menuExitOnClick(View v) {
+    public void menuExitOnClick(MenuItem v) {
         finish();
     }
 
     /**
      * @param v
      */
-    public void menuRestartOnClick(View v) {
-        //
+    public void menuRestartOnClick(MenuItem v) {
+        initTabuleiro();
     }
 
     /*
@@ -83,9 +84,7 @@ public class Main extends Activity {
 
         setContentView(R.layout.main);
 
-        ViewGroup contentView = (ViewGroup) findViewById(R.id.layout_main);
-
-        initTabuleiro(contentView);
+        initTabuleiro();
     }
 
     /*
@@ -95,11 +94,7 @@ public class Main extends Activity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        try {
-            getMenuInflater().inflate(R.menu.main, menu);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
     }

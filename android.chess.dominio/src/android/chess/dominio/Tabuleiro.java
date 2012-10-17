@@ -287,16 +287,16 @@ public class Tabuleiro
      *
      * @param jogada
      *
-     * @return <code>true</code> caso haja peça no caminho da jogada,
-     *         <code>false</code> caso contrário.
+     * @return A peça no caminho da jogada ou <code>null</code> caso não haja
+     *         peça.
      */
-    private IPeca pecaNoCaminho(IPeca peca, IJogada jogada) {
+    private IPeca pecaNoCaminho(IJogada jogada) {
 
         int iinc = (int) jogada.sentidoI();
         int jinc = (int) jogada.sentidoJ();
 
-        int i = peca.getI() + iinc;
-        int j = peca.getJ() + jinc;
+        int i = jogada.getOrigI() + iinc;
+        int j = jogada.getOrigJ() + jinc;
 
         while ((i != jogada.getDestI() || j != jogada.getDestJ())
             && pecas[i][j] == null) {
@@ -331,6 +331,10 @@ public class Tabuleiro
      * @throws JogadaInvalida
      *             Caso a jogada em questão não seja válida.
      */
+    /**
+     * @param jogada
+     * @throws ChessException
+     */
     private void realizar(Jogada jogada) throws ChessException {
         IPeca peca;
 
@@ -344,12 +348,10 @@ public class Tabuleiro
 
         IPeca outra = outra(jogada);
 
-        boolean ok = true;
+        boolean jogadaInvalida = false;
+        boolean checarPecaNoCaminho = true;
 
         // TODO Checar condições de cheque e cheque mate
-
-        // Peças que tem o movimento limitado
-        // devido a outras peças na trajetória até o destino.
         switch (peca.getTipo()) {
             case Rei :
             break;
@@ -359,24 +361,19 @@ public class Tabuleiro
             break;
             case Torre :
             break;
+            // Validação por parte do tabuleiro vazia para o caso do Cavalo.
             case Cavalo :
-                // Validação por parte do tabuleiro vazia para o caso do Cavalo.
-                ok = outra == null || outra.getCor() != peca.getCor();
+                checarPecaNoCaminho = false;
             break;
             default :
             break;
         }
 
-        if (ok) {
-            IPeca pecaNoCaminho = pecaNoCaminho(peca, jogada);
-
-            boolean hasPecaNoCaminho = pecaNoCaminho != null
-                && pecaNoCaminho != outra;
-
-            ok &= !hasPecaNoCaminho;
+        if (checarPecaNoCaminho) {
+            jogadaInvalida = pecaNoCaminho(jogada) != outra;
         }
 
-        if (!ok) {
+        if (jogadaInvalida) {
             throw new JogadaInvalida(jogada);
         }
 

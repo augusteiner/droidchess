@@ -83,10 +83,10 @@ public class Jogada implements IJogada {
         return getDestI() - getOrigI() > 0 && getDestJ() - getOrigJ() > 0;
     }
 
-    /**
-     * Sentido da jogada (de baixo para cima ou de cima para baixo).
+    /*
+     * (non-Javadoc)
      *
-     * @return Um <code>int</code> sinalizando o sentido do movimento.
+     * @see android.chess.dominio.interfaces.IJogada#sentidoI()
      */
     @Override
     public float sentidoI() {

@@ -52,7 +52,7 @@ public class Peao extends Peca implements IPeao {
         onAntesPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
             @Override
-            public void onMovimento(Object sender, IPromocaoInfo info)
+            public void handle(Object sender, IPromocaoInfo info)
                 throws Exception {
                 onPromocaoHandler.onAntesPromocao(info);
             }
@@ -72,7 +72,7 @@ public class Peao extends Peca implements IPeao {
         onDepoisPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
             @Override
-            public void onMovimento(Object sender, IPromocaoInfo info)
+            public void handle(Object sender, IPromocaoInfo info)
                 throws Exception {
                 onDepoisPromocaoHandler.onDepoisPromocao(info);
             }

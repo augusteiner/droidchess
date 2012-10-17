@@ -40,7 +40,6 @@ public class Tabuleiro extends View {
 
     private static final String TAG = Tabuleiro.class.getSimpleName();
     private PartidaControle controle;
-    private boolean inicializado;
     private Mensageiro mensageiro;
     // private boolean moving;
     private Paint paint;
@@ -116,13 +115,10 @@ public class Tabuleiro extends View {
      * Prepara objetos para desenho deste tabuleiro.
      */
     public void init(ViewGroup contentView) {
-        if (inicializado)
-            return;
+        controle.novaPartida();
 
-        inicializado = true;
-
-        // controle.getTabuleiro().setOnPromocaoHandler(this);
-        // controle.getTabuleiro().setOnDepoisPromocaoHandler(this);
+        contentView.removeAllViews();
+        contentView.addView(this);
 
         initPecas(contentView);
     }
@@ -132,8 +128,6 @@ public class Tabuleiro extends View {
      *
      */
     protected void initPecas(ViewGroup contentView) {
-        // controle.novaPartida();
-
         Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
         IPeca next = null;
         Context context = getContext();
