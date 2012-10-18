@@ -1,6 +1,8 @@
 package android.chess.dominio.events.info;
 
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
+import android.chess.dominio.excecao.ChessException;
+import android.chess.dominio.excecao.PromocaoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.Peao;
 import android.chess.dominio.pecas.interfaces.IPeca;
@@ -35,8 +37,12 @@ public class PromocaoInfo extends MovimentoInfo implements IPromocaoInfo {
      * android.chess.dominio.events.info.interfaces.IPromocaoInfo#getCallback()
      */
     @Override
-    public void callback() throws Exception {
-        callback.invoke(this);
+    public void callback() throws ChessException {
+        try {
+            callback.invoke(this);
+        } catch (Exception e) {
+            throw new PromocaoException(this, e);
+        }
     }
 
     /**

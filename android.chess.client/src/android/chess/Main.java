@@ -1,8 +1,8 @@
 package android.chess;
 
 import android.app.Activity;
-import android.chess.visao.R;
-import android.chess.visao.Tabuleiro;
+import android.chess.client.R;
+import android.chess.visao.interfaces.ITabuleiro;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -52,7 +52,7 @@ public class Main extends Activity {
     private void initTabuleiro() {
         ViewGroup contentView = (ViewGroup) findViewById(getMainLayoutResource());
 
-        ((Tabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
+        ((ITabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
     }
 
     /**

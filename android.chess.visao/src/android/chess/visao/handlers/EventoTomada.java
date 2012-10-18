@@ -1,22 +1,23 @@
 /**
- * 
+ *
  */
 package android.chess.visao.handlers;
 
+import android.chess.dominio.events.info.TomadaInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.visao.Peca;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class EventoTomada
     extends
-        android.chess.dominio.events.info.TomadaInfo {
+        TomadaInfo {
     private Peca peca;
 
     /**
-     * 
+     *
      */
     public EventoTomada(ITomadaInfo parent, Peca peca) {
         super(parent);
@@ -26,7 +27,7 @@ public class EventoTomada
 
     /**
      * Retorna a view para a peça sendo movida na UI.
-     * 
+     *
      * @return Peça sendo movida.
      */
     public Peca getPeca() {

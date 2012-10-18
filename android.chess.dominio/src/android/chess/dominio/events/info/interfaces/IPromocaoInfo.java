@@ -1,5 +1,6 @@
 package android.chess.dominio.events.info.interfaces;
 
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
 
@@ -15,7 +16,7 @@ public interface IPromocaoInfo extends IMovimentoInfo {
      * @return
      * @throws Exception
      */
-    public void callback() throws Exception;
+    public void callback() throws ChessException;
     /**
      * Peão sendo promovido.
      *

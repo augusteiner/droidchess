@@ -1,6 +1,3 @@
-/**
- *
- */
 package android.chess.visao;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -8,14 +5,13 @@ import static java.lang.Math.min;
 
 import java.util.Iterator;
 
-import android.annotation.TargetApi;
-import android.chess.Main;
 import android.chess.controle.PartidaControle;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.visao.interfaces.ITabuleiro;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,8 +20,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +30,11 @@ import android.widget.RelativeLayout.LayoutParams;
  * @author augusteiner
  *
  */
-public class Tabuleiro extends View {
+public abstract class Tabuleiro extends View implements ITabuleiro {
 
-    private static final String TAG = Tabuleiro.class.getSimpleName();
-    private PartidaControle controle;
-    private Mensageiro mensageiro;
+    // private static final String TAG = Tabuleiro.class.getSimpleName();
+    protected PartidaControle controle;
+    protected Mensageiro mensageiro;
     // private boolean moving;
     private Paint paint;
     // TODO Reabilitar no caso da implementação de suporte a uma API antiga.
@@ -81,7 +75,7 @@ public class Tabuleiro extends View {
      * @return
      */
     private DisplayMetrics getDisplayMetrics() {
-        return Main.getDisplayMetrics(getContext());
+        return getContext().getResources().getDisplayMetrics();
     }
 
     /**
@@ -101,7 +95,7 @@ public class Tabuleiro extends View {
     /**
      *
      */
-    public void init() {
+    private void init() {
         mensageiro = new Mensageiro(getContext());
         controle = new PartidaControle();
 
@@ -114,6 +108,7 @@ public class Tabuleiro extends View {
     /**
      * Prepara objetos para desenho deste tabuleiro.
      */
+    @Override
     public void init(ViewGroup contentView) {
         controle.novaPartida();
 
@@ -137,7 +132,7 @@ public class Tabuleiro extends View {
         LayoutParams lp = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 
         while (pecas.hasNext()) {
-            peca = new Peca(context);
+            peca = this.novaPeca(context);
             // peca.setOnTomadaHandler(this);
 
             next = pecas.next();
@@ -156,6 +151,12 @@ public class Tabuleiro extends View {
         }
     }
 
+    /**
+     * @param context
+     * @return
+     */
+    protected abstract Peca novaPeca(Context context);
+
     public void onAntesPromocao(Object sender, IPromocaoInfo evento)
         throws ChessException {
         //
@@ -165,31 +166,6 @@ public class Tabuleiro extends View {
         throws ChessException {
         //
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onDragEvent(android.view.DragEvent)
-     */
-    @TargetApi(11)
-    @Override
-    public boolean onDragEvent(DragEvent event) {
-        try {
-            return performOnDragEvent(event);
-            // } catch (ArrayIndexOutOfBoundsException e) {
-            // e.printStackTrace();
-            // return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            mensageiro.alertar(e.getMessage());
-
-            Log.d(TAG, e.toString());
-
-            return false;
-        }
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -298,7 +274,7 @@ public class Tabuleiro extends View {
      * @param peca
      * @return
      */
-    private boolean performDrag(int i, int j, Peca peca) {
+    protected boolean performDrag(int i, int j, Peca peca) {
 
         // p.getLayoutParams() utilizado para não perder a
         // referência
@@ -318,45 +294,5 @@ public class Tabuleiro extends View {
         peca.invalidate();
 
         return true;
-    }
-
-    @TargetApi(11)
-    private boolean performOnDragEvent(DragEvent event) throws Exception {
-        Peca vPeca = (Peca) event.getLocalState();
-
-        // Caso o evento seja realizado muito rápido, peca vem nulo.
-        if (vPeca == null)
-            return false;
-
-        switch (event.getAction()) {
-            case DragEvent.ACTION_DROP :
-                int destI = (int) (event.getY() / getSquareSide());
-                int destJ = (int) (event.getX() / getSquareSide());
-
-                Log.d(TAG, String.format("I: %d, J: %d", destI, destJ));
-
-                try {
-                    IPeca peca = (IPeca) vPeca.getTag();
-
-                    controle.mover(peca.getI(), peca.getJ(), destI, destJ);
-                } catch (MovimentoException e) {
-                    throw e;
-                }
-
-                performDrag(destI, destJ, vPeca);
-
-                return true;
-            case DragEvent.ACTION_DRAG_STARTED :
-                vPeca.hide();
-
-                return true;
-            case DragEvent.ACTION_DRAG_ENDED :
-                vPeca.show();
-                invalidate();
-
-                return true;
-            default :
-                return true;
-        }
     }
 }
