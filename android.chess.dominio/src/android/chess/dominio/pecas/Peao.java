@@ -16,6 +16,7 @@ import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.interfaces.IPeao;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.util.events.Event;
+import android.chess.util.events.interfaces.ICallback;
 import android.chess.util.events.interfaces.IEvent;
 import android.chess.util.events.interfaces.IHandler;
 
@@ -43,8 +44,12 @@ public class Peao extends Peca implements IPeao {
         onDepoisPromocao = new Event<IPromocaoInfo>();
     }
 
-    /**
-     * @param handler
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.pecas.interfaces.IPeao#addOnAntesPromocaoHandler
+     * (android.chess.dominio.events.handlers.IAntesPromocaoHandler)
      */
     @Override
     public void addOnAntesPromocaoHandler(final IAntesPromocaoHandler handler) {
@@ -118,13 +123,10 @@ public class Peao extends Peca implements IPeao {
 
         // Checando condição de promoção.
         if (di == 0 || di == 7) {
-            IPromocaoInfo info = new PromocaoInfo(this, jogada);
+            IPromocaoInfo info = new PromocaoInfo(this, jogada,
+                promocaoCallback());
 
             onAntesPromocao(info);
-
-            info.setAlvo(promover(info.getTipoPromocao()));
-
-            onDepoisPromocao(info);
         }
     }
 
@@ -148,11 +150,31 @@ public class Peao extends Peca implements IPeao {
         try {
             onDepoisPromocao.raise(info);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /**
+     * @return
+     */
+    private ICallback<IPromocaoInfo> promocaoCallback() {
+        return new ICallback<IPromocaoInfo>() {
+            private boolean invoked = false;
+
+            @Override
+            public void invoke(IPromocaoInfo info) throws ChessException {
+
+                if (invoked)
+                    return;
+
+                info.setAlvo(promover(info.getTipoPromocao()));
+
+                onDepoisPromocao(info);
+
+                invoked = true;
+            }
+        };
+    }
     /**
      * @param tipo
      * @return

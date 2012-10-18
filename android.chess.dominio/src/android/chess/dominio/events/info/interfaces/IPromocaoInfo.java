@@ -12,6 +12,11 @@ import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
  */
 public interface IPromocaoInfo extends IMovimentoInfo {
     /**
+     * @return
+     * @throws Exception
+     */
+    public void callback() throws Exception;
+    /**
      * Peão sendo promovido.
      *
      * @return
