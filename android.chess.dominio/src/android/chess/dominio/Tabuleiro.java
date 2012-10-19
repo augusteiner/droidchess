@@ -79,6 +79,13 @@ public class Tabuleiro
     }
 
     /**
+     * @return
+     */
+    public Cor getTurno() {
+        return atual;
+    }
+
+    /**
      *
      */
     private void initPecas() {

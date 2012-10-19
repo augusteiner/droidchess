@@ -3,6 +3,7 @@ package android.chess.controle;
 import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
 import android.chess.dominio.excecao.ChessException;
+import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
@@ -27,6 +28,13 @@ public class PartidaControle {
      */
     public Tabuleiro getTabuleiro() {
         return partida.getTabuleiro();
+    }
+
+    /**
+     * @return
+     */
+    public Cor getTurno() {
+        return partida.getTurno();
     }
 
     /**

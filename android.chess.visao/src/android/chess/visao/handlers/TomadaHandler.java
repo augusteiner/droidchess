@@ -8,14 +8,12 @@ public class TomadaHandler implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.interfaces.IEventoTomada)
      */
-    @Override
     public void onTomada(ITomadaInfo evento) throws MovimentoException {
-        // TODO Auto-generated method stub
 
     }
 }

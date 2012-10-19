@@ -5,7 +5,7 @@ package android.chess.visao.handlers;
 
 import android.chess.dominio.events.info.TomadaInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
-import android.chess.visao.Peca;
+import android.chess.visao.PecaAbstrata;
 
 /**
  * @author augusteiner
@@ -14,12 +14,12 @@ import android.chess.visao.Peca;
 public class EventoTomada
     extends
         TomadaInfo {
-    private Peca peca;
+    private PecaAbstrata peca;
 
     /**
      *
      */
-    public EventoTomada(ITomadaInfo parent, Peca peca) {
+    public EventoTomada(ITomadaInfo parent, PecaAbstrata peca) {
         super(parent);
 
         this.peca = peca;
@@ -30,7 +30,7 @@ public class EventoTomada
      *
      * @return Peça sendo movida.
      */
-    public Peca getPeca() {
+    public PecaAbstrata getPeca() {
         return peca;
     }
 }

@@ -6,6 +6,7 @@ package android.chess.dominio;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
+import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
@@ -46,6 +47,13 @@ public class Partida {
      */
     public Tabuleiro getTabuleiro() {
         return tabuleiro;
+    }
+
+    /**
+     * @return
+     */
+    public Cor getTurno() {
+        return tabuleiro.getTurno();
     }
 
     /**

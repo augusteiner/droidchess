@@ -20,7 +20,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -40,6 +39,7 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
     // TODO Reabilitar no caso da implementação de suporte a uma API antiga.
     // private Peca peca;
     private Rect placeRect;
+    protected ViewGroup contentView;
 
     /**
      * @param context
@@ -93,6 +93,16 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
     }
 
     /**
+     * Método deve ser utilizado para iniciar algo mais nas classes que herdem
+     * desta.
+     *
+     * @param peca
+     */
+    protected void iniPeca(PecaAbstrata peca) {
+        //do nothing.
+    }
+
+    /**
      *
      */
     private void init() {
@@ -108,32 +118,33 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
     /**
      * Prepara objetos para desenho deste tabuleiro.
      */
-    @Override
     public void init(ViewGroup contentView) {
+        this.contentView = contentView;
+
         controle.novaPartida();
 
         contentView.removeAllViews();
         contentView.addView(this);
 
-        initPecas(contentView);
+        initPecas();
     }
 
     /**
      * @param contentView
      *
      */
-    protected void initPecas(ViewGroup contentView) {
+    protected void initPecas() {
         Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
         IPeca next = null;
         Context context = getContext();
 
-        Peca peca = null;
+        PecaAbstrata peca = null;
 
         LayoutParams lp = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 
         while (pecas.hasNext()) {
             peca = this.novaPeca(context);
-            // peca.setOnTomadaHandler(this);
+            this.iniPeca(peca);
 
             next = pecas.next();
             peca.setTag(next);
@@ -155,8 +166,13 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
      * @param context
      * @return
      */
-    protected abstract Peca novaPeca(Context context);
+    protected abstract PecaAbstrata novaPeca(Context context);
 
+    /**
+     * @param sender
+     * @param evento
+     * @throws ChessException
+     */
     public void onAntesPromocao(Object sender, IPromocaoInfo evento)
         throws ChessException {
         //
@@ -243,38 +259,13 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
         //
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onTouchEvent(android.view.MotionEvent)
-     */
-    public boolean onTouchEvent(MotionEvent event, Peca peca) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-            // this.peca = peca;
-
-            break;
-            case MotionEvent.ACTION_UP :
-            // this.peca = null;
-
-            break;
-            case MotionEvent.ACTION_MOVE :
-            // performDrag(event.getX(), event.getY(), this.peca);
-
-            break;
-            default :
-                return true;
-        }
-        return true;
-    }
-
     /**
-     * @param eventX
-     * @param eventY
+     * @param destI
+     * @param destJ
      * @param peca
      * @return
      */
-    protected boolean performDrag(int i, int j, Peca peca) {
+    protected boolean performDrag(int destI, int destJ, PecaAbstrata peca) {
 
         // p.getLayoutParams() utilizado para não perder a
         // referência
@@ -284,8 +275,8 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
         if (lp == null)
             return false;
 
-        int leftMargin = j * peca.getWidth();
-        int topMargin = i * peca.getHeight();
+        int leftMargin = destJ * peca.getWidth();
+        int topMargin = destI * peca.getHeight();
 
         lp.leftMargin = leftMargin;
         lp.topMargin = topMargin;

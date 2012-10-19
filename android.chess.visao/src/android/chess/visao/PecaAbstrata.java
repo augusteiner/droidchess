@@ -27,19 +27,19 @@ import android.view.View;
  * @author augusteiner
  *
  */
-public abstract class Peca extends View
+public abstract class PecaAbstrata extends View
     implements
         IAntesPromocaoHandler,
         IDepoisPromocaoHandler,
         ITomadaHandler,
         IMovimentoHandler {
 
-    private static final String TAG = Peca.class.getSimpleName();
+    private static final String TAG = PecaAbstrata.class.getSimpleName();
 
     /**
      * @param context
      */
-    public Peca(Context context) {
+    public PecaAbstrata(Context context) {
         super(context);
     }
 
@@ -47,7 +47,7 @@ public abstract class Peca extends View
      * @param context
      * @param attrs
      */
-    public Peca(Context context, AttributeSet attrs) {
+    public PecaAbstrata(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -56,7 +56,7 @@ public abstract class Peca extends View
      * @param attrs
      * @param defStyle
      */
-    public Peca(Context context, AttributeSet attrs, int defStyle) {
+    public PecaAbstrata(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -92,25 +92,13 @@ public abstract class Peca extends View
             .toLowerCase());
 
         try {
+            Log.d(TAG,
+                String.format("Resource class is %s.", R.class.getName()));
             return R.drawable.class.getDeclaredField(bgName).getInt(null);
         } catch (Exception e) {
             return 0;
         }
     }
-
-    /**
-     * Retorna a linha desta peça em relação ao tabuleiro.
-     *
-     * @return
-     */
-    public abstract int getCoordI();
-
-    /**
-     * Retorna a coordenada y desta peça em relação ao tabuleiro.
-     *
-     * @return
-     */
-    public abstract int getCoordJ();
 
     /**
      * @return
@@ -122,7 +110,7 @@ public abstract class Peca extends View
     /**
      * @return
      */
-    private IPeca getPeca() {
+    public IPeca getPeca() {
         return (IPeca) getTag();
     }
 
@@ -141,6 +129,7 @@ public abstract class Peca extends View
         // setVisibility(INVISIBLE);
         // invalidate();
     }
+
     /**
      *
      */
@@ -161,7 +150,6 @@ public abstract class Peca extends View
         peca.addOnTomadaHandler(this);
         peca.addOnMovimentoHandler(this);
     }
-
     /*
      * (non-Javadoc)
      *
@@ -169,7 +157,6 @@ public abstract class Peca extends View
      * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
      * (android.chess.dominio.interfaces.IPromocaoInfo)
      */
-    @Override
     public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
         Log.d(TAG, String.format("Promoção da peça %s.", info.getAlvo()));
 
@@ -184,7 +171,6 @@ public abstract class Peca extends View
      * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
      * (android.chess.dominio.interfaces.IPromocaoInfo)
      */
-    @Override
     public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
         Log.d(TAG, String.format("Peão promovido a %s.", info.getAlvo()));
 
@@ -221,10 +207,8 @@ public abstract class Peca extends View
         setMeasuredDimension(getSide(), getSide());
     }
 
-    @Override
     public void onMovimento(Object sender, IMovimentoInfo evento)
         throws ChessException {
-        // TODO Auto-generated method stub
 
     }
 
@@ -235,7 +219,6 @@ public abstract class Peca extends View
      * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.interfaces.IEventoTomada)
      */
-    @Override
     public void onTomada(ITomadaInfo evento) throws MovimentoException {
         setVisibility(INVISIBLE);
         invalidate();

@@ -13,7 +13,7 @@ import android.view.MotionEvent;
  * @author augusteiner
  *
  */
-public class Peca extends android.chess.visao.Peca {
+public class Peca extends android.chess.visao.PecaAbstrata {
 
     private static final String TAG = Peca.class.getName();
 
@@ -42,26 +42,6 @@ public class Peca extends android.chess.visao.Peca {
     public Peca(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.chess.visao.Peca#getCoordI()
-     */
-    @Override
-    public int getCoordI() {
-        return (int) (getX() / getSide());
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.chess.visao.Peca#getCoordJ()
-     */
-    @Override
-    public int getCoordJ() {
-        return (int) (getY() / getSide());
     }
 
     /*
