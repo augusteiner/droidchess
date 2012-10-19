@@ -6,9 +6,12 @@ package android.chess.client8;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PathEffect;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout.LayoutParams;
@@ -20,6 +23,8 @@ import android.widget.RelativeLayout.LayoutParams;
 public class Peca extends android.chess.visao.PecaAbstrata {
 
     private Paint paint;
+    private RectF rect;
+    private PathEffect dash;
 
     /**
      * @param context
@@ -64,6 +69,11 @@ public class Peca extends android.chess.visao.PecaAbstrata {
      */
     private void initPeca() {
         paint = new Paint();
+        dash = new DashPathEffect(new float[]{
+            8, 4
+        }, 10F);
+
+        rect = new RectF(0, 0 + 1, getSide() - 1, getSide() - 1);
 
         setFocusableInTouchMode(true);
     }
@@ -71,16 +81,16 @@ public class Peca extends android.chess.visao.PecaAbstrata {
     @Override
     protected void onDraw(Canvas canvas) {
         if (isFocused()) {
-            paint.setColor(Color.argb(200, 50, 50, 205));
+            paint.setColor(Color.argb(200, 0, 0, 255));
             paint.setStyle(Style.STROKE);
-            paint.setStrokeWidth(10);
+            paint.setPathEffect(dash);
+            paint.setStrokeWidth(5);
 
-            canvas.drawRect(0, 0, getSide(), getSide(), paint);
+            canvas.drawRect(rect, paint);
         }
 
         super.onDraw(canvas);
     }
-
     /*
      * (non-Javadoc)
      *

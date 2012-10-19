@@ -1,6 +1,7 @@
 package android.chess.dominio;
 
 import static java.lang.Math.signum;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.interfaces.IPeca;
 
@@ -24,21 +25,48 @@ public class Jogada implements IJogada {
      * @param peca
      * @param destI
      * @param destJ
+     * @throws JogadaException
      */
-    public Jogada(int origI, int origJ, int destI, int destJ) {
+    public Jogada(int origI, int origJ, int destI, int destJ)
+        throws JogadaException {
+
         this.origI = origI;
         this.origJ = origJ;
 
         this.destI = destI;
         this.destJ = destJ;
-    }
 
+        if (!coordenadasValidas(origI, origJ, destI, destJ))
+            throw new JogadaException(this);
+    }
     /**
      * @param peca
      * @param outra
+     * @throws JogadaException
      */
-    public Jogada(IPeca peca, IPeca outra) {
+    public Jogada(IPeca peca, IPeca outra) throws JogadaException {
         this(peca.getI(), peca.getJ(), outra.getI(), outra.getJ());
+    }
+    /**
+     * @param coordenadas
+     * @return
+     */
+    private boolean coordenadasValidas(int... coordenadas) {
+        boolean ret = true;
+
+        for (int c : coordenadas) {
+            ret &= coordenadaValida(c);
+        }
+
+        return ret;
+    }
+
+    /**
+     * @param coordenada
+     * @return
+     */
+    private boolean coordenadaValida(int coordenada) {
+        return !(coordenada < 0 || coordenada > 7);
     }
 
     /**

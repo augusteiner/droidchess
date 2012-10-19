@@ -6,6 +6,7 @@ package android.chess.client;
 import android.annotation.TargetApi;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.visao.TabuleiroAbstrato;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,7 +16,7 @@ import android.view.DragEvent;
  * @author augusteiner
  *
  */
-public class Tabuleiro extends android.chess.visao.Tabuleiro {
+public class Tabuleiro extends TabuleiroAbstrato {
 
     /**
      *

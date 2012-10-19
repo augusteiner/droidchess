@@ -3,9 +3,9 @@
  */
 package android.chess.client8;
 
-import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.visao.PecaAbstrata;
+import android.chess.visao.TabuleiroAbstrato;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,7 +16,7 @@ import android.view.View.OnFocusChangeListener;
  * @author augusteiner
  *
  */
-public class Tabuleiro extends android.chess.visao.Tabuleiro
+public class Tabuleiro extends TabuleiroAbstrato
     implements
         OnFocusChangeListener {
 
@@ -71,10 +71,10 @@ public class Tabuleiro extends android.chess.visao.Tabuleiro
 
             performDrag(destI, destJ, vPeca);
 
-            vPeca.clearFocus();
+            // vPeca.clearFocus();
 
             return true;
-        } catch (ChessException e) {
+        } catch (Exception e) {
             mensageiro.alertar(e.getMessage());
 
             return false;
@@ -108,6 +108,13 @@ public class Tabuleiro extends android.chess.visao.Tabuleiro
         return new Peca(context);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.view.View.OnFocusChangeListener#onFocusChange(android.view.View,
+     * boolean)
+     */
     @Override
     public void onFocusChange(View nextView, boolean hasFocus) {
         if (hasFocus && nextView instanceof Peca) {
@@ -115,6 +122,8 @@ public class Tabuleiro extends android.chess.visao.Tabuleiro
                 || controle.getTurno() == ((Peca) nextView).getPeca().getCor()) {
                 prevView = (Peca) nextView;
             } else {
+                prevView.requestFocus();
+
                 jogada(prevView, (Peca) nextView);
 
                 prevView = null;
@@ -131,7 +140,7 @@ public class Tabuleiro extends android.chess.visao.Tabuleiro
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN :
-                View v = contentView.findFocus();
+                View v = contentView.getFocusedChild();
 
                 if (v == null || !(v instanceof Peca))
                     return false;
@@ -139,13 +148,6 @@ public class Tabuleiro extends android.chess.visao.Tabuleiro
                 Peca vPeca = (Peca) v;
 
                 prevView = null;
-
-                /*
-                 * for (int i = 0; i < contentView.getChildCount(); i++) { if
-                 * (contentView.getChildAt(i).isSelected() &&
-                 * contentView.getChildAt(i) instanceof Peca) { vPeca = (Peca)
-                 * contentView.getChildAt(i); } }
-                 */
 
                 int destI = (int) event.getY() / vPeca.getSide();
                 int destJ = (int) event.getX() / vPeca.getSide();

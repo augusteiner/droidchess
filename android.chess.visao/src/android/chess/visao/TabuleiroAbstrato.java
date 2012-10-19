@@ -29,7 +29,7 @@ import android.widget.RelativeLayout.LayoutParams;
  * @author augusteiner
  *
  */
-public abstract class Tabuleiro extends View implements ITabuleiro {
+public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     // private static final String TAG = Tabuleiro.class.getSimpleName();
     protected PartidaControle controle;
@@ -44,7 +44,7 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
     /**
      * @param context
      */
-    public Tabuleiro(Context context) {
+    public TabuleiroAbstrato(Context context) {
         super(context);
 
         init();
@@ -54,7 +54,7 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
      * @param context
      * @param attrs
      */
-    public Tabuleiro(Context context, AttributeSet attrs) {
+    public TabuleiroAbstrato(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init();
@@ -65,7 +65,7 @@ public abstract class Tabuleiro extends View implements ITabuleiro {
      * @param attrs
      * @param defStyle
      */
-    public Tabuleiro(Context context, AttributeSet attrs, int defStyle) {
+    public TabuleiroAbstrato(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         init();
