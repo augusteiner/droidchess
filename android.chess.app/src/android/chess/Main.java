@@ -3,9 +3,7 @@ package android.chess;
 import android.app.Activity;
 import android.chess.app.R;
 import android.chess.visao.interfaces.ITabuleiro;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -21,22 +19,8 @@ public class Main extends Activity {
     /**
      * @return
      */
-    public static DisplayMetrics getDisplayMetrics(Context c) {
-        return c.getResources().getDisplayMetrics();
-    }
-
-    /**
-     * @return
-     */
     public ViewGroup getContentView() {
         return (ViewGroup) findViewById(getMainLayoutResource());
-    }
-
-    /**
-     * @return
-     */
-    public DisplayMetrics getDisplayMetrics() {
-        return getDisplayMetrics(getApplicationContext());
     }
 
     /**
