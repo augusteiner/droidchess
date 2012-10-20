@@ -53,7 +53,7 @@ public class EventTest extends Test {
 
         e.addHandler(new IHandler<EventTest.IChangeInfo>() {
             @Override
-            public void onMovimento(Object sender, IChangeInfo info) {
+            public void handle(Object sender, IChangeInfo info) {
                 EventTest.this.handle2(info);
             }
 
@@ -61,7 +61,7 @@ public class EventTest extends Test {
 
         e.addHandler(new IHandler<EventTest.IChangeInfo>() {
             @Override
-            public void onMovimento(Object sender, IChangeInfo info) {
+            public void handle(Object sender, IChangeInfo info) {
                 EventTest.this.handle(info);
             }
 

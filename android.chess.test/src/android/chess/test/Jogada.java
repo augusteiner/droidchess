@@ -7,11 +7,8 @@ import android.chess.dominio.Partida;
 import android.chess.dominio.Tabuleiro;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.JogadaInvalida;
-import android.chess.dominio.excecao.MovimentoInvalido;
-import android.chess.dominio.excecao.PecaNaoEncontrada;
-import android.chess.dominio.interfaces.IPeca;
-import android.chess.dominio.interfaces.IPeca.Cor;
+import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
