@@ -5,7 +5,7 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <android.chess.client.Tabuleiro
+    <android.chess.app.Tabuleiro
         android:id="@+id/tabuleiro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

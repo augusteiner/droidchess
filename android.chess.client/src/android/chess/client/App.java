@@ -1,22 +1,18 @@
-package android.chess.server;
-
-import java.io.IOException;
+package android.chess.client;
 
 /**
  * @author augusteiner
  *
  */
 public class App {
-
     /**
      * @param args
      */
     public static void main(String[] args) {
         try {
-            new Server().serve();
-        } catch (IOException e) {
-            System.exit(-1);
+            new Client().request();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
 }

@@ -1,11 +1,8 @@
-/**
- *
- */
 package android.chess.server;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * @author augusteiner
@@ -13,38 +10,36 @@ import java.net.ServerSocket;
  */
 public class Server extends ServerSocket {
 
+    // FIXME Colocar configurações em arquivo .xml?
+    /**
+     *
+     */
+    public static final String address = "127.0.0.1";
+    /**
+     *
+     */
+    public static final int port = 9666;
+    /**
+     * @return
+     * @throws IOException
+     */
+    public static Socket newSocket() throws IOException {
+        return new Socket(address, port);
+    }
+
     /**
      * @throws IOException
      */
     public Server() throws IOException {
-
-    }
-
-    /**
-     * @param port
-     * @throws IOException
-     */
-    public Server(int port) throws IOException {
         super(port);
     }
 
     /**
-     * @param port
-     * @param backlog
      * @throws IOException
      */
-    public Server(int port, int backlog) throws IOException {
-        super(port, backlog);
+    public void serve() throws IOException {
+        while (true) {
+            new ServerThread(this).start();
+        }
     }
-
-    /**
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     * @throws IOException
-     */
-    public Server(int arg0, int arg1, InetAddress arg2) throws IOException {
-        super(arg0, arg1, arg2);
-    }
-
 }
