@@ -9,7 +9,7 @@ import android.chess.dominio.Jogador;
  * @author augusteiner
  *
  */
-public class Request implements Serializable {
+public class Requisicao implements Serializable {
 
     public enum Tipo {
         /**
@@ -32,22 +32,24 @@ public class Request implements Serializable {
      */
     private static final long serialVersionUID = -2193091130641718696L;
 
-    private Object message;
+    private Object mensagem;
 
     private Tipo tipo;
 
     /**
      * @param tipo
+     * @param mensagem
      */
-    public Request(Tipo tipo) {
+    public Requisicao(Tipo tipo, Object mensagem) {
         this.tipo = tipo;
+        this.mensagem = mensagem;
     }
 
     /**
      * @return
      */
-    public Object getMessage() {
-        return message;
+    public Object getMensagem() {
+        return mensagem;
     }
 
     /**
@@ -58,34 +60,30 @@ public class Request implements Serializable {
     }
 
     /**
+     * Responde a uma requisição representada por esta instância.
+     *
      * @throws Exception
+     *             Caso o tipo da requisição seja desconhecido.
      */
-    public Response handle() throws Exception {
+    public Resposta responder() throws Exception {
 
-        Response r = new Response();
+        Resposta r = new Resposta();
 
         switch (tipo) {
             case CADASTRO :
-                r.respond((Jogador) message);
+                r.responder((Jogador) mensagem);
             break;
             case PARTIDA :
 
             break;
             case JOGADA :
-                r.respond((Jogada) message);
+                r.responder((Jogada) mensagem);
             break;
             default :
                 throw new Exception();
         }
 
         return r;
-    }
-
-    /**
-     * @param message
-     */
-    public void setMessage(Object message) {
-        this.message = message;
     }
 
     /**

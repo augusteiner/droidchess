@@ -6,35 +6,34 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import android.chess.dominio.Jogador;
-import android.chess.server.Request;
-import android.chess.server.Request.Tipo;
-import android.chess.server.Response;
-import android.chess.server.Server;
+import android.chess.server.Requisicao;
+import android.chess.server.Requisicao.Tipo;
+import android.chess.server.Resposta;
+import android.chess.server.Servidor;
 
 /**
  * @author augusteiner
  *
  */
-public class Client extends Socket {
+public class Cliente extends Socket {
     /**
      * @throws IOException
      * @throws ClassNotFoundException
      */
     public void request() throws Exception {
-        Socket server = Server.newSocket();
+        Socket server = Servidor.novoSocket();
 
         ObjectOutputStream out = new ObjectOutputStream(
             server.getOutputStream());
 
-        Request request = new Request(Tipo.CADASTRO);
-        request.setMessage(new Jogador("José Augusto"));
+        Requisicao request = new Requisicao(Tipo.CADASTRO, new Jogador("José Augusto"));
 
         out.writeObject(request);
         out.flush();
 
         ObjectInputStream in = new ObjectInputStream(server.getInputStream());
-        Response response = (Response) in.readObject();
+        Resposta response = (Resposta) in.readObject();
 
-        System.out.println(response.getMessage());
+        System.out.println(response.getMensagem());
     }
 }

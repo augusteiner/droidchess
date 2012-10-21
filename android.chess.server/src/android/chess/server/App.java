@@ -1,7 +1,5 @@
 package android.chess.server;
 
-import java.io.IOException;
-
 /**
  * @author augusteiner
  *
@@ -13,8 +11,10 @@ public class App {
      */
     public static void main(String[] args) {
         try {
-            new Server().serve();
-        } catch (IOException e) {
+            new Servidor().servir();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+
             System.exit(-1);
         }
     }

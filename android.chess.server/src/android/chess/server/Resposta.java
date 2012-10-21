@@ -12,7 +12,7 @@ import android.chess.dominio.Jogador;
  * @author augusteiner
  *
  */
-public class Response implements Serializable {
+public class Resposta implements Serializable {
 
     /**
      *
@@ -21,34 +21,38 @@ public class Response implements Serializable {
     /**
      *
      */
-    private Object message;
+    private Object mensagem;
 
     /**
      * @param server
      */
-    public Response() {
+    public Resposta() {
 
     }
 
     /**
      * @return
      */
-    public Object getMessage() {
-        return message;
+    public Object getMensagem() {
+        return mensagem;
     }
 
     /**
+     * Calcula a resposta a uma jogada sendo requisitada.
+     *
      * @param jogada
      */
-    public void respond(Jogada jogada) {
-        // TODO Inverter jogada para o outro jogador.
+    public void responder(Jogada jogada) {
+        mensagem = null;
     }
 
     /**
+     * Calcula a resposta a um cadastro de jogador/usuário sendo requisitado.
+     *
      * @param jogador
      */
-    public void respond(Jogador jogador) {
-        message = jogador;
+    public void responder(Jogador jogador) {
+        mensagem = jogador;
     }
 
 }
