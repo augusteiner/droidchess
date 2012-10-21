@@ -4,7 +4,6 @@
 package android.chess.dominio;
 
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.MovimentoInvalidoException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 

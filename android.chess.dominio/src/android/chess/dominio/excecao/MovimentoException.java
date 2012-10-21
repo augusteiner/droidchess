@@ -1,10 +1,13 @@
 package android.chess.dominio.excecao;
 
+import android.chess.dominio.pecas.interfaces.IPeca;
+
 /**
- * @author augusteiner
+ * Exceção a ser jogada quando o movimento de uma peça não for válido.
  *
+ * @author augusteiner
  */
-public abstract class MovimentoException extends ChessException {
+public class MovimentoException extends ChessException {
 
     /**
      *
@@ -12,13 +15,28 @@ public abstract class MovimentoException extends ChessException {
     private static final long serialVersionUID = 1L;
 
     /**
-     *
-     * @param message
-     *
-     * @param cause
+     * @param orig
+     * @param destI
+     * @param destJ
      */
-    public MovimentoException(String message, Throwable cause) {
-        super(message, cause);
+    public MovimentoException(IPeca orig, int destI, int destJ) {
+        super(String.format("Peça '%s' não pode ser movida para (%d:%d).",
+            orig, destI, destJ), null);
     }
 
+    /**
+     * @param orig
+     * @param dest
+     */
+    protected MovimentoException(IPeca orig, IPeca dest) {
+        this(orig, dest.getI(), dest.getJ());
+    }
+
+    /**
+     * @param messsage
+     * @param cause
+     */
+    protected MovimentoException(String messsage, Throwable cause) {
+        super(messsage, cause);
+    }
 }

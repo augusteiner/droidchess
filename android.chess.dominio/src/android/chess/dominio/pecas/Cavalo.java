@@ -6,7 +6,7 @@ package android.chess.dominio.pecas;
 import static java.lang.Math.abs;
 import android.chess.dominio.Peca;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.excecao.MovimentoException;
 
 /**
  * @author augusteiner
@@ -41,6 +41,6 @@ public class Cavalo extends Peca {
         int dj = abs(getJ() - destJ);
 
         if ((di != 1 && di != 2) || (dj != 1 && dj != 2) || di == dj)
-            throw new MovimentoInvalidoException(this);
+            throw new MovimentoException(this, destI, destJ);
     }
 }

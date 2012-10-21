@@ -12,11 +12,9 @@ import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
-import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
-import android.chess.dominio.excecao.PromocaoException;
 import android.chess.dominio.excecao.TurnoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.iterators.MatrixIterator;
@@ -207,7 +205,8 @@ public class Tabuleiro
     public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
 
         if (info.getAlvo().getTipo() != Tipo.Peao) {
-            throw new PromocaoException(info);
+            throw new MovimentoException(info.getAlvo(), info.getDestI(),
+                info.getDestJ());
         }
     }
 

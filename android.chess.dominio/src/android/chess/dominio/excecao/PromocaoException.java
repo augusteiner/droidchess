@@ -1,6 +1,6 @@
 package android.chess.dominio.excecao;
 
-import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
+import android.chess.dominio.pecas.interfaces.IPeao;
 
 /**
  * @author augusteiner
@@ -14,17 +14,18 @@ public class PromocaoException extends MovimentoException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @param info
+     * @param peao
      */
-    public PromocaoException(IPromocaoInfo info) {
-        this(info, null);
+    public PromocaoException(IPeao peao) {
+        this(peao, null);
     }
 
     /**
-     * @param info
+     * @param peao
      * @param cause
      */
-    public PromocaoException(IPromocaoInfo info, Throwable cause) {
-        super(String.format("Falha ao promover %s.", info.getAlvo()), cause);
+    public PromocaoException(IPeao peao, Throwable cause) {
+
+        super(String.format("Falha ao promover %s.", peao), cause);
     }
 }

@@ -10,7 +10,7 @@ import android.chess.dominio.events.info.PromocaoInfo;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
-import android.chess.dominio.excecao.MovimentoInvalidoException;
+import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.PromocaoException;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.pecas.interfaces.IPeao;
@@ -138,7 +138,7 @@ public class Peao extends Peca implements IPeao {
         try {
             onAntesPromocao.raise(info);
         } catch (Exception e) {
-            throw new PromocaoException(info, e);
+            throw new PromocaoException(this, e);
         }
     }
 
@@ -191,7 +191,7 @@ public class Peao extends Peca implements IPeao {
             case Torre :
                 return new Torre(this);
             default :
-                throw new MovimentoInvalidoException(this);
+                throw new PromocaoException(this);
         }
     }
 
@@ -201,8 +201,7 @@ public class Peao extends Peca implements IPeao {
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
-    public void validarJogada(int destI, int destJ)
-        throws MovimentoInvalidoException {
+    public void validarJogada(int destI, int destJ) throws ChessException {
         int di = abs(getI() - destI);
         int dj = abs(getJ() - destJ);
         boolean ok = true;
@@ -223,7 +222,7 @@ public class Peao extends Peca implements IPeao {
         }
 
         if (!ok)
-            throw new MovimentoInvalidoException(this);
+            throw new MovimentoException(this, destI, destJ);
     }
 
     /*

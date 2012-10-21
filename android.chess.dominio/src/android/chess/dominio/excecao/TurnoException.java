@@ -4,7 +4,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class TurnoException extends MovimentoException {
 
@@ -17,7 +17,7 @@ public class TurnoException extends MovimentoException {
      * @param atual
      */
     public TurnoException(Cor atual) {
-        this(String.format("O turno é da %s", atual.toString()), null);
+        this(String.format("O turno atual é da %s.", atual.toString()), null);
     }
 
     /**

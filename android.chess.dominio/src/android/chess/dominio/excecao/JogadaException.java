@@ -30,4 +30,12 @@ public class JogadaException extends MovimentoException {
     public JogadaException(IJogada jogada, Throwable cause) {
         super(String.format("Jogada inválida %s.", jogada), cause);
     }
+
+    /**
+     * @param message
+     * @param cause
+     */
+    protected JogadaException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
