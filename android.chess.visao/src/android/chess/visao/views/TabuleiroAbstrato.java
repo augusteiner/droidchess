@@ -104,12 +104,21 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
                 try {
                     controle.novaPartida();
                 } catch (RequisicaoException e) {
-                    mensageiro.erro(e);
+                    e.printStackTrace();
+
+                    // mensageiro.erro(e);
                 }
             }
         };
 
-        new Thread(r).start();
+        Thread t = new Thread(r);
+        t.start();
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            mensageiro.erro(e);
+        }
 
         contentView.removeAllViews();
         contentView.addView(this);

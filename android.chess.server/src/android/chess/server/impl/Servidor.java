@@ -47,7 +47,7 @@ public class Servidor {
      *
      * FIXME Colocar configurações em arquivo .xml?
      */
-    public static final String address = "127.0.0.1";
+    public static final String address = "10.0.2.2";
     /**
      *
      */

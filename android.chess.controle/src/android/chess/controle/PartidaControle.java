@@ -11,7 +11,7 @@ import android.chess.server.exceptions.RequisicaoException;
  * @author augusteiner
  *
  */
-public class PartidaControle extends Controle<IPartida> {
+public class PartidaControle {
     /**
      *
      */
@@ -27,7 +27,7 @@ public class PartidaControle extends Controle<IPartida> {
      * @todo Implementar escolha/convite de adversário.
      */
     public PartidaControle() {
-        super(null);
+        //
     }
 
     /**
@@ -65,6 +65,6 @@ public class PartidaControle extends Controle<IPartida> {
      *
      */
     public void novaPartida() throws RequisicaoException {
-        super.controlado = Cliente.getInstancia().novaPartida();
+        partida = Cliente.getInstancia().novaPartida();
     }
 }
