@@ -32,7 +32,7 @@ public class TomadaInfo extends MovimentoInfo implements ITomadaInfo {
     /*
      * (non-Javadoc)
      *
-     * @see android.chess.dominio.interfaces.IEventoTomada#getDest()
+     * @see android.chess.dominio.events.info.interfaces.ITomadaInfo#getDest()
      */
     @Override
     public IPeca getDest() {

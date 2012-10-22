@@ -20,7 +20,7 @@ import android.widget.RelativeLayout.LayoutParams;
  * @author augusteiner
  *
  */
-public class Peca extends android.chess.visao.PecaAbstrata {
+public class Peca extends android.chess.visao.views.PecaAbstrata {
 
     private Paint paint;
     private RectF rect;
@@ -73,7 +73,7 @@ public class Peca extends android.chess.visao.PecaAbstrata {
             8, 4
         }, 10F);
 
-        rect = new RectF(0, 0 + 1, getSide() - 1, getSide() - 1);
+        rect = new RectF(0, 0 + 1, getLado() - 1, getLado() - 1);
 
         setFocusableInTouchMode(true);
     }

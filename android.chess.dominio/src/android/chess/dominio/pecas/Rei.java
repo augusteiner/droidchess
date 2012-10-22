@@ -27,8 +27,8 @@ public class Rei extends Peca {
      * (non-Javadoc)
      *
      * @see
-     * android.chess.dominio.pecas.Peca#onTomada(android.chess.dominio.pecas
-     * .EventoTomada)
+     * android.chess.dominio.Peca#onTomada(android.chess.dominio.events.info
+     * .interfaces.ITomadaInfo)
      */
     @Override
     protected void onTomada(ITomadaInfo evento) throws MovimentoException {

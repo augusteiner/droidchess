@@ -1,7 +1,7 @@
 /**
  *
  */
-package android.chess.server;
+package android.chess.server.impl;
 
 import java.io.IOException;
 import java.net.ServerSocket;

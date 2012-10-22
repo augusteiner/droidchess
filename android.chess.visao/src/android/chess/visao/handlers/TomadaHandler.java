@@ -10,8 +10,8 @@ public class TomadaHandler implements ITomadaHandler {
      * (non-Javadoc)
      *
      * @see
-     * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
-     * .chess.dominio.interfaces.IEventoTomada)
+     * android.chess.dominio.events.handlers.ITomadaHandler#onTomada(android
+     * .chess.dominio.events.info.interfaces.ITomadaInfo)
      */
     public void onTomada(ITomadaInfo evento) throws MovimentoException {
 

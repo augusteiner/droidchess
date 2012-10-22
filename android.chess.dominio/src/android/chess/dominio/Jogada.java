@@ -17,9 +17,14 @@ public class Jogada implements IJogada {
 
     private int destJ;
 
+    private int origI;
+
     private int origJ;
 
-    private int origI;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8243646882719443432L;
 
     /**
      * @param peca
@@ -47,28 +52,6 @@ public class Jogada implements IJogada {
     public Jogada(IPeca peca, IPeca outra) throws JogadaException {
         this(peca.getI(), peca.getJ(), outra.getI(), outra.getJ());
     }
-    /**
-     * @param coordenadas
-     * @return
-     */
-    private boolean coordenadasValidas(int... coordenadas) {
-        boolean ret = true;
-
-        for (int c : coordenadas) {
-            ret &= coordenadaValida(c);
-        }
-
-        return ret;
-    }
-
-    /**
-     * @param coordenada
-     * @return
-     */
-    private boolean coordenadaValida(int coordenada) {
-        return !(coordenada < 0 || coordenada > 7);
-    }
-
     /**
      * @return Linha de destino desta jogada.
      */
@@ -140,5 +123,27 @@ public class Jogada implements IJogada {
     public String toString() {
         return String.format("(%d:%d) -> (%d:%d)", getOrigI(), getOrigJ(),
             getDestI(), getDestJ());
+    }
+
+    /**
+     * @param coordenadas
+     * @return
+     */
+    private boolean coordenadasValidas(int... coordenadas) {
+        boolean ret = true;
+
+        for (int c : coordenadas) {
+            ret &= coordenadaValida(c);
+        }
+
+        return ret;
+    }
+
+    /**
+     * @param coordenada
+     * @return
+     */
+    private boolean coordenadaValida(int coordenada) {
+        return !(coordenada < 0 || coordenada > 7);
     }
 }

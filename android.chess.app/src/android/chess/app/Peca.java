@@ -13,7 +13,7 @@ import android.view.MotionEvent;
  * @author augusteiner
  *
  */
-public class Peca extends android.chess.visao.PecaAbstrata {
+public class Peca extends android.chess.visao.views.PecaAbstrata {
 
     private static final String TAG = Peca.class.getName();
 

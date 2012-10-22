@@ -17,6 +17,7 @@ import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
 import android.chess.dominio.excecao.TurnoException;
 import android.chess.dominio.interfaces.IJogada;
+import android.chess.dominio.interfaces.ITabuleiro;
 import android.chess.dominio.iterators.MatrixIterator;
 import android.chess.dominio.iterators.PecaIterator;
 import android.chess.dominio.pecas.Bispo;
@@ -37,6 +38,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
  */
 public class Tabuleiro
     implements
+        ITabuleiro,
         IAntesPromocaoHandler,
         IDepoisPromocaoHandler,
         IMovimentoHandler,
@@ -44,6 +46,10 @@ public class Tabuleiro
 
     private Cor atual;
     private IPeca[][] pecas;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4839737424999483841L;
 
     // private Jogador[] jogadores;
     // private Partida partida;
@@ -81,6 +87,105 @@ public class Tabuleiro
      */
     public Cor getTurno() {
         return atual;
+    }
+
+    /**
+     * Move uma peça nessa instância de tabuleiro para um ponto de destino
+     * representado por (destI, destJ).
+     *
+     * @param peca
+     *            Peça a ser movida.
+     *
+     * @param destI
+     *            Linha de destino para a peça.
+     *
+     * @param destJ
+     *            Coluna de destino para a peça.
+     * @throws PecaNaoEncontradaException
+     *
+     * @throws MovimentoInvalidoException
+     *             Caso o movimento seja considerado inválido.
+     *
+     * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
+     */
+    public void mover(IJogada jogada) throws ChessException {
+        IPeca peca = peca(jogada);
+
+        if (peca.getCor().outra() == atual)
+            throw new TurnoException(atual);
+
+        try {
+            realizar(jogada);
+
+            atual = atual.outra();
+        } catch (ChessException e) {
+            throw new JogadaException(jogada, e);
+        }
+    }
+
+    /**
+     * @param origI
+     * @param origJ
+     * @param destI
+     * @param destJ
+     * @throws JogadaException
+     */
+    public void mover(int origI, int origJ, int destI, int destJ)
+        throws ChessException {
+        IJogada jogada = new Jogada(origI, origJ, destI, destJ);
+
+        mover(jogada);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
+     * (android.chess.dominio.interfaces.IPromocaoInfo)
+     */
+    @Override
+    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+
+        if (info.getAlvo().getTipo() != Tipo.Peao) {
+            throw new MovimentoException(info.getAlvo(), info.getDestI(),
+                info.getDestJ());
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
+     * (android.chess.dominio.interfaces.IPromocaoInfo)
+     */
+    @Override
+    public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+
+        pecas[info.getDestI()][info.getDestJ()] = info.getAlvo();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.handlers.IMovimentoHandler#onMovimento
+     * (android.chess.dominio.interfaces.IEventoMover)
+     */
+    @Override
+    public void onMovimento(Object sender, IMovimentoInfo info)
+        throws ChessException {
+        IPeca peca = info.getAlvo();
+
+        // Refletindo alterações da jogada no tabuleiro.
+        pecas[info.getDestI()][info.getDestJ()] = peca;
+        pecas[peca.getI()][peca.getJ()] = null;
+    }
+
+    @Override
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
+
     }
 
     /**
@@ -154,95 +259,6 @@ public class Tabuleiro
 
         // partida.marcar(jIndex);
         // jogadores[jIndex].marcar();
-    }
-
-    /**
-     * Move uma peça nessa instância de tabuleiro para um ponto de destino
-     * representado por (destI, destJ).
-     *
-     * @param peca
-     *            Peça a ser movida.
-     *
-     * @param destI
-     *            Linha de destino para a peça.
-     *
-     * @param destJ
-     *            Coluna de destino para a peça.
-     * @throws PecaNaoEncontradaException
-     *
-     * @throws MovimentoInvalidoException
-     *             Caso o movimento seja considerado inválido.
-     *
-     * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
-     */
-    public void mover(int origI, int origJ, int destI, int destJ)
-        throws ChessException {
-        Jogada jogada = new Jogada(origI, origJ, destI, destJ);
-        IPeca peca = peca(jogada);
-
-        if (peca.getCor().outra() == atual)
-            throw new TurnoException(atual);
-
-        try {
-            realizar(jogada);
-
-            atual = atual.outra();
-        } catch (JogadaException e) {
-            throw e;
-        } catch (MovimentoException e) {
-            throw new JogadaException(jogada, e);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
-     * (android.chess.dominio.interfaces.IPromocaoInfo)
-     */
-    @Override
-    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
-
-        if (info.getAlvo().getTipo() != Tipo.Peao) {
-            throw new MovimentoException(info.getAlvo(), info.getDestI(),
-                info.getDestJ());
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
-     * (android.chess.dominio.interfaces.IPromocaoInfo)
-     */
-    @Override
-    public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
-
-        pecas[info.getDestI()][info.getDestJ()] = info.getAlvo();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.interfaces.handlers.IMovimentoHandler#onMovimento
-     * (android.chess.dominio.interfaces.IEventoMover)
-     */
-    @Override
-    public void onMovimento(Object sender, IMovimentoInfo info)
-        throws ChessException {
-        IPeca peca = info.getAlvo();
-
-        // Refletindo alterações da jogada no tabuleiro.
-        pecas[info.getDestI()][info.getDestJ()] = peca;
-        pecas[peca.getI()][peca.getJ()] = null;
-    }
-
-    @Override
-    public void onTomada(ITomadaInfo evento) throws MovimentoException {
-
     }
 
     /**
@@ -338,7 +354,7 @@ public class Tabuleiro
      * @param jogada
      * @throws ChessException
      */
-    private void realizar(Jogada jogada) throws ChessException {
+    private void realizar(IJogada jogada) throws ChessException {
         IPeca peca;
 
         try {

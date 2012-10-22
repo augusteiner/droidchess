@@ -2,7 +2,7 @@ package android.chess.test;
 
 import android.chess.util.events.interfaces.IHandler;
 
-public class EventTest extends Test {
+public class Evento extends Test {
     /**
      * @author augusteiner
      *
@@ -51,18 +51,18 @@ public class EventTest extends Test {
     private void change() throws Exception {
         ChangeEvent e = new ChangeEvent();
 
-        e.addHandler(new IHandler<EventTest.IChangeInfo>() {
+        e.addHandler(new IHandler<Evento.IChangeInfo>() {
             @Override
             public void handle(Object sender, IChangeInfo info) {
-                EventTest.this.handle2(info);
+                Evento.this.handle2(info);
             }
 
         });
 
-        e.addHandler(new IHandler<EventTest.IChangeInfo>() {
+        e.addHandler(new IHandler<Evento.IChangeInfo>() {
             @Override
             public void handle(Object sender, IChangeInfo info) {
-                EventTest.this.handle(info);
+                Evento.this.handle(info);
             }
 
         });

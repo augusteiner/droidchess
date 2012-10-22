@@ -2,7 +2,9 @@ package android.chess;
 
 import android.app.Activity;
 import android.chess.app.R;
-import android.chess.visao.interfaces.ITabuleiro;
+import android.chess.visao.Mensageiro;
+import android.chess.visao.exceptions.InicializacaoException;
+import android.chess.visao.views.ITabuleiro;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,15 +30,6 @@ public class Main extends Activity {
      */
     public int getMainLayoutResource() {
         return R.id.mainLayout;
-    }
-
-    /**
-     * @param contentView
-     */
-    private void initTabuleiro() {
-        ViewGroup contentView = (ViewGroup) findViewById(getMainLayoutResource());
-
-        ((ITabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
     }
 
     /**
@@ -81,5 +74,18 @@ public class Main extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
+    }
+
+    /**
+     * @param contentView
+     */
+    private void initTabuleiro() {
+        ViewGroup contentView = (ViewGroup) findViewById(getMainLayoutResource());
+
+        try {
+            ((ITabuleiro) findViewById(R.id.tabuleiro)).init(contentView);
+        } catch (InicializacaoException e) {
+            new Mensageiro(getApplicationContext()).erro(e);
+        }
     }
 }

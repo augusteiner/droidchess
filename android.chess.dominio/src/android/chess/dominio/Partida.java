@@ -4,32 +4,48 @@
 package android.chess.dominio;
 
 import android.chess.dominio.excecao.ChessException;
+import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
+import android.chess.dominio.interfaces.IJogada;
+import android.chess.dominio.interfaces.IPartida;
+import android.chess.dominio.interfaces.ITabuleiro;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
  *
  */
-public class Partida {
-    private Tabuleiro tabuleiro;
-    private Jogador[] jogadores;
-
+public class Partida implements IPartida {
     /**
      *
      */
-    public Partida() {
-        this(new Jogador(), new Jogador());
-
-        tabuleiro = new Tabuleiro();
-    }
-
+    private Jogador[] jogadores;
+    /**
+     *
+     */
+    private ITabuleiro tabuleiro;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5291020267269476271L;
     /**
      * @param j1
      * @param j2
      */
     public Partida(Jogador j1, Jogador j2) {
+        tabuleiro = new Tabuleiro();
+
         initJogadores(j1, j2);
+    }
+
+    /**
+     *
+     */
+    Partida() {
+        this(new Jogador("Jogador de teste #1"), new Jogador(
+            "Jogador de teste #2"));
+
+        tabuleiro = new Tabuleiro();
     }
 
     /**
@@ -44,25 +60,17 @@ public class Partida {
      *
      * @return {@link Tabuleiro}
      */
-    public Tabuleiro getTabuleiro() {
+    @Override
+    public ITabuleiro getTabuleiro() {
         return tabuleiro;
     }
 
     /**
      * @return
      */
+    @Override
     public Cor getTurno() {
         return tabuleiro.getTurno();
-    }
-
-    /**
-     *
-     */
-    private void initJogadores(Jogador j1, Jogador j2) {
-        jogadores = new Jogador[2];
-
-        jogadores[0] = j1;
-        jogadores[1] = j2;
     }
 
     /**
@@ -79,8 +87,27 @@ public class Partida {
      *
      * @throws PecaNaoEncontradaException
      */
+    @Override
     public void jogada(int origI, int origJ, int destI, int destJ)
-        throws ChessException {
-        tabuleiro.mover(origI, origJ, destI, destJ);
+        throws JogadaException {
+
+        IJogada jogada = new Jogada(origI, origJ, destI, destJ);
+
+        try {
+            tabuleiro.mover(jogada);
+        } catch (ChessException e) {
+
+            throw new JogadaException(jogada, e);
+        }
+    }
+
+    /**
+     *
+     */
+    private void initJogadores(Jogador j1, Jogador j2) {
+        jogadores = new Jogador[2];
+
+        jogadores[0] = j1;
+        jogadores[1] = j2;
     }
 }

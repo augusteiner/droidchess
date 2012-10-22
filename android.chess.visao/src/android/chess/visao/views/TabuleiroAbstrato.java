@@ -1,4 +1,4 @@
-package android.chess.visao;
+package android.chess.visao.views;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static java.lang.Math.min;
@@ -11,7 +11,9 @@ import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
-import android.chess.visao.interfaces.ITabuleiro;
+import android.chess.server.exceptions.RequisicaoException;
+import android.chess.visao.Mensageiro;
+import android.chess.visao.exceptions.InicializacaoException;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -31,15 +33,19 @@ import android.widget.RelativeLayout.LayoutParams;
  */
 public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
-    // private static final String TAG = Tabuleiro.class.getSimpleName();
-    protected PartidaControle controle;
-    protected Mensageiro mensageiro;
     // private boolean moving;
     private Paint paint;
     // TODO Reabilitar no caso da implementação de suporte a uma API antiga.
     // private Peca peca;
     private Rect placeRect;
     protected ViewGroup contentView;
+    // private static final String TAG = Tabuleiro.class.getSimpleName();
+    protected PartidaControle controle;
+    protected Mensageiro mensageiro;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8324111699374876004L;
 
     /**
      * @param context
@@ -74,13 +80,6 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     /**
      * @return
      */
-    private DisplayMetrics getDisplayMetrics() {
-        return getContext().getResources().getDisplayMetrics();
-    }
-
-    /**
-     * @return
-     */
     public Mensageiro getMensageiro() {
         return new Mensageiro(getContext());
     }
@@ -93,13 +92,59 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     }
 
     /**
-     * Método deve ser utilizado para iniciar algo mais nas classes que herdem
-     * desta.
+     * Prepara objetos para desenho deste tabuleiro.
      *
-     * @param peca
+     * @throws Exception
      */
-    protected void iniPeca(PecaAbstrata peca) {
-        //do nothing.
+    public void init(ViewGroup contentView) throws InicializacaoException {
+        this.contentView = contentView;
+
+        Runnable r = new Runnable() {
+            public void run() {
+                try {
+                    controle.novaPartida();
+                } catch (RequisicaoException e) {
+                    mensageiro.erro(e);
+                }
+            }
+        };
+
+        new Thread(r).start();
+
+        contentView.removeAllViews();
+        contentView.addView(this);
+
+        initPecas();
+    }
+
+    /**
+     * @param sender
+     * @param evento
+     * @throws ChessException
+     */
+    public void onAntesPromocao(Object sender, IPromocaoInfo evento)
+        throws ChessException {
+        //
+    }
+
+    public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
+        throws ChessException {
+        //
+    }
+
+    /**
+     * @param evento
+     * @throws MovimentoException
+     */
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
+        //
+    }
+
+    /**
+     * @return
+     */
+    private DisplayMetrics getDisplayMetrics() {
+        return getContext().getResources().getDisplayMetrics();
     }
 
     /**
@@ -116,17 +161,13 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     }
 
     /**
-     * Prepara objetos para desenho deste tabuleiro.
+     * Método deve ser utilizado para iniciar algo mais nas classes que herdem
+     * desta.
+     *
+     * @param peca
      */
-    public void init(ViewGroup contentView) {
-        this.contentView = contentView;
-
-        controle.novaPartida();
-
-        contentView.removeAllViews();
-        contentView.addView(this);
-
-        initPecas();
+    protected void iniPeca(PecaAbstrata peca) {
+        // do nothing.
     }
 
     /**
@@ -155,33 +196,18 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
             // LayoutParams não copia as "rules" definidas.
             lp.addRule(RelativeLayout.ALIGN_TOP, getId());
 
-            lp.topMargin = peca.getSide() * next.getI();
-            lp.leftMargin = peca.getSide() * next.getJ();
+            lp.topMargin = peca.getLado() * next.getI();
+            lp.leftMargin = peca.getLado() * next.getJ();
 
             contentView.addView(peca, lp);
         }
     }
-
     /**
      * @param context
      * @return
      */
     protected abstract PecaAbstrata novaPeca(Context context);
 
-    /**
-     * @param sender
-     * @param evento
-     * @throws ChessException
-     */
-    public void onAntesPromocao(Object sender, IPromocaoInfo evento)
-        throws ChessException {
-        //
-    }
-
-    public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
-        throws ChessException {
-        //
-    }
     /*
      * (non-Javadoc)
      *
@@ -255,10 +281,6 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
         }
     }
 
-    public void onTomada(ITomadaInfo evento) throws MovimentoException {
-        //
-    }
-
     /**
      * @param destI
      * @param destJ
@@ -268,8 +290,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     protected boolean performDrag(int destI, int destJ, PecaAbstrata peca) {
 
         // p.getLayoutParams() utilizado para não perder a
-        // referência
-        // de alinhamento com a view do tabuleiro
+        // referência do alinhamento com esta view.
         LayoutParams lp = (LayoutParams) peca.getLayoutParams();
 
         if (lp == null)

@@ -8,22 +8,13 @@ import java.io.Serializable;
  */
 public class Jogador implements Serializable {
     /**
-     *
+     * Identificador deste jogador.
      */
-    private static final long serialVersionUID = 1949083620486065585L;
+    private int id;
     /**
      *
      */
     private String nome;
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    Jogador() {
-
-    }
-
     /**
      * @param nome
      */
@@ -31,19 +22,39 @@ public class Jogador implements Serializable {
         this.nome = nome;
     }
     /**
+     * @deprecated
+     */
+    @Deprecated
+    Jogador() {
+
+    }
+    /**
+     * @return O identificador desta instância.
+     */
+    public int getId() {
+        return id;
+    }
+    /**
      * @return
      */
     public String getNome() {
         return nome;
     }
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
     /**
      * @param nome
      */
     public void setNome(String nome) {
         this.nome = nome;
     }
-
     /*
      * (non-Javadoc)
      *
@@ -53,4 +64,8 @@ public class Jogador implements Serializable {
     public String toString() {
         return nome;
     }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1949083620486065585L;
 }

@@ -1,4 +1,4 @@
-package android.chess.visao;
+package android.chess.visao.views;
 
 import static java.lang.Math.min;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
@@ -14,6 +14,7 @@ import android.chess.dominio.pecas.Peao;
 import android.chess.dominio.pecas.interfaces.IPeao;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
+import android.chess.visao.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -22,10 +23,9 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * Representa graficamente uma peça de um tabuleiro.
+ * Classe abstrata para representação gráfica de uma peça do tabuleiro.
  *
  * @author augusteiner
- *
  */
 public abstract class PecaAbstrata extends View
     implements
@@ -34,6 +34,9 @@ public abstract class PecaAbstrata extends View
         ITomadaHandler,
         IMovimentoHandler {
 
+    /**
+     * Tag para utilização de métodos de log.
+     */
     private static final String TAG = PecaAbstrata.class.getSimpleName();
 
     /**
@@ -61,27 +64,33 @@ public abstract class PecaAbstrata extends View
     }
 
     /**
+     * Adiciona um handler do evento de promoção a fila de execução.
+     *
      * @param onPromocaoHandler
+     *            Handler a ser adicionado.
      */
     public void addOnPromocaoHandler(IAntesPromocaoHandler onPromocaoHandler) {
         ((Peao) getPeca()).addOnAntesPromocaoHandler(onPromocaoHandler);
     }
 
     /**
+     * Adiciona um handler do evento de tomada a fila de execução.
+     *
      * @param onTomadaHandler
+     *            Handler a ser adicionado.
      */
     public void addOnTomadaHandler(ITomadaHandler onTomadaHandler) {
         getPeca().addOnTomadaHandler(onTomadaHandler);
     }
     /**
-     * Retorna o resid de acordo com a cor e nome da peça configurada com o
-     * setTag.
+     * Retorna o resourse_id de acordo com a cor e nome da peça configurada com
+     * o setTag.
      *
      * @return Id do recurso associado com a imagem da peça de chadrez.
      *
-     * @see View#setTag(Object)
+     * @see View#setTag()
      */
-    public int backgroundResId() {
+    private int backgroundResId() {
         IPeca peca = (IPeca) getTag();
 
         if (peca == null)
@@ -92,8 +101,10 @@ public abstract class PecaAbstrata extends View
             .toLowerCase());
 
         try {
-            Log.d(TAG,
-                String.format("Resource class is %s.", R.class.getName()));
+            /*
+             * Log.d(TAG, String.format("Resource class is %s.",
+             * R.class.getName()));
+             */
             return R.drawable.class.getDeclaredField(bgName).getInt(null);
         } catch (Exception e) {
             return 0;
@@ -101,37 +112,63 @@ public abstract class PecaAbstrata extends View
     }
 
     /**
-     * @return
+     * Esconde esta peça. Cancelando chamada anterior ao método
+     * {@link #exibir()}.
+     *
+     * @deprecated
+     */
+    @Deprecated
+    public void esconder() {
+        setVisibility(INVISIBLE);
+        invalidate();
+    }
+
+    /**
+     * Exibe esta peça. Cancelando chamada anterior ao método
+     * {@link #esconder()} .
+     *
+     * @deprecated
+     */
+    @Deprecated
+    public void exibir() {
+        setVisibility(VISIBLE);
+        invalidate();
+    }
+
+    /**
+     * Retorna as métricas do display associado aos recursos desta view.
+     *
+     * @return Objeto para as métricas do display.
      */
     private DisplayMetrics getDisplayMetrics() {
         return getContext().getResources().getDisplayMetrics();
     }
 
     /**
-     * @return
+     * Retorna o lado do quadrado desta view de acordo com as métricas do
+     * display.
+     *
+     * @return Número inteiro representando o tamanho do lado desta view
+     *         (cosiderada como um quadrado).
      */
-    public IPeca getPeca() {
-        return (IPeca) getTag();
-    }
-
-    /**
-     * @return
-     */
-    public int getSide() {
+    public int getLado() {
         return (min(getDisplayMetrics().widthPixels,
             getDisplayMetrics().heightPixels) / 8);
     }
 
     /**
-     * @param peca
-     */
-    public void hide() {
-        // setVisibility(INVISIBLE);
-        // invalidate();
-    }
-
-    /**
+     * Atalho para (IPeca)getTag(). Retorna getTag deste objeto com cast para
+     * IPeca.
      *
+     * @return A peça associada a esta view do android.
+     *
+     * @see View#getTag()
+     */
+    public IPeca getPeca() {
+        return (IPeca) getTag();
+    }
+    /**
+     * Inicializa informações desta peça, como imagem de fundo entre outros.
      */
     public void init() {
         setBackgroundResource(backgroundResId());
@@ -150,12 +187,13 @@ public abstract class PecaAbstrata extends View
         peca.addOnTomadaHandler(this);
         peca.addOnMovimentoHandler(this);
     }
+
     /*
      * (non-Javadoc)
      *
      * @see
-     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
-     * (android.chess.dominio.interfaces.IPromocaoInfo)
+     * android.chess.dominio.events.handlers.IAntesPromocaoHandler#onAntesPromocao
+     * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
      */
     public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
         Log.d(TAG, String.format("Promoção da peça %s.", info.getAlvo()));
@@ -168,8 +206,8 @@ public abstract class PecaAbstrata extends View
      * (non-Javadoc)
      *
      * @see
-     * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
-     * (android.chess.dominio.interfaces.IPromocaoInfo)
+     * android.chess.dominio.events.handlers.IDepoisPromocaoHandler#onDepoisPromocao
+     * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
      */
     public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
         Log.d(TAG, String.format("Peão promovido a %s.", info.getAlvo()));
@@ -204,7 +242,7 @@ public abstract class PecaAbstrata extends View
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getSide(), getSide());
+        setMeasuredDimension(getLado(), getLado());
     }
 
     public void onMovimento(Object sender, IMovimentoInfo evento)
@@ -216,8 +254,8 @@ public abstract class PecaAbstrata extends View
      * (non-Javadoc)
      *
      * @see
-     * android.chess.dominio.interfaces.handlers.ITomadaHandler#onTomada(android
-     * .chess.dominio.interfaces.IEventoTomada)
+     * android.chess.dominio.events.handlers.ITomadaHandler#onTomada(android
+     * .chess.dominio.events.info.interfaces.ITomadaInfo)
      */
     public void onTomada(ITomadaInfo evento) throws MovimentoException {
         setVisibility(INVISIBLE);
@@ -225,13 +263,5 @@ public abstract class PecaAbstrata extends View
 
         // TODO Utilizar handler para remover peça do tabuleiro?
         // ViewGroup g = (ViewGroup) getParent();
-    }
-
-    /**
-     * @param peca
-     */
-    public void show() {
-        // setVisibility(VISIBLE);
-        // invalidate();
     }
 }

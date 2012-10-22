@@ -1,12 +1,9 @@
-/**
- *
- */
 package android.chess.app;
 
 import android.annotation.TargetApi;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
-import android.chess.visao.TabuleiroAbstrato;
+import android.chess.visao.views.TabuleiroAbstrato;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,6 +15,10 @@ import android.view.DragEvent;
  */
 public class Tabuleiro extends TabuleiroAbstrato {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6555426123534972054L;
     /**
      *
      */
@@ -47,11 +48,6 @@ public class Tabuleiro extends TabuleiroAbstrato {
         super(context, attrs, defStyle);
     }
 
-    @Override
-    protected Peca novaPeca(Context context) {
-        return new Peca(context);
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -76,11 +72,18 @@ public class Tabuleiro extends TabuleiroAbstrato {
         }
     }
 
+    /**
+     * @param event
+     * @return
+     * @throws Exception
+     */
     @TargetApi(11)
     private boolean performOnDragEvent(DragEvent event) throws Exception {
         Peca vPeca = (Peca) event.getLocalState();
 
-        // Caso o evento seja realizado muito rápido, peca vem nulo.
+        /*
+         * Caso o evento seja realizado muito rápido, peca vem nulo.
+         */
         if (vPeca == null)
             return false;
 
@@ -103,16 +106,21 @@ public class Tabuleiro extends TabuleiroAbstrato {
 
                 return true;
             case DragEvent.ACTION_DRAG_STARTED :
-                vPeca.hide();
+                // vPeca.esconder();
 
                 return true;
             case DragEvent.ACTION_DRAG_ENDED :
-                vPeca.show();
-                invalidate();
+                // vPeca.exibir();
+                // invalidate();
 
                 return true;
             default :
                 return true;
         }
+    }
+
+    @Override
+    protected Peca novaPeca(Context context) {
+        return new Peca(context);
     }
 }

@@ -1,4 +1,8 @@
-package android.chess.test;
+package android.chess;
+
+import android.chess.test.Cliente;
+import android.chess.test.Evento;
+import android.chess.test.Test;
 
 public class App {
     /**
@@ -18,8 +22,10 @@ public class App {
      */
     private static void run() throws Exception {
         Test[] tests = new Test[]{
-            new Jogada(),
-        // new EventTest()
+            // new Jogada(),
+            // new Evento(),
+            new Cliente()
+
         };
 
         for (Test t : tests) {

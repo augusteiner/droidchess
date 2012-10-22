@@ -1,10 +1,12 @@
 package android.chess.dominio.interfaces;
 
+import java.io.Serializable;
+
 /**
  * @author augusteiner
  *
  */
-public interface IJogada {
+public interface IJogada extends Serializable {
     /**
      * @return
      */

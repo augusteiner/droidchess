@@ -2,7 +2,9 @@ package android.chess;
 
 import android.app.Activity;
 import android.chess.app8.R;
-import android.chess.visao.interfaces.ITabuleiro;
+import android.chess.visao.Mensageiro;
+import android.chess.visao.exceptions.InicializacaoException;
+import android.chess.visao.views.ITabuleiro;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.ViewGroup;
@@ -23,7 +25,11 @@ public class Main extends Activity {
 
         ViewGroup mainLayout = (ViewGroup) findViewById(R.id.mainLayout);
 
-        ((ITabuleiro) findViewById(R.id.tabuleiro)).init(mainLayout);
+        try {
+            ((ITabuleiro) findViewById(R.id.tabuleiro)).init(mainLayout);
+        } catch (InicializacaoException e) {
+            new Mensageiro(getApplicationContext()).erro(e);
+        }
     }
 
     @Override
