@@ -3,6 +3,8 @@
  */
 package android.chess.dominio.pecas.interfaces;
 
+import java.io.Serializable;
+
 import android.chess.dominio.Peca;
 import android.chess.dominio.events.handlers.IMovimentoHandler;
 import android.chess.dominio.events.handlers.ITomadaHandler;
@@ -16,7 +18,7 @@ import android.chess.dominio.interfaces.IJogada;
  *
  * @since 0.1
  */
-public interface IPeca {
+public interface IPeca extends Serializable {
     /**
      * @author augusteiner
      *

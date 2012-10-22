@@ -19,21 +19,13 @@ public class Rei extends Peca {
     /**
      *
      */
+    private static final long serialVersionUID = 4973169558150335781L;
+
+    /**
+     *
+     */
     public Rei(Cor cor) {
         super(cor);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.Peca#onTomada(android.chess.dominio.events.info
-     * .interfaces.ITomadaInfo)
-     */
-    @Override
-    protected void onTomada(ITomadaInfo evento) throws MovimentoException {
-
-        throw new TomadaException(evento.getOrig(), evento.getDest());
     }
 
     /*
@@ -48,6 +40,19 @@ public class Rei extends Peca {
 
         if (di > 1 || dj > 1)
             throw new MovimentoException(this, destI, destJ);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.Peca#onTomada(android.chess.dominio.events.info
+     * .interfaces.ITomadaInfo)
+     */
+    @Override
+    protected void onTomada(ITomadaInfo evento) throws MovimentoException {
+
+        throw new TomadaException(evento.getOrig(), evento.getDest());
     }
 
 }

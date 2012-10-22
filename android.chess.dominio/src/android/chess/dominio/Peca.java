@@ -32,8 +32,13 @@ public abstract class Peca implements IPeca {
 
     private boolean moveu;
 
-    private Event<ITomadaInfo> onTomada;
     private Event<IMovimentoInfo> onMovimento;
+
+    private Event<ITomadaInfo> onTomada;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 5587581021453027353L;
 
     /**
      * @param tabuleiro
@@ -72,17 +77,6 @@ public abstract class Peca implements IPeca {
         j = outra.getJ();
     }
 
-    /**
-     * @param destI
-     * @param destJ
-     */
-    protected void acionarMovimento(MovimentoInfo evento) {
-        onMovimento(evento);
-
-        setI(evento.getDestI());
-        setJ(evento.getDestJ());
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -94,6 +88,11 @@ public abstract class Peca implements IPeca {
     public void addOnMovimentoHandler(final IMovimentoHandler onMovimentoHandler) {
         onMovimento.addHandler(new IHandler<IMovimentoInfo>() {
 
+            /**
+             *
+             */
+            private static final long serialVersionUID = 1324757291254818261L;
+
             @Override
             public void handle(Object sender, IMovimentoInfo info)
                 throws Exception {
@@ -101,6 +100,7 @@ public abstract class Peca implements IPeca {
             }
         });
     }
+
     /*
      * (non-Javadoc)
      *
@@ -112,6 +112,11 @@ public abstract class Peca implements IPeca {
     public void addOnTomadaHandler(final ITomadaHandler onTomadaHandler) {
         onTomada.addHandler(new IHandler<ITomadaInfo>() {
 
+            /**
+             *
+             */
+            private static final long serialVersionUID = -1823497395502062889L;
+
             @Override
             public void handle(Object sender, ITomadaInfo info)
                 throws Exception {
@@ -119,7 +124,6 @@ public abstract class Peca implements IPeca {
             }
         });
     }
-
     /**
      * @return
      */
@@ -167,19 +171,6 @@ public abstract class Peca implements IPeca {
         return Tipo.valueOf(this.getClass().getSimpleName());
     }
 
-    /**
-     * Movimenta esta peça de acordo com o destino do movimento/jogada.
-     *
-     * @param jogada
-     *            Jogada guardando as informações de destino para esta peça.
-     *
-     * @throws ChessException
-     *             No caso do movimento não ser válido.
-     */
-    private void mover(IJogada jogada) throws ChessException {
-        mover(jogada.getDestI(), jogada.getDestJ());
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -194,24 +185,6 @@ public abstract class Peca implements IPeca {
         } else {
             mover(jogada);
         }
-    }
-
-    /**
-     * Move a peça da posição atual para a nova posição definida pelos pontos
-     * destI e destJ.
-     *
-     * @param destI
-     *
-     * @param destJ
-     *
-     * @throws ChessException
-     */
-    private final void mover(int destI, int destJ) throws ChessException {
-        validarJogada(destI, destJ);
-
-        moveu = true;
-
-        realizarMovimento(destI, destJ);
     }
 
     /**
@@ -268,6 +241,125 @@ public abstract class Peca implements IPeca {
         return getI() != destI && getJ() == destJ;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeca#setOnMovimentoHandler(android.
+     * chess.dominio.interfaces.handlers.IMovimentoHandler)
+     */
+    /**
+     * Altera a linha atual desta peça.
+     *
+     * @param i
+     *            Nova linha.
+     */
+    @Override
+    public void setI(int i) {
+        this.i = i;
+    }
+
+    /**
+     * Altera a coordenada y atual desta peça.
+     *
+     * @param j
+     *            Nova coordenada y.
+     */
+    @Override
+    public void setJ(int j) {
+        this.j = j;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("%s %s (%d:%d)",
+
+        this.getClass().getSimpleName(), this.getCor(),
+
+        this.getI(), this.getJ());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.chess.dominio.interfaces.IPeca#validar(android.chess.dominio.
+     * Jogada)
+     */
+    @Override
+    public final void validarJogada(IJogada jogada) throws ChessException {
+        validarJogada(jogada.getDestI(), jogada.getDestJ());
+    }
+
+    /**
+     * Movimenta esta peça de acordo com o destino do movimento/jogada.
+     *
+     * @param jogada
+     *            Jogada guardando as informações de destino para esta peça.
+     *
+     * @throws ChessException
+     *             No caso do movimento não ser válido.
+     */
+    private void mover(IJogada jogada) throws ChessException {
+        mover(jogada.getDestI(), jogada.getDestJ());
+    }
+
+    /**
+     * Move a peça da posição atual para a nova posição definida pelos pontos
+     * destI e destJ.
+     *
+     * @param destI
+     *
+     * @param destJ
+     *
+     * @throws ChessException
+     */
+    private final void mover(int destI, int destJ) throws ChessException {
+        validarJogada(destI, destJ);
+
+        moveu = true;
+
+        realizarMovimento(destI, destJ);
+    }
+
+    /**
+     * Valida a ação da tomada de outra peça de acordo com esta.
+     *
+     * @param outra
+     *
+     * @throws MovimentoException
+     */
+    private void tomar(Peca outra) throws ChessException {
+        if (getCor() == outra.getCor()) {
+            throw new MovimentoException(this, outra.i, outra.j);
+        } else {
+            validarTomada(outra);
+
+            TomadaInfo evento = new TomadaInfo(this, outra);
+
+            outra.onTomada(evento);
+            onMovimento(evento);
+
+            i = outra.i;
+            j = outra.j;
+        }
+    }
+    /**
+     * @param destI
+     * @param destJ
+     */
+    protected void acionarMovimento(MovimentoInfo evento) {
+        onMovimento(evento);
+
+        setI(evento.getDestI());
+        setJ(evento.getDestJ());
+    }
+
     /**
      * Pseudo evento a ser chamado após a posição da peça ser alterada.
      *
@@ -310,83 +402,6 @@ public abstract class Peca implements IPeca {
         MovimentoInfo evento = new MovimentoInfo(this, destI, destJ);
 
         acionarMovimento(evento);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.interfaces.IPeca#setOnMovimentoHandler(android.
-     * chess.dominio.interfaces.handlers.IMovimentoHandler)
-     */
-    /**
-     * Altera a linha atual desta peça.
-     *
-     * @param i
-     *            Nova linha.
-     */
-    @Override
-    public void setI(int i) {
-        this.i = i;
-    }
-    /**
-     * Altera a coordenada y atual desta peça.
-     *
-     * @param j
-     *            Nova coordenada y.
-     */
-    @Override
-    public void setJ(int j) {
-        this.j = j;
-    }
-
-    /**
-     * Valida a ação da tomada de outra peça de acordo com esta.
-     *
-     * @param outra
-     *
-     * @throws MovimentoException
-     */
-    private void tomar(Peca outra) throws ChessException {
-        if (getCor() == outra.getCor()) {
-            throw new MovimentoException(this, outra.i, outra.j);
-        } else {
-            validarTomada(outra);
-
-            TomadaInfo evento = new TomadaInfo(this, outra);
-
-            outra.onTomada(evento);
-            onMovimento(evento);
-
-            i = outra.i;
-            j = outra.j;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return String.format("%s %s (%d:%d)",
-
-        this.getClass().getSimpleName(), this.getCor(),
-
-        this.getI(), this.getJ());
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.chess.dominio.interfaces.IPeca#validar(android.chess.dominio.
-     * Jogada)
-     */
-    @Override
-    public final void validarJogada(IJogada jogada) throws ChessException {
-        validarJogada(jogada.getDestI(), jogada.getDestJ());
     }
 
     /**

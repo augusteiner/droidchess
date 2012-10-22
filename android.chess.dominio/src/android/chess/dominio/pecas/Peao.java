@@ -27,9 +27,13 @@ import android.chess.util.events.interfaces.IHandler;
  *
  */
 public class Peao extends Peca implements IPeao {
-    private int prevI;
     private IEvent<IPromocaoInfo> onAntesPromocao;
     private IEvent<IPromocaoInfo> onDepoisPromocao;
+    private int prevI;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -2896146436470948414L;
 
     /**
      * @param tabuleiro
@@ -55,6 +59,11 @@ public class Peao extends Peca implements IPeao {
     public void addOnAntesPromocaoHandler(final IAntesPromocaoHandler handler) {
         onAntesPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
+            /**
+             *
+             */
+            private static final long serialVersionUID = -148723678563964175L;
+
             @Override
             public void handle(Object sender, IPromocaoInfo info)
                 throws Exception {
@@ -74,6 +83,11 @@ public class Peao extends Peca implements IPeao {
     public void addOnDepoisPromocaoHandler(final IDepoisPromocaoHandler handler) {
         onDepoisPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
+            /**
+             *
+             */
+            private static final long serialVersionUID = 4226611616067756655L;
+
             @Override
             public void handle(Object sender, IPromocaoInfo info)
                 throws Exception {
@@ -81,31 +95,6 @@ public class Peao extends Peca implements IPeao {
             }
 
         });
-    }
-
-    /**
-     * Retorna o índice anterior inicial do movimento deste peão.
-     *
-     * @return
-     */
-    private int getInitialPreviousI() {
-        return 7 * abs(getCor().compareTo(Cor.Branca));
-    }
-
-    /**
-     * Verifica se a direção do movimento deste peão está conforme as regras de
-     * movimento do mesmo.
-     *
-     * @return True caso ok, False caso contrário.
-     */
-    private boolean isDirecaoOk(int destI) {
-        int pdi = getI() - prevI;
-
-        if (signum(pdi) > 0) {
-            return destI > getI();
-        } else {
-            return destI < getI();
-        }
     }
 
     /*
@@ -127,71 +116,6 @@ public class Peao extends Peca implements IPeao {
                 promocaoCallback());
 
             onAntesPromocao(info);
-        }
-    }
-
-    /**
-     * @param info
-     * @throws ChessException
-     */
-    protected void onAntesPromocao(IPromocaoInfo info) throws ChessException {
-        try {
-            onAntesPromocao.raise(info);
-        } catch (Exception e) {
-            throw new PromocaoException(this, e);
-        }
-    }
-
-    /**
-     * @param info
-     * @throws ChessException
-     */
-    protected void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
-        try {
-            onDepoisPromocao.raise(info);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @return
-     */
-    private ICallback<IPromocaoInfo> promocaoCallback() {
-        return new ICallback<IPromocaoInfo>() {
-            private boolean invoked = false;
-
-            @Override
-            public void invoke(IPromocaoInfo info) throws ChessException {
-
-                if (invoked)
-                    return;
-
-                info.setAlvo(promover(info.getTipoPromocao()));
-
-                onDepoisPromocao(info);
-
-                invoked = true;
-            }
-        };
-    }
-    /**
-     * @param tipo
-     * @return
-     * @throws MovimentoInvalidoException
-     */
-    protected IPeca promover(Tipo tipo) throws ChessException {
-        switch (tipo) {
-            case Bispo :
-                return new Bispo(this);
-            case Rainha :
-                return new Rainha(this);
-            case Cavalo :
-                return new Cavalo(this);
-            case Torre :
-                return new Torre(this);
-            default :
-                throw new PromocaoException(this);
         }
     }
 
@@ -223,6 +147,96 @@ public class Peao extends Peca implements IPeao {
 
         if (!ok)
             throw new MovimentoException(this, destI, destJ);
+    }
+
+    /**
+     * Retorna o índice anterior inicial do movimento deste peão.
+     *
+     * @return
+     */
+    private int getInitialPreviousI() {
+        return 7 * abs(getCor().compareTo(Cor.Branca));
+    }
+
+    /**
+     * Verifica se a direção do movimento deste peão está conforme as regras de
+     * movimento do mesmo.
+     *
+     * @return True caso ok, False caso contrário.
+     */
+    private boolean isDirecaoOk(int destI) {
+        int pdi = getI() - prevI;
+
+        if (signum(pdi) > 0) {
+            return destI > getI();
+        } else {
+            return destI < getI();
+        }
+    }
+
+    /**
+     * @return
+     */
+    private ICallback<IPromocaoInfo> promocaoCallback() {
+        return new ICallback<IPromocaoInfo>() {
+            private boolean invoked = false;
+
+            @Override
+            public void invoke(IPromocaoInfo info) throws ChessException {
+
+                if (invoked)
+                    return;
+
+                info.setAlvo(promover(info.getTipoPromocao()));
+
+                onDepoisPromocao(info);
+
+                invoked = true;
+            }
+        };
+    }
+
+    /**
+     * @param info
+     * @throws ChessException
+     */
+    protected void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+        try {
+            onAntesPromocao.raise(info);
+        } catch (Exception e) {
+            throw new PromocaoException(this, e);
+        }
+    }
+    /**
+     * @param info
+     * @throws ChessException
+     */
+    protected void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+        try {
+            onDepoisPromocao.raise(info);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param tipo
+     * @return
+     * @throws MovimentoInvalidoException
+     */
+    protected IPeca promover(Tipo tipo) throws ChessException {
+        switch (tipo) {
+            case Bispo :
+                return new Bispo(this);
+            case Rainha :
+                return new Rainha(this);
+            case Cavalo :
+                return new Cavalo(this);
+            case Torre :
+                return new Torre(this);
+            default :
+                throw new PromocaoException(this);
+        }
     }
 
     /*

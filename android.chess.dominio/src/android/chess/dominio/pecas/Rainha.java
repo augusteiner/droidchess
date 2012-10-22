@@ -14,6 +14,11 @@ import android.chess.dominio.excecao.MovimentoException;
 public class Rainha extends Peca {
 
     /**
+     *
+     */
+    private static final long serialVersionUID = 4303074241364116257L;
+
+    /**
      * @param tabuleiro
      * @param cor
      */

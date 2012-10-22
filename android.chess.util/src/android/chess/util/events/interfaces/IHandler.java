@@ -1,11 +1,13 @@
 package android.chess.util.events.interfaces;
 
+import java.io.Serializable;
+
 /**
  * Novo manipulador para a informação de um evento.
  *
  * @author augusteiner
  */
-public interface IHandler<I> {
+public interface IHandler<I> extends Serializable {
     /**
      * Manipula a informação repassada pelo evento.
      *

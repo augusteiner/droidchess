@@ -20,6 +20,30 @@ import android.chess.server.exceptions.RequisicaoException;
  */
 public class Servidor {
     /**
+     * @author augusteiner
+     *
+     */
+    private class ObjectStreams {
+        /**
+         *
+         */
+        private ObjectInputStream in;
+        /**
+         *
+         */
+        private ObjectOutputStream out;
+        /**
+         * @param client
+         */
+        public ObjectStreams(Socket client) {
+            // this.client = client;
+        }
+    }
+    /**
+     *
+     */
+    // private Hashtable<Integer, ObjectStreams> clients;
+    /**
      *
      * FIXME Colocar configurações em arquivo .xml?
      */
@@ -43,7 +67,7 @@ public class Servidor {
         try {
             socket = new ServerSocket(port);
         } catch (IOException e) {
-            System.err.println(e);
+            // e.printStackTrace();
         }
     }
     /**
@@ -108,12 +132,25 @@ public class Servidor {
     public void servir(Socket client) throws IOException,
         ClassNotFoundException, Exception {
 
-        ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+        ObjectStreams streams = new ObjectStreams(client);
 
-        Requisicao r = (Requisicao) in.readObject();
+        streams.in = new ObjectInputStream(client.getInputStream());
+        streams.out = new ObjectOutputStream(client.getOutputStream());
 
-        ObjectOutputStream out = new ObjectOutputStream(
-            client.getOutputStream());
+        while (true) {
+            continuarServindo(streams);
+        }
+    }
+    /**
+     * @param streams
+     * @throws ClassNotFoundException
+     * @throws IOException
+     * @throws Exception
+     */
+    private void continuarServindo(ObjectStreams streams) throws IOException,
+        ClassNotFoundException, Exception {
+
+        Requisicao r = (Requisicao) streams.in.readObject();
 
         Object response = null;
 
@@ -126,11 +163,11 @@ public class Servidor {
                 throw e;
         }
 
-        out.writeObject(response);
+        streams.out.writeObject(response);
 
         // in.close();
 
-        out.flush();
+        streams.out.flush();
         // out.close();
     }
     private Resposta responder(Jogador remetente, Jogador mensagem) {
@@ -152,6 +189,8 @@ public class Servidor {
                 return responder(r.getRemetente(), (Jogador) r.getMensagem());
             case JOGADA :
                 return responder((Jogada) r.getMensagem());
+            case DESCONECTAR :
+                System.exit(0);
             default :
                 throw new RequisicaoException(r);
         }

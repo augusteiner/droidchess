@@ -13,8 +13,14 @@ import android.chess.util.events.interfaces.IHandler;
  * @param <I>
  */
 public class Event<I> implements IEvent<I> {
-
+    /**
+     *
+     */
     private Queue<IHandler<I>> handlers;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8275369616912873426L;
 
     /**
      * @todo Possivelmente adicionar sender como argumento.
@@ -34,13 +40,6 @@ public class Event<I> implements IEvent<I> {
         getHandlers().add(handler);
     }
 
-    /**
-     * @return
-     */
-    protected Queue<IHandler<I>> getHandlers() {
-        return handlers;
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -51,5 +50,12 @@ public class Event<I> implements IEvent<I> {
         for (IHandler<I> handler : getHandlers()) {
             handler.handle(this, info);
         }
+    }
+
+    /**
+     * @return
+     */
+    protected Queue<IHandler<I>> getHandlers() {
+        return handlers;
     }
 }

@@ -17,7 +17,7 @@ import android.chess.server.impl.Servidor;
  * @author augusteiner
  *
  */
-public class Cliente {
+public final class Cliente {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
@@ -32,12 +32,13 @@ public class Cliente {
             socket = Servidor.novoSocket();
 
             out = new ObjectOutputStream(socket.getOutputStream());
+
+            // out.flush();
+
             in = new ObjectInputStream(socket.getInputStream());
-
         } catch (IOException e) {
-            System.err.println(e);
-
-            // System.exit(-1);
+            // e.printStackTrace();
+            // System.err.println(e);
         }
     }
     /**
@@ -54,6 +55,24 @@ public class Cliente {
         Resposta resposta = enviar(requisicao);
 
         return (Jogador) resposta.getMensagem();
+    }
+
+    /**
+     * @deprecated
+     *
+     * @todo Renomear método.
+     */
+    @Deprecated
+    public void dispose() {
+        try {
+            // out.flush();
+
+            in.close();
+
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -81,15 +100,12 @@ public class Cliente {
             out.flush();
 
             response = (Resposta) in.readObject();
-        } catch (IOException e) {
-            throw new RequisicaoException(requisicao, e);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             throw new RequisicaoException(requisicao, e);
         }
 
         return response;
     }
-
     /**
      * @return
      */

@@ -23,6 +23,10 @@ public class Requisicao implements Serializable {
          */
         CONVIDAR,
         /**
+         * Desconectar do jogo em andamento (ou do servidor).
+         */
+        DESCONECTAR,
+        /**
          * Nova jogada sendo requisitado por um jogador. O objeto
          * {@link #mensagem} desta requisição deve ser um objeto da classe
          * {@link Jogada} com seu jogador e origem/destino da peça a ser jogada.
@@ -55,6 +59,13 @@ public class Requisicao implements Serializable {
      *
      */
     private static final long serialVersionUID = -2193091130641718696L;
+
+    /**
+     * @param tipo
+     */
+    public Requisicao(Tipo tipo) {
+        this(tipo, null);
+    }
 
     /**
      * @param tipo

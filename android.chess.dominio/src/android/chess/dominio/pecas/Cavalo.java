@@ -15,6 +15,11 @@ import android.chess.dominio.excecao.MovimentoException;
 public class Cavalo extends Peca {
 
     /**
+     *
+     */
+    private static final long serialVersionUID = 7754639629981852787L;
+
+    /**
      * @param tabuleiro
      * @param cor
      */

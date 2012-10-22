@@ -14,6 +14,11 @@ import android.chess.dominio.excecao.MovimentoException;
 public class Torre extends Peca {
 
     /**
+     *
+     */
+    private static final long serialVersionUID = -2050588410243308221L;
+
+    /**
      * @param tabuleiro
      * @param cor
      */

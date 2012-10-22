@@ -26,8 +26,8 @@ public class PartidaControle extends Controle<IPartida> {
      * @todo Deve requisitar à aplicação servidora uma nova partida.
      * @todo Implementar escolha/convite de adversário.
      */
-    public PartidaControle() throws RequisicaoException {
-        super(Cliente.getInstancia().novaPartida());
+    public PartidaControle() {
+        super(null);
     }
 
     /**
@@ -59,5 +59,12 @@ public class PartidaControle extends Controle<IPartida> {
     public void mover(int origI, int origJ, int destI, int destJ)
         throws ChessException {
         partida.jogada(origI, origJ, destI, destJ);
+    }
+    /**
+     * @throws RequisicaoException
+     *
+     */
+    public void novaPartida() throws RequisicaoException {
+        super.controlado = Cliente.getInstancia().novaPartida();
     }
 }

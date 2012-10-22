@@ -1,7 +1,6 @@
 package android.chess;
 
 import android.chess.test.Cliente;
-import android.chess.test.Evento;
 import android.chess.test.Test;
 
 public class App {

@@ -14,6 +14,11 @@ import android.chess.dominio.excecao.MovimentoException;
 public class Bispo extends Peca {
 
     /**
+     *
+     */
+    private static final long serialVersionUID = 7006893619030472559L;
+
+    /**
      * @param tabuleiro
      * @param cor
      */
