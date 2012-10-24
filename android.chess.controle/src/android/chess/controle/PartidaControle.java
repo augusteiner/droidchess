@@ -1,6 +1,10 @@
 package android.chess.controle;
 
+<<<<<<< HEAD
 import android.chess.client.Cliente;
+=======
+import android.chess.client.ClienteFactory;
+>>>>>>> f788d73... Otimizados imports.
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
@@ -62,9 +66,8 @@ public class PartidaControle {
     }
     /**
      * @throws RequisicaoException
-     *
      */
     public void novaPartida() throws RequisicaoException {
-        partida = Cliente.getInstancia().novaPartida();
+        partida = Cliente.novaPartida();
     }
 }

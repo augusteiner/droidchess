@@ -1,0 +1,3 @@
+[submodule "android.chess.wiki"]
+	path = android.chess.wiki
+	url = git@bitbucket.org:augusteiner/android-chess.git/wiki

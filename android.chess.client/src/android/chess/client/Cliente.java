@@ -17,13 +17,29 @@ import android.chess.server.impl.Servidor;
  * @author augusteiner
  *
  */
-public final class Cliente {
+public class Cliente {
+    /**
+     * @author augusteiner
+     *
+     */
+    private static class Holder {
+        /**
+         *
+         */
+        private static final Cliente INSTANCIA = new Cliente();
+    }
+    /**
+     *
+     */
     private ObjectInputStream in;
+    /**
+     *
+     */
     private ObjectOutputStream out;
-
-    private Socket socket;
-    private static final Cliente instancia = new Cliente();
-
+    /**
+     *
+     */
+    protected Socket socket;
     /**
      *
      */
@@ -31,15 +47,19 @@ public final class Cliente {
         try {
             socket = Servidor.novoSocket();
 
-            out = new ObjectOutputStream(socket.getOutputStream());
-
-            // out.flush();
-
-            in = new ObjectInputStream(socket.getInputStream());
+            initStreams();
         } catch (IOException e) {
-            // e.printStackTrace();
-            // System.err.println(e);
+            e.printStackTrace();
+
+            System.exit(-1);
         }
+
+    }
+    /**
+     *
+     */
+    protected Cliente(boolean arg) {
+
     }
     /**
      * @return
@@ -67,26 +87,13 @@ public final class Cliente {
         try {
             // out.flush();
 
-            in.close();
+            getInstancia().in.close();
 
-            out.close();
+            getInstancia().out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    /**
-     * @return
-     * @throws Exception
-     * @throws ClassNotFoundException
-     * @throws IOException
-     */
-    public Partida novaPartida() throws RequisicaoException {
-        Resposta r = enviar(new Requisicao(Tipo.PARTIDA, null));
-
-        return (Partida) r.getMensagem();
-    }
-
     /**
      * @param requisicao
      * @return
@@ -96,20 +103,43 @@ public final class Cliente {
 
         Resposta response = null;
         try {
-            out.writeObject(requisicao);
-            out.flush();
+            getInstancia().out.writeObject(requisicao);
+            getInstancia().out.flush();
 
-            response = (Resposta) in.readObject();
+            response = (Resposta) getInstancia().in.readObject();
         } catch (Exception e) {
             throw new RequisicaoException(requisicao, e);
         }
 
         return response;
     }
+
+    /**
+     * @throws IOException
+     *
+     */
+    protected void initStreams() throws IOException {
+        out = new ObjectOutputStream(socket.getOutputStream());
+        in = new ObjectInputStream(socket.getInputStream());
+    }
+
+    /**
+     * Solicita ao servidor o início de uma partida.
+     *
+     * @return A partida iniciada pelo servidor.
+     *
+     * @throws RequisicaoException
+     *             Caso algum erro ocorra durante a requisição.
+     */
+    public static Partida novaPartida() throws RequisicaoException {
+        Resposta r = getInstancia().enviar(new Requisicao(Tipo.PARTIDA, null));
+
+        return (Partida) r.getMensagem();
+    }
     /**
      * @return
      */
-    public static Cliente getInstancia() {
-        return instancia;
+    private static Cliente getInstancia() {
+        return Holder.INSTANCIA;
     }
 }

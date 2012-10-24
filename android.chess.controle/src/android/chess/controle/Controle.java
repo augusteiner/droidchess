@@ -2,9 +2,12 @@ package android.chess.controle;
 
 /**
  * @author augusteiner
- * 
+ *
  * @param <T>
+ *
+ * @deprecated
  */
+@Deprecated
 public class Controle<T> {
     /**
      *

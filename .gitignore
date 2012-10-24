@@ -4,5 +4,7 @@
 *.dex
 *.ap_
 */bin/*
+*/doc/*
+tutorials/*
 .classpath
 .project

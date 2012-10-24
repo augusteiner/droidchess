@@ -106,7 +106,7 @@ public class Jogada extends Test {
      */
     private void novaPartida() {
         try {
-            partida = Cliente.getInstancia().novaPartida();
+            partida = Cliente.novaPartida();
         } catch (Exception e) {
             System.err.println(e);
 

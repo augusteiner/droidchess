@@ -3,6 +3,10 @@
  */
 package android.chess.dominio;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
@@ -15,7 +19,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
  * @author augusteiner
  *
  */
-public class Partida implements IPartida {
+public class Partida implements IPartida, Serializable {
     /**
      *
      */
@@ -23,7 +27,7 @@ public class Partida implements IPartida {
     /**
      *
      */
-    private ITabuleiro tabuleiro;
+    private transient ITabuleiro tabuleiro;
     /**
      *
      */
@@ -109,5 +113,20 @@ public class Partida implements IPartida {
 
         jogadores[0] = j1;
         jogadores[1] = j2;
+    }
+    /**
+     * Inicializa propriedades transientes (como o tabuleiro desta partida) afim
+     * de economizar networking.
+     *
+     * @param in
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream in) throws IOException,
+        ClassNotFoundException {
+        in.defaultReadObject();
+
+        tabuleiro = new Tabuleiro();
     }
 }

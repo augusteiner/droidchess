@@ -22,9 +22,9 @@ import android.widget.RelativeLayout.LayoutParams;
  */
 public class Peca extends android.chess.visao.views.PecaAbstrata {
 
+    private PathEffect dash;
     private Paint paint;
     private RectF rect;
-    private PathEffect dash;
 
     /**
      * @param context
@@ -64,47 +64,6 @@ public class Peca extends android.chess.visao.views.PecaAbstrata {
         return (LayoutParams) super.getLayoutParams();
     }
 
-    /**
-     *
-     */
-    private void initPeca() {
-        paint = new Paint();
-        dash = new DashPathEffect(new float[]{
-            8, 4
-        }, 10F);
-
-        rect = new RectF(0, 0 + 1, getLado() - 1, getLado() - 1);
-
-        setFocusableInTouchMode(true);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (isFocused()) {
-            paint.setColor(Color.argb(200, 0, 0, 255));
-            paint.setStyle(Style.STROKE);
-            paint.setPathEffect(dash);
-            paint.setStrokeWidth(5);
-
-            canvas.drawRect(rect, paint);
-        }
-
-        super.onDraw(canvas);
-    }
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onFocusChanged(boolean, int,
-     * android.graphics.Rect)
-     */
-    @Override
-    protected void onFocusChanged(boolean gainFocus, int direction,
-        Rect previouslyFocusedRect) {
-        invalidate();
-
-        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -122,6 +81,47 @@ public class Peca extends android.chess.visao.views.PecaAbstrata {
             default :
                 return super.onTouchEvent(event);
         }
+    }
+
+    /**
+     *
+     */
+    private void initPeca() {
+        paint = new Paint();
+        dash = new DashPathEffect(new float[]{
+            8, 4
+        }, 10F);
+
+        rect = new RectF(0, 0 + 1, getLado() - 1, getLado() - 1);
+
+        setFocusableInTouchMode(true);
+    }
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (isFocused()) {
+            paint.setColor(Color.argb(200, 255, 0, 0));
+            paint.setStyle(Style.STROKE);
+            paint.setPathEffect(dash);
+            paint.setStrokeWidth(5);
+
+            canvas.drawRect(rect, paint);
+        }
+
+        super.onDraw(canvas);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.View#onFocusChanged(boolean, int,
+     * android.graphics.Rect)
+     */
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction,
+        Rect previouslyFocusedRect) {
+        invalidate();
+
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     }
 
 }

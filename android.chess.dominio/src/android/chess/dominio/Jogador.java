@@ -16,6 +16,10 @@ public class Jogador implements Serializable {
      */
     private String nome;
     /**
+     *
+     */
+    private static final long serialVersionUID = 1949083620486065585L;
+    /**
      * @param nome
      */
     public Jogador(String nome) {
@@ -64,8 +68,4 @@ public class Jogador implements Serializable {
     public String toString() {
         return nome;
     }
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1949083620486065585L;
 }

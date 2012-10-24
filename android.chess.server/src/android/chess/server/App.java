@@ -15,7 +15,7 @@ public class App {
         try {
             Servidor.getInstancia().servir();
         } catch (Exception e) {
-            System.err.println(e.getStackTrace());
+            e.printStackTrace();
 
             System.exit(-1);
         }

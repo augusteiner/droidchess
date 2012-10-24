@@ -23,6 +23,16 @@ public class Servidor {
      * @author augusteiner
      *
      */
+    private static class Holder {
+        /**
+         *
+         */
+        private static final Servidor INSTANCIA = new Servidor();
+    }
+    /**
+     * @author augusteiner
+     *
+     */
     private class ObjectStreams {
         /**
          *
@@ -40,6 +50,10 @@ public class Servidor {
         }
     }
     /**
+     * Socket servidor associado a esta fachada.
+     */
+    protected ServerSocket socket;
+    /**
      *
      */
     // private Hashtable<Integer, ObjectStreams> clients;
@@ -47,19 +61,11 @@ public class Servidor {
      *
      * FIXME Colocar configurações em arquivo .xml?
      */
-    public static final String address = "10.0.2.2";
+    public static final String address = "127.0.0.1";
     /**
      *
      */
     public static final int port = 9666;
-    /**
-     *
-     */
-    private static final Servidor instancia = new Servidor();
-    /**
-     * Socket servidor associado a esta fachada.
-     */
-    private static ServerSocket socket;
     /**
      * @throws IOException
      */
@@ -67,8 +73,14 @@ public class Servidor {
         try {
             socket = new ServerSocket(port);
         } catch (IOException e) {
-            // e.printStackTrace();
+            e.printStackTrace();
         }
+    }
+    /**
+     * @param arg
+     */
+    protected Servidor(boolean arg) {
+
     }
     /**
      * Chama o método <code>ServerSocket.accept()</code> na instância singleton
@@ -83,7 +95,6 @@ public class Servidor {
     public Socket accept() throws IOException {
         return socket.accept();
     }
-
     /**
      * Calcula a resposta a uma jogada sendo requisitada.
      *
@@ -119,6 +130,7 @@ public class Servidor {
             new ServidorThread(this).start();
         }
     }
+
     /**
      * Serve conteúdo para um cliente conectado via o socket informado.
      *
@@ -170,6 +182,11 @@ public class Servidor {
         streams.out.flush();
         // out.close();
     }
+    /**
+     * @param remetente
+     * @param mensagem
+     * @return
+     */
     private Resposta responder(Jogador remetente, Jogador mensagem) {
         return new Resposta(null, new Partida(remetente, mensagem));
     }
@@ -197,9 +214,11 @@ public class Servidor {
     }
     /**
      * Retorna instância única associada a esta fachada.
+     *
+     * @return
      */
-    public static final Servidor getInstancia() {
-        return instancia;
+    public static Servidor getInstancia() {
+        return Holder.INSTANCIA;
     }
     /**
      * Cria um novo socket de comunicação com o socket servidor associado a esta
