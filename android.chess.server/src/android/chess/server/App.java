@@ -1,7 +1,5 @@
 package android.chess.server;
 
-import android.chess.server.impl.Servidor;
-
 /**
  * @author augusteiner
  *
@@ -13,7 +11,7 @@ public class App {
      */
     public static void main(String[] args) {
         try {
-            Servidor.getInstancia().servir();
+            ServidorFactory.getPadrao().servir();
         } catch (Exception e) {
             e.printStackTrace();
 

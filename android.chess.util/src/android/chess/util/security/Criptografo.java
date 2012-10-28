@@ -1,6 +1,5 @@
 package android.chess.util.security;
 
-
 public class Criptografo {
     /**
      * @param texto

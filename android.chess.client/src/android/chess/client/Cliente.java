@@ -5,8 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import android.chess.dominio.Jogador;
+import android.chess.dominio.Usuario;
 import android.chess.dominio.Partida;
+import android.chess.dominio.interfaces.ICredenciais;
+import android.chess.dominio.interfaces.IJogador;
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Requisicao.Tipo;
 import android.chess.server.comunicacao.Resposta;
@@ -43,7 +45,7 @@ public class Cliente {
     /**
      *
      */
-    private Cliente() {
+    public Cliente() {
         try {
             socket = Servidor.novoSocket();
 
@@ -62,21 +64,28 @@ public class Cliente {
 
     }
     /**
+     * @param credenciais
+     * @return
+     */
+    public IJogador autenticar(ICredenciais credenciais) {
+        return null;
+    }
+
+    /**
      * @return
      * @throws Exception
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    public Jogador cadastro() throws IOException, ClassNotFoundException,
+    public Usuario cadastro() throws IOException, ClassNotFoundException,
         Exception {
 
-        Requisicao requisicao = new Requisicao(Tipo.CADASTRO, new Jogador(
+        Requisicao requisicao = new Requisicao(Tipo.CADASTRO, new Usuario(
             "José Augusto"));
         Resposta resposta = enviar(requisicao);
 
-        return (Jogador) resposta.getMensagem();
+        return (Usuario) resposta.getMensagem();
     }
-
     /**
      * @deprecated
      *
@@ -94,6 +103,21 @@ public class Cliente {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Solicita ao servidor o início de uma partida.
+     *
+     * @return A partida iniciada pelo servidor.
+     *
+     * @throws RequisicaoException
+     *             Caso algum erro ocorra durante a requisição.
+     */
+    public Partida novaPartida() throws RequisicaoException {
+        Resposta r = getInstancia().enviar(new Requisicao(Tipo.PARTIDA, null));
+
+        return (Partida) r.getMensagem();
+    }
+
     /**
      * @param requisicao
      * @return
@@ -113,7 +137,6 @@ public class Cliente {
 
         return response;
     }
-
     /**
      * @throws IOException
      *
@@ -121,20 +144,6 @@ public class Cliente {
     protected void initStreams() throws IOException {
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
-    }
-
-    /**
-     * Solicita ao servidor o início de uma partida.
-     *
-     * @return A partida iniciada pelo servidor.
-     *
-     * @throws RequisicaoException
-     *             Caso algum erro ocorra durante a requisição.
-     */
-    public static Partida novaPartida() throws RequisicaoException {
-        Resposta r = getInstancia().enviar(new Requisicao(Tipo.PARTIDA, null));
-
-        return (Partida) r.getMensagem();
     }
     /**
      * @return

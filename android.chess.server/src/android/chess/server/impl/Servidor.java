@@ -7,9 +7,10 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import android.chess.dominio.Jogada;
-import android.chess.dominio.Jogador;
+import android.chess.dominio.Usuario;
 import android.chess.dominio.Partida;
+import android.chess.dominio.interfaces.ICredenciais;
+import android.chess.dominio.interfaces.IJogada;
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Resposta;
 import android.chess.server.exceptions.RequisicaoException;
@@ -61,7 +62,7 @@ public class Servidor {
      *
      * FIXME Colocar configurações em arquivo .xml?
      */
-    public static final String address = "127.0.0.1";
+    public static final String address = "10.0.2.2";
     /**
      *
      */
@@ -69,7 +70,7 @@ public class Servidor {
     /**
      * @throws IOException
      */
-    private Servidor() {
+    public Servidor() {
         try {
             socket = new ServerSocket(port);
         } catch (IOException e) {
@@ -96,18 +97,6 @@ public class Servidor {
         return socket.accept();
     }
     /**
-     * Calcula a resposta a uma jogada sendo requisitada.
-     *
-     * @param requisicao
-     *
-     * @param jogada
-     * @return
-     */
-    public Resposta responder(Jogada jogada) {
-        return new Resposta(null, jogada);
-    }
-
-    /**
      * Calcula a resposta a um cadastro de jogador/usuário sendo requisitado.
      *
      * @param requisicao
@@ -115,8 +104,21 @@ public class Servidor {
      * @param jogador
      * @return
      */
-    public Resposta responder(Jogador jogador) {
-        return new Resposta(jogador, jogador);
+    public Resposta responder(ICredenciais credenciais) {
+        return null;
+        // return new Resposta(jogador, jogador);
+    }
+
+    /**
+     * Calcula a resposta a uma jogada sendo requisitada.
+     *
+     * @param requisicao
+     *
+     * @param jogada
+     * @return
+     */
+    public Resposta responder(IJogada jogada) {
+        return new Resposta(null, jogada);
     }
 
     /**
@@ -187,7 +189,7 @@ public class Servidor {
      * @param mensagem
      * @return
      */
-    private Resposta responder(Jogador remetente, Jogador mensagem) {
+    private Resposta responder(Usuario remetente, Usuario mensagem) {
         return new Resposta(null, new Partida(remetente, mensagem));
     }
     /**
@@ -201,11 +203,11 @@ public class Servidor {
     private Resposta responder(Requisicao r) throws RequisicaoException {
         switch (r.getTipo()) {
             case CADASTRO :
-                return responder((Jogador) r.getMensagem());
+                return responder((ICredenciais) r.getMensagem());
             case PARTIDA :
-                return responder(r.getRemetente(), (Jogador) r.getMensagem());
+                return responder(r.getRemetente(), (Usuario) r.getMensagem());
             case JOGADA :
-                return responder((Jogada) r.getMensagem());
+                return responder((IJogada) r.getMensagem());
             case DESCONECTAR :
                 System.exit(0);
             default :

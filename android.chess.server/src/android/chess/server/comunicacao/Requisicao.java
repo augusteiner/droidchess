@@ -3,7 +3,7 @@ package android.chess.server.comunicacao;
 import java.io.Serializable;
 
 import android.chess.dominio.Jogada;
-import android.chess.dominio.Jogador;
+import android.chess.dominio.Usuario;
 
 /**
  * @author augusteiner
@@ -45,10 +45,10 @@ public class Requisicao implements Serializable {
     private Object mensagem;
 
     /**
-     * {@link Jogador} que está requisitando ao servidor alguma ação. Deve ser
+     * {@link Usuario} que está requisitando ao servidor alguma ação. Deve ser
      * <code>null</code> no caso de cadastro de um novo jogador.
      */
-    private Jogador remetente;
+    private Usuario remetente;
 
     /**
      * Tipo da requisição a ser disparada.
@@ -86,7 +86,7 @@ public class Requisicao implements Serializable {
     /**
      * @return
      */
-    public Jogador getRemetente() {
+    public Usuario getRemetente() {
         return remetente;
     }
 

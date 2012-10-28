@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.Iterator;
 
 import android.chess.client.Cliente;
+import android.chess.client.ClienteFactory;
 import android.chess.dominio.Partida;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
@@ -106,7 +107,7 @@ public class Jogada extends Test {
      */
     private void novaPartida() {
         try {
-            partida = Cliente.novaPartida();
+            partida = ClienteFactory.getPadrao().novaPartida();
         } catch (Exception e) {
             System.err.println(e);
 

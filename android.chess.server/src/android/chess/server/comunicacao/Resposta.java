@@ -5,7 +5,7 @@ package android.chess.server.comunicacao;
 
 import java.io.Serializable;
 
-import android.chess.dominio.Jogador;
+import android.chess.dominio.Usuario;
 
 /**
  * Resposta enviada pelo servidor a um cliente conectado.
@@ -17,7 +17,7 @@ public class Resposta implements Serializable {
     /**
      * Destinatário da resposta do servidor.
      */
-    private Jogador destinatario;
+    private Usuario destinatario;
     /**
      * Conteúdo a ser enviado ao {@link #destinatario} pelo servidor.
      */
@@ -26,7 +26,7 @@ public class Resposta implements Serializable {
     /**
      * @param destinatario
      */
-    public Resposta(Jogador destinatario) {
+    public Resposta(Usuario destinatario) {
         this(destinatario, null);
     }
     /**
@@ -34,14 +34,14 @@ public class Resposta implements Serializable {
      *
      * @param mensagem
      */
-    public Resposta(Jogador destinatario, Object mensagem) {
+    public Resposta(Usuario destinatario, Object mensagem) {
         this.destinatario = destinatario;
         this.mensagem = mensagem;
     }
     /**
      * @return O destinatário desta resposta.
      */
-    public Jogador getDestinatario() {
+    public Usuario getDestinatario() {
         return destinatario;
     }
 

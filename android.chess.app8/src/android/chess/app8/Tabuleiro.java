@@ -57,7 +57,6 @@ public class Tabuleiro extends TabuleiroAbstrato
      * android.view.View.OnFocusChangeListener#onFocusChange(android.view.View,
      * boolean)
      */
-    @Override
     public void onFocusChange(View nextView, boolean hasFocus) {
         if (hasFocus && nextView instanceof Peca) {
             if (prevView == null
@@ -150,7 +149,7 @@ public class Tabuleiro extends TabuleiroAbstrato
      * android.chess.visao.Tabuleiro#iniPeca(android.chess.visao.PecaAbstrata)
      */
     @Override
-    protected void iniPeca(PecaAbstrata peca) {
+    protected void initPeca(PecaAbstrata peca) {
         peca.setOnFocusChangeListener(this);
     }
 

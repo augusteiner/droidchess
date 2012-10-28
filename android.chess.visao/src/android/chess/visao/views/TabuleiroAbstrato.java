@@ -175,7 +175,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      *
      * @param peca
      */
-    protected void iniPeca(PecaAbstrata peca) {
+    protected void initPeca(PecaAbstrata peca) {
         // do nothing.
     }
 
@@ -194,7 +194,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
         while (pecas.hasNext()) {
             peca = this.novaPeca(context);
-            this.iniPeca(peca);
+            this.initPeca(peca);
 
             next = pecas.next();
             peca.setTag(next);

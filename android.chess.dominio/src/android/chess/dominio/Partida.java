@@ -23,7 +23,7 @@ public class Partida implements IPartida, Serializable {
     /**
      *
      */
-    private Jogador[] jogadores;
+    private Usuario[] jogadores;
     /**
      *
      */
@@ -36,7 +36,7 @@ public class Partida implements IPartida, Serializable {
      * @param j1
      * @param j2
      */
-    public Partida(Jogador j1, Jogador j2) {
+    public Partida(Usuario j1, Usuario j2) {
         tabuleiro = new Tabuleiro();
 
         initJogadores(j1, j2);
@@ -46,8 +46,7 @@ public class Partida implements IPartida, Serializable {
      *
      */
     Partida() {
-        this(new Jogador("Jogador de teste #1"), new Jogador(
-            "Jogador de teste #2"));
+        this(new Usuario(), new Usuario());
 
         tabuleiro = new Tabuleiro();
     }
@@ -55,7 +54,7 @@ public class Partida implements IPartida, Serializable {
     /**
      * @return
      */
-    public Jogador[] getJogadores() {
+    public Usuario[] getJogadores() {
         return jogadores;
     }
 
@@ -108,8 +107,8 @@ public class Partida implements IPartida, Serializable {
     /**
      *
      */
-    private void initJogadores(Jogador j1, Jogador j2) {
-        jogadores = new Jogador[2];
+    private void initJogadores(Usuario j1, Usuario j2) {
+        jogadores = new Usuario[2];
 
         jogadores[0] = j1;
         jogadores[1] = j2;
