@@ -31,8 +31,8 @@ public class PartidaControle extends Controle<IPartida> {
      * @todo Deve requisitar à aplicação servidora uma nova partida.
      * @todo Implementar escolha/convite de adversário.
      */
-    public PartidaControle(JogadorControle controle) {
-        this.jogador = controle.getControlado();
+    public PartidaControle() {
+        jogador = ClienteFactory.getPadrao().getUsuario();
     }
     /*
      * (non-Javadoc)

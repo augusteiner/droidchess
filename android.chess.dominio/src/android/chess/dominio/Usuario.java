@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IJogador;
+import android.chess.dominio.interfaces.IUsuario;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
  *
  */
-public class Usuario implements Serializable, IJogador {
+public class Usuario implements Serializable, IUsuario, IJogador {
     private Cor cor;
     /**
      *
@@ -59,6 +60,7 @@ public class Usuario implements Serializable, IJogador {
     public ICredenciais getCredenciais() {
         return credenciais;
     }
+    @Override
     public String getEmail() {
         return email;
     }

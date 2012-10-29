@@ -60,7 +60,7 @@ public class Tabuleiro extends TabuleiroAbstrato
     public void onFocusChange(View nextView, boolean hasFocus) {
         if (hasFocus && nextView instanceof Peca) {
             if (prevView == null
-                || controle.getTurno() == ((Peca) nextView).getPeca().getCor()) {
+                || partidaCtrl.getTurno() == ((Peca) nextView).getPeca().getCor()) {
                 prevView = (Peca) nextView;
             } else {
                 prevView.requestFocus();
@@ -116,7 +116,7 @@ public class Tabuleiro extends TabuleiroAbstrato
         IPeca peca = vPeca.getPeca();
 
         try {
-            controle.mover(peca.getI(), peca.getJ(), destI, destJ);
+            partidaCtrl.mover(peca.getI(), peca.getJ(), destI, destJ);
 
             vPeca.setSelected(false);
 

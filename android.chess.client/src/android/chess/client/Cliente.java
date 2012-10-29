@@ -5,10 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import android.chess.dominio.Usuario;
 import android.chess.dominio.Partida;
+import android.chess.dominio.Usuario;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IJogador;
+import android.chess.dominio.interfaces.IUsuario;
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Requisicao.Tipo;
 import android.chess.server.comunicacao.Resposta;
@@ -77,11 +78,9 @@ public class Cliente {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    public Usuario cadastro() throws IOException, ClassNotFoundException,
-        Exception {
+    public Usuario cadastro(IUsuario usuario) throws RequisicaoException {
 
-        Requisicao requisicao = new Requisicao(Tipo.CADASTRO, new Usuario(
-            "José Augusto"));
+        Requisicao requisicao = new Requisicao(Tipo.CADASTRO, usuario);
         Resposta resposta = enviar(requisicao);
 
         return (Usuario) resposta.getMensagem();
@@ -105,6 +104,15 @@ public class Cliente {
     }
 
     /**
+     * Retorna o jogador autenticado atualmente.
+     *
+     * @return
+     */
+    public IJogador getUsuario() {
+        return null;
+    }
+
+    /**
      * Solicita ao servidor o início de uma partida.
      *
      * @return A partida iniciada pelo servidor.
@@ -117,7 +125,6 @@ public class Cliente {
 
         return (Partida) r.getMensagem();
     }
-
     /**
      * @param requisicao
      * @return

@@ -1,7 +1,7 @@
 package android.chess.test;
 
-import android.chess.controle.JogadorControle;
 import android.chess.controle.PartidaControle;
+import android.chess.controle.UsuarioControle;
 
 /**
  * @author augusteiner
@@ -21,10 +21,10 @@ public class Cliente extends Test {
      */
     @Override
     public void run() throws Exception {
-        JogadorControle jogadaCtrl = new JogadorControle();
+        UsuarioControle jogadaCtrl = new UsuarioControle();
         jogadaCtrl.autenticar("dev", "123456");
 
-        PartidaControle partidaCtrl = new PartidaControle(jogadaCtrl);
+        PartidaControle partidaCtrl = new PartidaControle();
 
         partidaCtrl.novaPartida();
     }

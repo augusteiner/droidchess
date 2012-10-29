@@ -97,7 +97,7 @@ public class Tabuleiro extends TabuleiroAbstrato {
                 try {
                     IPeca peca = (IPeca) vPeca.getTag();
 
-                    controle.mover(peca.getI(), peca.getJ(), destI, destJ);
+                    partidaCtrl.mover(peca.getI(), peca.getJ(), destI, destJ);
                 } catch (MovimentoException e) {
                     throw e;
                 }

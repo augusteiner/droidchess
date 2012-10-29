@@ -39,9 +39,9 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     // private Peca peca;
     private Rect placeRect;
     protected ViewGroup contentView;
-    // private static final String TAG = Tabuleiro.class.getSimpleName();
-    protected PartidaControle controle;
     protected Mensageiro mensageiro;
+    // private static final String TAG = Tabuleiro.class.getSimpleName();
+    protected PartidaControle partidaCtrl;
     /**
      *
      */
@@ -102,7 +102,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
         Runnable r = new Runnable() {
             public void run() {
                 try {
-                    controle.novaPartida();
+                    partidaCtrl.novaPartida();
                 } catch (RequisicaoException e) {
                     e.printStackTrace();
 
@@ -161,7 +161,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      */
     private void init() {
         mensageiro = new Mensageiro(getContext());
-        controle = new PartidaControle();
+        partidaCtrl = new PartidaControle();
 
         placeRect = new Rect();
         paint = new Paint();
@@ -184,7 +184,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      *
      */
     protected void initPecas() {
-        Iterator<IPeca> pecas = controle.getTabuleiro().getPecas();
+        Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
         IPeca next = null;
         Context context = getContext();
 

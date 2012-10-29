@@ -2,6 +2,7 @@ package android.chess.controle;
 
 import android.chess.client.ClienteFactory;
 import android.chess.dominio.Credenciais;
+import android.chess.dominio.Usuario;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IJogador;
 import android.chess.server.exceptions.RequisicaoException;
@@ -10,7 +11,7 @@ import android.chess.server.exceptions.RequisicaoException;
  * @author augusteiner
  *
  */
-public class JogadorControle extends Controle<IJogador> {
+public class UsuarioControle extends Controle<IJogador> {
     /**
      *
      */
@@ -18,7 +19,7 @@ public class JogadorControle extends Controle<IJogador> {
     /**
      *
      */
-    public JogadorControle() {
+    public UsuarioControle() {
         jogador = null;
     }
     /**
@@ -30,11 +31,15 @@ public class JogadorControle extends Controle<IJogador> {
     }
     /**
      * @return
+     *
+     * @throws RequisicaoException
      */
-    public IJogador cadastro(String usuario, String senha, String email, String nome) throws RequisicaoException {
+    public IJogador cadastro(String usuario, String senha, String email,
+        String nome) throws RequisicaoException {
         ICredenciais cred = new Credenciais(usuario, senha);
 
-        return ClienteFactory.getPadrao().cadastro(new Usuario(cred, email, nome));
+        return ClienteFactory.getPadrao().cadastro(
+            new Usuario(cred, email, nome));
     }
     /*
      * (non-Javadoc)
