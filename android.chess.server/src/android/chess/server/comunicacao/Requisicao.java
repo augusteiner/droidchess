@@ -13,6 +13,10 @@ public class Requisicao implements Serializable {
 
     public enum Tipo {
         /**
+         *
+         */
+        AUTENTICAR,
+        /**
          * Novo cadastro de um usuário. Objeto {@link #mensagem} deve ser
          * instância de {@link Jogador}.
          */
@@ -36,7 +40,7 @@ public class Requisicao implements Serializable {
          * Nova partida a ser iniciada. Objeto {@link #mensagem} deve ser o id
          * do outro jogador a ser convidado para uma partida.
          */
-        PARTIDA,
+        PARTIDA;
     }
 
     /**

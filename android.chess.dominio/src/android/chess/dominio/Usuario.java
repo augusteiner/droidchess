@@ -57,9 +57,17 @@ public class Usuario implements Serializable, IUsuario, IJogador {
     public Cor getCor() {
         return cor;
     }
+    /**
+     * @return
+     */
     public ICredenciais getCredenciais() {
         return credenciais;
     }
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.chess.dominio.interfaces.IUsuario#getEmail()
+     */
     @Override
     public String getEmail() {
         return email;
@@ -86,12 +94,27 @@ public class Usuario implements Serializable, IUsuario, IJogador {
     public int hashCode() {
         return super.hashCode();
     }
+    /**
+     * @param cor
+     */
+    public void setCor(Cor cor) {
+        this.cor = cor;
+    }
+    /**
+     * @param credenciais
+     */
     public void setCredenciais(ICredenciais credenciais) {
         this.credenciais = credenciais;
     }
+    /**
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
+    /**
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }

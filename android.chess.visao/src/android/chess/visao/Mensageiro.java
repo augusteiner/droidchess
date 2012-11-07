@@ -55,7 +55,7 @@ public class Mensageiro extends Toast {
      * @param duracao
      */
     public void erro(CharSequence mensagem, int duracao) {
-        makeText(String.format("ERRO!\n\n%s.", mensagem), duracao);
+        makeText(String.format("ERRO!\n\n%s", mensagem), duracao);
     }
 
     /**

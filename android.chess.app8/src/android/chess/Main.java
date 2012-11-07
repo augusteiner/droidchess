@@ -11,8 +11,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+/**
+ * @author augusteiner
+ *
+ */
 public class Main extends Activity {
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +41,11 @@ public class Main extends Activity {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);

@@ -2,6 +2,7 @@ package android.chess.dominio;
 
 import static java.lang.Math.abs;
 
+import java.io.PrintStream;
 import java.util.Iterator;
 
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
@@ -68,6 +69,7 @@ public class Tabuleiro
     /**
      * @return
      */
+    @Override
     public Iterator<IPeca> getMatrizPecas() {
         return new MatrixIterator<IPeca>(pecas);
     }
@@ -78,6 +80,7 @@ public class Tabuleiro
      *
      * @return {@link Iterator} para as peças deste tabuleiro.
      */
+    @Override
     public Iterator<IPeca> getPecas() {
         return new PecaIterator(pecas);
     }
@@ -85,6 +88,7 @@ public class Tabuleiro
     /**
      * @return
      */
+    @Override
     public Cor getTurno() {
         return atual;
     }
@@ -108,6 +112,7 @@ public class Tabuleiro
      *
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
      */
+    @Override
     public void mover(IJogada jogada) throws ChessException {
         IPeca peca = peca(jogada);
 
@@ -186,6 +191,29 @@ public class Tabuleiro
     @Override
     public void onTomada(ITomadaInfo evento) throws MovimentoException {
 
+    }
+
+    @Override
+    public void print(PrintStream ps) {
+        Iterator<IPeca> pecas = getMatrizPecas();
+        IPeca peca = null;
+
+        for (int i = 0, j; i < 8; i++) {
+            ps.print("\n|");
+
+            for (j = 0; j < 8; j++) {
+                peca = pecas.next();
+
+                if (peca != null) {
+                    ps.print(peca.getClass().getSimpleName().substring(0, 2));
+                    ps.flush();
+                } else {
+                    ps.print("  ");
+                }
+
+                ps.print("|");
+            }
+        }
     }
 
     /**
@@ -325,34 +353,14 @@ public class Tabuleiro
 
         return pecas[i][j];
     }
-
     /**
      * Valida o movimento desta peça de acordo com as coordenadas de destino
      * informadas e realiza o movimento da mesma.
      *
      * @param jogada
-     *
-     * @throws MovimentoInvalido
+     *            Jogada em questão.
      *
      * @todo Adicionar suporte a jogadas especiais.
-     */
-    /**
-     * Realiza operações para realizar o movimento de uma peça da jogada neste
-     * tabuleiro.
-     *
-     * @param jogada
-     *            Jogada em questão.
-     * @throws PecaNaoEncontrada
-     *
-     * @throws MovimentoInvalido
-     *             Caso o movimento da peça não seja válido.
-     *
-     * @throws JogadaInvalida
-     *             Caso a jogada em questão não seja válida.
-     */
-    /**
-     * @param jogada
-     * @throws ChessException
      */
     private void realizar(IJogada jogada) throws ChessException {
         IPeca peca;

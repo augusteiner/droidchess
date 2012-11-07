@@ -3,6 +3,7 @@
  */
 package android.chess.dominio.interfaces;
 
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Iterator;
 
@@ -31,4 +32,8 @@ public interface ITabuleiro extends Serializable {
      * @param jogada
      */
     void mover(IJogada jogada) throws ChessException;
+    /**
+     * @param ps
+     */
+    void print(PrintStream ps);
 }

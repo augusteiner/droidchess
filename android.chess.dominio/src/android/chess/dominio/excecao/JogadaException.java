@@ -6,11 +6,11 @@ package android.chess.dominio.excecao;
 import android.chess.dominio.interfaces.IJogada;
 
 /**
- * @author augusteiner
+ * Exceção a ser lançada caso a jogada em questão não seja válida.
  *
+ * @author augusteiner
  */
 public class JogadaException extends MovimentoException {
-
     /**
      *
      */

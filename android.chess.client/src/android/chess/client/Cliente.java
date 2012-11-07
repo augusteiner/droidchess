@@ -8,7 +8,7 @@ import java.net.Socket;
 import android.chess.dominio.Partida;
 import android.chess.dominio.Usuario;
 import android.chess.dominio.interfaces.ICredenciais;
-import android.chess.dominio.interfaces.IJogador;
+import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.IUsuario;
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Requisicao.Tipo;
@@ -40,6 +40,10 @@ public class Cliente {
      */
     private ObjectOutputStream out;
     /**
+     * Usuário autenticado na sessão.
+     */
+    private Usuario usuario;
+    /**
      *
      */
     protected Socket socket;
@@ -67,9 +71,14 @@ public class Cliente {
     /**
      * @param credenciais
      * @return
+     * @throws RequisicaoException
      */
-    public IJogador autenticar(ICredenciais credenciais) {
-        return null;
+    public void autenticar(ICredenciais credenciais) throws RequisicaoException {
+
+        Resposta r = getInstancia().enviar(
+            new Requisicao(Tipo.AUTENTICAR, credenciais));
+
+        usuario = (Usuario) r.getMensagem();
     }
 
     /**
@@ -108,10 +117,9 @@ public class Cliente {
      *
      * @return
      */
-    public IJogador getUsuario() {
-        return null;
+    public Usuario getUsuario() {
+        return usuario;
     }
-
     /**
      * Solicita ao servidor o início de uma partida.
      *
@@ -120,7 +128,7 @@ public class Cliente {
      * @throws RequisicaoException
      *             Caso algum erro ocorra durante a requisição.
      */
-    public Partida novaPartida() throws RequisicaoException {
+    public IPartida novaPartida() throws RequisicaoException {
         Resposta r = getInstancia().enviar(new Requisicao(Tipo.PARTIDA, null));
 
         return (Partida) r.getMensagem();

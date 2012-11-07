@@ -6,12 +6,12 @@ import static java.lang.Math.min;
 import java.util.Iterator;
 
 import android.chess.controle.PartidaControle;
+import android.chess.controle.exceptions.ExecucaoException;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
-import android.chess.server.exceptions.RequisicaoException;
 import android.chess.visao.Mensageiro;
 import android.chess.visao.exceptions.InicializacaoException;
 import android.content.Context;
@@ -53,7 +53,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     public TabuleiroAbstrato(Context context) {
         super(context);
 
-        init();
+        initPrivate();
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     public TabuleiroAbstrato(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        init();
+        initPrivate();
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     public TabuleiroAbstrato(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        init();
+        initPrivate();
     }
 
     /**
@@ -99,25 +99,12 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     public void init(ViewGroup contentView) throws InicializacaoException {
         this.contentView = contentView;
 
-        Runnable r = new Runnable() {
-            public void run() {
-                try {
-                    partidaCtrl.novaPartida();
-                } catch (RequisicaoException e) {
-                    e.printStackTrace();
-
-                    // mensageiro.erro(e);
-                }
-            }
-        };
-
-        Thread t = new Thread(r);
-        t.start();
-
         try {
-            t.join();
-        } catch (InterruptedException e) {
+            partidaCtrl.novaPartida();
+        } catch (ExecucaoException e) {
             mensageiro.erro(e);
+
+            return;
         }
 
         contentView.removeAllViews();
@@ -159,9 +146,16 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     /**
      *
      */
-    private void init() {
+    private void initPrivate() {
         mensageiro = new Mensageiro(getContext());
-        partidaCtrl = new PartidaControle();
+
+        try {
+            partidaCtrl = new PartidaControle();
+        } catch (Exception e) {
+            mensageiro.erro(e);
+
+            return;
+        }
 
         placeRect = new Rect();
         paint = new Paint();

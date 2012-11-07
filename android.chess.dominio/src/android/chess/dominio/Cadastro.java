@@ -10,8 +10,18 @@ import android.chess.dominio.interfaces.ICadastro;
  *
  */
 public class Cadastro extends Credenciais implements ICadastro {
+    /**
+     *
+     */
     private String email;
+    /**
+     *
+     */
     private String nome;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4670360113093930116L;
     /**
      * @param login
      * @param senha

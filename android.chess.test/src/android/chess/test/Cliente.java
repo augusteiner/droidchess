@@ -27,5 +27,7 @@ public class Cliente extends Test {
         PartidaControle partidaCtrl = new PartidaControle();
 
         partidaCtrl.novaPartida();
+
+        partidaCtrl.getTabuleiro().print(System.out);
     }
 }

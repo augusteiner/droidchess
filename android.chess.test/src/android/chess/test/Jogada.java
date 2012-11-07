@@ -1,16 +1,10 @@
 package android.chess.test;
 
-import java.io.PrintStream;
-import java.util.Iterator;
-
-import android.chess.client.Cliente;
 import android.chess.client.ClienteFactory;
-import android.chess.dominio.Partida;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
-import android.chess.dominio.pecas.interfaces.IPeca;
-import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
@@ -18,13 +12,13 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
  */
 @SuppressWarnings("unused")
 public class Jogada extends Test {
-    private Partida partida;
+    private IPartida partida;
 
     /**
      *
      * @return
      */
-    public Partida getPartida() {
+    public IPartida getPartida() {
         return partida;
     }
 
@@ -40,7 +34,7 @@ public class Jogada extends Test {
      */
     public void jogada(int origI, int origJ, int destI, int destJ)
         throws ChessException {
-        Partida p = getPartida();
+        IPartida p = getPartida();
 
         p.jogada(origI, origJ, destI, destJ);
 
@@ -65,7 +59,6 @@ public class Jogada extends Test {
         // promocao();
         tomadaInvalida();
     }
-
     /**
      * Testa jogadas com um bispo.
      *
@@ -82,7 +75,6 @@ public class Jogada extends Test {
         // Movendo o bispo.
         jogada(0, 5, 2, 7);
     }
-
     /**
      * Testa jogadas com um cavalo.
      *
@@ -101,7 +93,6 @@ public class Jogada extends Test {
 
         System.out.println("OK!");
     }
-
     /**
      * Partida do zero para reinicializar posições possivelmente alteradas.
      */
@@ -142,7 +133,6 @@ public class Jogada extends Test {
     private void print() {
         print(getPartida().getTabuleiro());
     }
-
     /**
      * Imprime uma representação gráfica do tabuleiro dado.
      *
@@ -150,36 +140,8 @@ public class Jogada extends Test {
      *            Tabuleiro a ser impresso.
      */
     private void print(ITabuleiro tabuleiro) {
-        Iterator<IPeca> pecas = tabuleiro.getMatrizPecas();
-        IPeca peca = null;
-
-        PrintStream ps = System.out;
-        for (int i = 0, j; i < 8; i++) {
-            ps.print("\n|");
-
-            for (j = 0; j < 8; j++) {
-                peca = pecas.next();
-
-                if (peca != null) {
-                    if (peca.getCor() == Cor.Branca) {
-                        ps = System.out;
-                    } else {
-                        ps = System.err;
-                    }
-
-                    ps.print(peca.getClass().getSimpleName().substring(0, 2));
-                    ps.flush();
-                } else {
-                    ps.print("  ");
-                }
-
-                ps.print("|");
-            }
-        }
-
-        System.out.println("\n");
+        tabuleiro.print(System.out);
     }
-
     /**
      * @throws ChessException
      */

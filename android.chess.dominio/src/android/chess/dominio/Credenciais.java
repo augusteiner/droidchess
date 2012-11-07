@@ -21,6 +21,10 @@ public class Credenciais implements ICredenciais {
     /**
      *
      */
+    private static final long serialVersionUID = -2191215794779028045L;
+    /**
+     *
+     */
     public Credenciais(String login, String senha) {
         this.login = login;
         this.senha = senha;
@@ -42,5 +46,14 @@ public class Credenciais implements ICredenciais {
     @Override
     public String getSenha() {
         return senha;
+    }
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("Login: %s, senha: %s", login, senha);
     }
 }

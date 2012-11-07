@@ -1,9 +1,10 @@
 package android.chess.controle;
 
 import android.chess.client.ClienteFactory;
+import android.chess.controle.exceptions.ExecucaoException;
+import android.chess.dominio.Usuario;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.TurnoException;
-import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
@@ -17,13 +18,14 @@ public class PartidaControle extends Controle<IPartida> {
     /**
      *
      */
-    private IJogador jogador;
-    /**
-     *
-     */
     private IPartida partida;
     /**
      *
+     */
+    protected Usuario jogador;
+    /**
+     *
+     * @throws ExecucaoException
      * @throws RequisicaoException
      *
      * @todo Adicionar jogadores como parametro.
@@ -31,8 +33,15 @@ public class PartidaControle extends Controle<IPartida> {
      * @todo Deve requisitar à aplicação servidora uma nova partida.
      * @todo Implementar escolha/convite de adversário.
      */
-    public PartidaControle() {
-        jogador = ClienteFactory.getPadrao().getUsuario();
+    public PartidaControle() throws ExecucaoException {
+        AcaoThread r = new AcaoThread() {
+            @Override
+            protected void executar() throws Exception {
+                jogador = ClienteFactory.getPadrao().getUsuario();
+            }
+        };
+
+        threadAndJoin(r);
     }
     /*
      * (non-Javadoc)
@@ -77,7 +86,42 @@ public class PartidaControle extends Controle<IPartida> {
     /**
      * @throws RequisicaoException
      */
-    public void novaPartida() throws RequisicaoException {
-        partida = ClienteFactory.getPadrao().novaPartida();
+    public void novaPartida() throws ExecucaoException {
+        AcaoThread r = new AcaoThread() {
+            @Override
+            protected void executar() throws Exception {
+                partida = ClienteFactory.getPadrao().novaPartida();
+            }
+        };
+
+        threadAndJoin(r);
+    }
+    /**
+     * @param r
+     * @return
+     */
+    private Thread thread(AcaoThread r) {
+        Thread t = new Thread(r);
+
+        t.start();
+
+        return t;
+    }
+    /**
+     * @param r
+     * @throws InterruptedException
+     */
+    private void threadAndJoin(AcaoThread r) throws ExecucaoException {
+        Thread t = thread(r);
+
+        try {
+            t.join();
+
+            if (r.ocorreuExcecao()) {
+                throw r.getException();
+            }
+        } catch (Exception e) {
+            throw new ExecucaoException(e);
+        }
     }
 }

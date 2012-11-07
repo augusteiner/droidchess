@@ -19,7 +19,9 @@ import android.view.View.OnFocusChangeListener;
 public class Tabuleiro extends TabuleiroAbstrato
     implements
         OnFocusChangeListener {
-
+    /**
+     *
+     */
     private Peca prevView;
     /**
      *
@@ -60,7 +62,8 @@ public class Tabuleiro extends TabuleiroAbstrato
     public void onFocusChange(View nextView, boolean hasFocus) {
         if (hasFocus && nextView instanceof Peca) {
             if (prevView == null
-                || partidaCtrl.getTurno() == ((Peca) nextView).getPeca().getCor()) {
+                || partidaCtrl.getTurno() == ((Peca) nextView).getPeca()
+                    .getCor()) {
                 prevView = (Peca) nextView;
             } else {
                 prevView.requestFocus();

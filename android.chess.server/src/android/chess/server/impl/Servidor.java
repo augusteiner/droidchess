@@ -7,12 +7,14 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import android.chess.dominio.Usuario;
 import android.chess.dominio.Partida;
+import android.chess.dominio.Usuario;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IJogada;
+import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Resposta;
+import android.chess.server.exceptions.AutenticacaoException;
 import android.chess.server.exceptions.RequisicaoException;
 
 /**
@@ -101,12 +103,24 @@ public class Servidor {
      *
      * @param requisicao
      *
-     * @param jogador
      * @return
+     *
+     * @throws AutenticacaoException
+     *
+     * @todo Implementar busca do jogador/usuario e verificar credenciais.
      */
-    public Resposta responder(ICredenciais credenciais) {
-        return null;
-        // return new Resposta(jogador, jogador);
+    public Resposta responder(ICredenciais credenciais)
+        throws AutenticacaoException {
+        if (credenciais.getLogin().equals("android-chess")
+            && credenciais.getSenha().equals("123456")) {
+            Usuario jogador = new Usuario(credenciais, "Usuário de teste",
+                "example@example.org");
+            jogador.setCor(Cor.Branca);
+
+            return new Resposta(jogador, jogador);
+        } else {
+            throw new AutenticacaoException(credenciais);
+        }
     }
 
     /**
@@ -185,14 +199,6 @@ public class Servidor {
         // out.close();
     }
     /**
-     * @param remetente
-     * @param mensagem
-     * @return
-     */
-    private Resposta responder(Usuario remetente, Usuario mensagem) {
-        return new Resposta(null, new Partida(remetente, mensagem));
-    }
-    /**
      * Calcula a resposta a ser enviada de acordo com a requisição recebida.
      *
      * @return Resposta a requisição solicitada.
@@ -200,7 +206,7 @@ public class Servidor {
      * @throws RequisicaoException
      *             Caso o tipo da requisição seja desconhecido.
      */
-    private Resposta responder(Requisicao r) throws RequisicaoException {
+    private Resposta responder(Requisicao r) throws Exception {
         switch (r.getTipo()) {
             case CADASTRO :
                 return responder((ICredenciais) r.getMensagem());
@@ -210,9 +216,19 @@ public class Servidor {
                 return responder((IJogada) r.getMensagem());
             case DESCONECTAR :
                 System.exit(0);
+            case AUTENTICAR :
+                return responder((ICredenciais) r.getMensagem());
             default :
                 throw new RequisicaoException(r);
         }
+    }
+    /**
+     * @param remetente
+     * @param mensagem
+     * @return
+     */
+    private Resposta responder(Usuario remetente, Usuario mensagem) {
+        return new Resposta(null, new Partida(remetente, mensagem));
     }
     /**
      * Retorna instância única associada a esta fachada.

@@ -32,4 +32,11 @@ public class RequisicaoException extends ChessException implements Serializable 
         super(String.format("Requisição de tipo '%s' não aceita.",
             requisicao.getTipo()), cause);
     }
+
+    /**
+     * @param message
+     */
+    protected RequisicaoException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -15,19 +15,17 @@ public class UsuarioControle extends Controle<IJogador> {
     /**
      *
      */
-    private IJogador jogador;
-    /**
-     *
-     */
     public UsuarioControle() {
-        jogador = null;
+        //
     }
     /**
      * @return
      */
     public IJogador autenticar(String usuario, String senha)
         throws RequisicaoException {
-        return autenticar(new Credenciais(usuario, senha));
+        autenticar(new Credenciais(usuario, senha));
+
+        return getControlado();
     }
     /**
      * @return
@@ -48,13 +46,17 @@ public class UsuarioControle extends Controle<IJogador> {
      */
     @Override
     public IJogador getControlado() {
-        return jogador;
+        return ClienteFactory.getPadrao().getUsuario();
     }
     /**
      * @param credenciais
      * @return
+     * @throws RequisicaoException
      */
-    private IJogador autenticar(ICredenciais credenciais) {
-        return ClienteFactory.getPadrao().autenticar(credenciais);
+    private IJogador autenticar(ICredenciais credenciais)
+        throws RequisicaoException {
+        ClienteFactory.getPadrao().autenticar(credenciais);
+
+        return getControlado();
     }
 }
