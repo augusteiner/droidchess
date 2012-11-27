@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.controle"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.dominio"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.util"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.persistencia"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

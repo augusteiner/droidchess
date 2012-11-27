@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence/orm"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+    version="2.0" xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
 
-	<entity class="android.chess.dominio.Usuario">
-		<table name="USUARIO">
-			<unique-constraint name="UNQ_USR_LOGIN">
-				<column-name>USR_LOGIN</column-name>
-			</unique-constraint>
-		</table>
-		<attributes>
-			<id name="id">
-				<column name="USR_ID" />
-				<generated-value strategy="IDENTITY" />
-			</id>
-			<basic name="login">
-				<column name="USR_LOGIN" />
-			</basic>
+    <entity class="android.chess.dominio.Usuario">
+        <table name="USUARIO">
+            <unique-constraint name="UNQ_USR_LOGIN">
+                <column-name>USR_LOGIN</column-name>
+            </unique-constraint>
+        </table>
+        <attributes>
+            <id name="id">
+                <column name="USR_ID" />
+                <generated-value strategy="IDENTITY" />
+            </id>
+            <basic name="login">
+                <column name="USR_LOGIN" />
+            </basic>
 
-			<basic name="senha">
-				<column name="USR_SENHA" />
-			</basic>
-			<basic name="nome">
-				<column name="USR_NOME" />
-			</basic>
-			<transient name="cor" />
-			<transient name="email" />
-		</attributes>
-	</entity>
+            <basic name="senha">
+                <column name="USR_SENHA" />
+            </basic>
+            <basic name="nome">
+                <column name="USR_NOME" />
+            </basic>
+            <transient name="cor" />
+            <transient name="email" />
+        </attributes>
+    </entity>
 
-	<entity class="android.chess.dominio.Partida">
-		<table name="PARTIDA">
-		</table>
-		<attributes>
-			<id name="id">
-				<column name="PAR_ID" />
-				<generated-value strategy="IDENTITY" />
-			</id>
-			<basic name="vencedor">
-				<column name="PAR_VENC" />
-			</basic>
-			<one-to-one name="jogador1" target-entity="android.chess.dominio.Usuario"
-				fetch="LAZY" orphan-removal="false">
-				<join-column name="JOG_ID_1" />
-				<cascade>
-					<cascade-persist />
-				</cascade>
-			</one-to-one>
-			<one-to-one name="jogador2" target-entity="android.chess.dominio.Usuario"
-				fetch="LAZY" orphan-removal="false">
-				<join-column name="JOG_ID_2" />
-				<cascade>
-					<cascade-persist />
-				</cascade>
-			</one-to-one>
-		</attributes>
-	</entity>
+    <entity class="android.chess.dominio.Partida">
+        <table name="PARTIDA">
+        </table>
+        <attributes>
+            <id name="id">
+                <column name="PAR_ID" />
+                <generated-value strategy="IDENTITY" />
+            </id>
+            <basic name="vencedor">
+                <column name="PAR_VENC" />
+            </basic>
+            <one-to-one name="jogador1" target-entity="android.chess.dominio.Usuario"
+                fetch="LAZY" orphan-removal="false">
+                <join-column name="JOG_ID_1" />
+                <cascade>
+                    <cascade-persist />
+                </cascade>
+            </one-to-one>
+            <one-to-one name="jogador2" target-entity="android.chess.dominio.Usuario"
+                fetch="LAZY" orphan-removal="false">
+                <join-column name="JOG_ID_2" />
+                <cascade>
+                    <cascade-persist />
+                </cascade>
+            </one-to-one>
+        </attributes>
+    </entity>
 
 </entity-mappings>
