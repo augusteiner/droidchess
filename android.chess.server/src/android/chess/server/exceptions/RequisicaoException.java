@@ -7,7 +7,7 @@ import android.chess.server.comunicacao.Requisicao;
 
 /**
  * Exceção a ser jogada caso a requisição não possa ser atendida pelo servidor.
- *
+ * 
  * @author augusteiner
  */
 public class RequisicaoException extends ChessException implements Serializable {

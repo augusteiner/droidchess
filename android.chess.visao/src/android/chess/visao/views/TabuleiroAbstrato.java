@@ -29,7 +29,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
@@ -93,7 +93,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /**
      * Prepara objetos para desenho deste tabuleiro.
-     *
+     * 
      * @throws Exception
      */
     public void init(ViewGroup contentView) throws InicializacaoException {
@@ -166,7 +166,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     /**
      * Método deve ser utilizado para iniciar algo mais nas classes que herdem
      * desta.
-     *
+     * 
      * @param peca
      */
     protected void initPeca(PecaAbstrata peca) {
@@ -175,7 +175,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /**
      * @param contentView
-     *
+     * 
      */
     protected void initPecas() {
         Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
@@ -213,7 +213,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -269,7 +269,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onMeasure(int, int)
      */
     @Override

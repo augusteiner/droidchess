@@ -5,7 +5,7 @@ package android.chess.controle.exceptions;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class ExecucaoException extends Exception {
     /**

@@ -31,7 +31,7 @@ public class Evento extends Test {
     }
     /**
      * @author augusteiner
-     *
+     * 
      */
     class ChangeEvent extends android.chess.util.events.Event<IChangeInfo> {
 
@@ -43,7 +43,7 @@ public class Evento extends Test {
     }
     /**
      * @author augusteiner
-     *
+     * 
      */
     class ChangeInfo implements IChangeInfo {
 
@@ -57,7 +57,7 @@ public class Evento extends Test {
         }
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see android.chess.test.EventTest.IChangeInfo#getState()
          */
         @Override
@@ -67,7 +67,7 @@ public class Evento extends Test {
     }
     /**
      * @author augusteiner
-     *
+     * 
      */
     interface IChangeInfo {
         /**
@@ -77,7 +77,7 @@ public class Evento extends Test {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.test.Test#run()
      */
     @Override
@@ -86,7 +86,7 @@ public class Evento extends Test {
     }
     /**
      * @throws Exception
-     *
+     * 
      */
     private void change() throws Exception {
         ChangeEvent e = new ChangeEvent();

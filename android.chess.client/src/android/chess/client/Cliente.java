@@ -18,12 +18,12 @@ import android.chess.server.impl.Servidor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Cliente {
     /**
      * @author augusteiner
-     *
+     * 
      */
     private static class Holder {
         /**
@@ -56,7 +56,7 @@ public class Cliente {
     protected Socket socket;
     /**
      * @throws Exception
-     *
+     * 
      */
     public Cliente() throws Exception {
         try {
@@ -101,7 +101,7 @@ public class Cliente {
     }
     /**
      * @deprecated
-     *
+     * 
      * @todo Renomear método.
      */
     @Deprecated
@@ -119,7 +119,7 @@ public class Cliente {
 
     /**
      * Retorna o jogador autenticado atualmente.
-     *
+     * 
      * @return
      */
     public Usuario getUsuario() {
@@ -127,9 +127,9 @@ public class Cliente {
     }
     /**
      * Solicita ao servidor o início de uma partida.
-     *
+     * 
      * @return A partida iniciada pelo servidor.
-     *
+     * 
      * @throws RequisicaoException
      *             Caso algum erro ocorra durante a requisição.
      */
@@ -159,7 +159,7 @@ public class Cliente {
     }
     /**
      * @throws IOException
-     *
+     * 
      */
     protected void initStreams() throws IOException {
         out = new ObjectOutputStream(socket.getOutputStream());

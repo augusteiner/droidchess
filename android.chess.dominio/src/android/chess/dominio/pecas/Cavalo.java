@@ -10,7 +10,7 @@ import android.chess.dominio.excecao.MovimentoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Cavalo extends Peca {
 
@@ -37,7 +37,7 @@ public class Cavalo extends Peca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override

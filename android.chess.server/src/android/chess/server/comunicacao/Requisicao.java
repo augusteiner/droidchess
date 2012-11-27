@@ -7,7 +7,7 @@ import android.chess.dominio.Usuario;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Requisicao implements Serializable {
 

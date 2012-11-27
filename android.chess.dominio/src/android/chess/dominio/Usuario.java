@@ -9,7 +9,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Usuario extends Credenciais
     implements
@@ -63,7 +63,7 @@ public class Usuario extends Credenciais
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogador#getCor()
      */
     @Override
@@ -80,7 +80,7 @@ public class Usuario extends Credenciais
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IUsuario#getEmail()
      */
     @Override
@@ -102,7 +102,7 @@ public class Usuario extends Credenciais
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -144,7 +144,7 @@ public class Usuario extends Credenciais
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

@@ -4,9 +4,9 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 /**
- *
+ * 
  * @author augusteiner
- *
+ * 
  */
 public class FachadaPersistencia {
     /**

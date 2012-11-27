@@ -9,7 +9,7 @@ import android.chess.dominio.excecao.MovimentoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Bispo extends Peca {
 
@@ -35,7 +35,7 @@ public class Bispo extends Peca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override

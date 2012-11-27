@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public interface ITabuleiro extends Serializable {
     /**
      * @param contentView
-     *
+     * 
      * @throws Exception
      */
     void init(ViewGroup contentView) throws InicializacaoException;

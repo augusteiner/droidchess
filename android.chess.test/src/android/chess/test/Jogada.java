@@ -8,14 +8,14 @@ import android.chess.dominio.interfaces.ITabuleiro;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 @SuppressWarnings("unused")
 public class Jogada extends Test {
     private IPartida partida;
 
     /**
-     *
+     * 
      * @return
      */
     public IPartida getPartida() {
@@ -24,7 +24,7 @@ public class Jogada extends Test {
 
     /**
      * Realiza uma jogada no tabuleiro da partida atual e imprime-o logo após.
-     *
+     * 
      * @param origI
      * @param origJ
      * @param destI
@@ -43,7 +43,7 @@ public class Jogada extends Test {
 
     /**
      * Realiza o teste com algumas jogadas
-     *
+     * 
      * @throws MovimentoInvalido
      * @throws PecaNaoEncontrada
      */
@@ -61,10 +61,10 @@ public class Jogada extends Test {
     }
     /**
      * Testa jogadas com um bispo.
-     *
+     * 
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
-     *
+     * 
      */
     private void bispo() throws ChessException {
         novaPartida();
@@ -77,7 +77,7 @@ public class Jogada extends Test {
     }
     /**
      * Testa jogadas com um cavalo.
-     *
+     * 
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
@@ -108,7 +108,7 @@ public class Jogada extends Test {
 
     /**
      * Jogada simples entre dois peões.
-     *
+     * 
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
      */
@@ -135,7 +135,7 @@ public class Jogada extends Test {
     }
     /**
      * Imprime uma representação gráfica do tabuleiro dado.
-     *
+     * 
      * @param tabuleiro
      *            Tabuleiro a ser impresso.
      */
@@ -204,9 +204,9 @@ public class Jogada extends Test {
 
     /**
      * Testa um exemplo de tomada inválida com peça no caminho da jogada.
-     *
+     * 
      * @throws Exception
-     *
+     * 
      * @throws ChessException
      */
     private void tomadaInvalida() throws Exception {

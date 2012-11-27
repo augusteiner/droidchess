@@ -2,7 +2,7 @@ package android.chess.dominio.interfaces;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public interface IUsuario {
     /**

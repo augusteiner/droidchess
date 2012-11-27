@@ -8,7 +8,7 @@ public class TomadaHandler implements ITomadaHandler {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.events.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.events.info.interfaces.ITomadaInfo)

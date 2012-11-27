@@ -7,9 +7,9 @@ import android.chess.util.events.interfaces.IEvent;
 import android.chess.util.events.interfaces.IHandler;
 
 /**
- *
+ * 
  * @author augusteiner
- *
+ * 
  * @param <I>
  */
 public class Event<I> implements IEvent<I> {
@@ -30,7 +30,7 @@ public class Event<I> implements IEvent<I> {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.util.events.interfaces.IEvent#addHandler(android.chess.
      * util.events.interfaces.IHandler)
@@ -42,7 +42,7 @@ public class Event<I> implements IEvent<I> {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.util.events.interfaces.IEvent#raise(java.lang.Object)
      */
     @Override

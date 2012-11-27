@@ -12,7 +12,7 @@ import android.chess.server.exceptions.RequisicaoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class PartidaControle extends Controle<IPartida> {
     /**
@@ -24,10 +24,10 @@ public class PartidaControle extends Controle<IPartida> {
      */
     protected Usuario jogador;
     /**
-     *
+     * 
      * @throws ExecucaoException
      * @throws RequisicaoException
-     *
+     * 
      * @todo Adicionar jogadores como parametro.
      * @todo Criar evento para repassar a UI?
      * @todo Deve requisitar à aplicação servidora uma nova partida.
@@ -45,7 +45,7 @@ public class PartidaControle extends Controle<IPartida> {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.controle.Controle#getControlado()
      */
     @Override
@@ -65,15 +65,15 @@ public class PartidaControle extends Controle<IPartida> {
         return partida.getTurno();
     }
     /**
-     *
+     * 
      * @param origI
-     *
+     * 
      * @param origJ
-     *
+     * 
      * @param destI
-     *
+     * 
      * @param destJ
-     *
+     * 
      * @throws ChessException
      */
     public void mover(int origI, int origJ, int destI, int destJ)

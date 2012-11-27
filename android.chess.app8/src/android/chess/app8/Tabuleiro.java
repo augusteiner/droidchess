@@ -14,7 +14,7 @@ import android.view.View.OnFocusChangeListener;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Tabuleiro extends TabuleiroAbstrato
     implements
@@ -54,7 +54,7 @@ public class Tabuleiro extends TabuleiroAbstrato
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.view.View.OnFocusChangeListener#onFocusChange(android.view.View,
      * boolean)
@@ -77,7 +77,7 @@ public class Tabuleiro extends TabuleiroAbstrato
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     @Override
@@ -147,7 +147,7 @@ public class Tabuleiro extends TabuleiroAbstrato
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.visao.Tabuleiro#iniPeca(android.chess.visao.PecaAbstrata)
      */
@@ -158,14 +158,14 @@ public class Tabuleiro extends TabuleiroAbstrato
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.view.View.OnFocusChangeListener#onFocusChange(android.view.View,
      * boolean)
      */
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.visao.Tabuleiro#novaPeca(android.content.Context)
      */
     @Override

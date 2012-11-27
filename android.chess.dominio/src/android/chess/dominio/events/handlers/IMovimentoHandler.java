@@ -5,9 +5,9 @@ import android.chess.dominio.excecao.ChessException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
-public interface IMovimentoHandler  {
+public interface IMovimentoHandler {
 
     /**
      * @param info

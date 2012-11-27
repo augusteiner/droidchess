@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Peca extends android.chess.visao.views.PecaAbstrata {
 
@@ -46,7 +46,7 @@ public class Peca extends android.chess.visao.views.PecaAbstrata {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.visao.Peca#onTouchEvent(android.view.MotionEvent)
      */
     @Override

@@ -4,7 +4,7 @@ import android.chess.dominio.pecas.interfaces.IPeao;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class PromocaoException extends MovimentoException {
 

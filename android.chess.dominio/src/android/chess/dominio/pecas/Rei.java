@@ -12,7 +12,7 @@ import android.chess.dominio.excecao.TomadaException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Rei extends Peca {
 
@@ -30,7 +30,7 @@ public class Rei extends Peca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
@@ -44,7 +44,7 @@ public class Rei extends Peca {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.Peca#onTomada(android.chess.dominio.events.info
      * .interfaces.ITomadaInfo)

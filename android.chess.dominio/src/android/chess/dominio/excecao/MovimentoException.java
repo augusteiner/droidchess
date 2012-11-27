@@ -4,7 +4,7 @@ import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * Exceção a ser jogada quando o movimento de uma peça não for válido.
- *
+ * 
  * @author augusteiner
  */
 public class MovimentoException extends ChessException {

@@ -19,12 +19,12 @@ import android.chess.server.exceptions.RequisicaoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Servidor {
     /**
      * @author augusteiner
-     *
+     * 
      */
     private static class Holder {
         /**
@@ -34,7 +34,7 @@ public class Servidor {
     }
     /**
      * @author augusteiner
-     *
+     * 
      */
     private class ObjectStreams {
         /**
@@ -61,7 +61,7 @@ public class Servidor {
      */
     // private Hashtable<Integer, ObjectStreams> clients;
     /**
-     *
+     * 
      * FIXME Colocar configurações em arquivo .xml?
      */
     public static final String address = "10.0.2.2";
@@ -88,11 +88,11 @@ public class Servidor {
     /**
      * Chama o método <code>ServerSocket.accept()</code> na instância singleton
      * de socket associada a esta fachada.
-     *
+     * 
      * @return Socket cliente a ser servido.
-     *
+     * 
      * @throws IOException
-     *
+     * 
      * @see {@link ServerSocket#accept()}
      */
     public Socket accept() throws IOException {
@@ -100,13 +100,13 @@ public class Servidor {
     }
     /**
      * Calcula a resposta a um cadastro de jogador/usuário sendo requisitado.
-     *
+     * 
      * @param requisicao
-     *
+     * 
      * @return
-     *
+     * 
      * @throws AutenticacaoException
-     *
+     * 
      * @todo Implementar busca do jogador/usuario e verificar credenciais.
      */
     public Resposta responder(ICredenciais credenciais)
@@ -125,9 +125,9 @@ public class Servidor {
 
     /**
      * Calcula a resposta a uma jogada sendo requisitada.
-     *
+     * 
      * @param requisicao
-     *
+     * 
      * @param jogada
      * @return
      */
@@ -138,7 +138,7 @@ public class Servidor {
     /**
      * Loop principal do servidor esperando por conexão de clientes a serem
      * servidos.
-     *
+     * 
      * @throws Exception
      */
     public void servir() throws Exception {
@@ -149,12 +149,12 @@ public class Servidor {
 
     /**
      * Serve conteúdo para um cliente conectado via o socket informado.
-     *
+     * 
      * @param client
      *            Socket de comunicação com o cliente.
-     *
+     * 
      * @throws IOException
-     *
+     * 
      * @throws ClassNotFoundException
      */
     public void servir(Socket client) throws IOException,
@@ -200,9 +200,9 @@ public class Servidor {
     }
     /**
      * Calcula a resposta a ser enviada de acordo com a requisição recebida.
-     *
+     * 
      * @return Resposta a requisição solicitada.
-     *
+     * 
      * @throws RequisicaoException
      *             Caso o tipo da requisição seja desconhecido.
      */
@@ -232,7 +232,7 @@ public class Servidor {
     }
     /**
      * Retorna instância única associada a esta fachada.
-     *
+     * 
      * @return
      */
     public static Servidor getInstancia() {
@@ -241,11 +241,11 @@ public class Servidor {
     /**
      * Cria um novo socket de comunicação com o socket servidor associado a esta
      * instância.
-     *
+     * 
      * @return Socket cliente para comunicação com servidor.
-     *
+     * 
      * @throws IOException
-     *
+     * 
      * @see {@link Socket#Socket(String, int)}
      */
     public static Socket novoSocket() throws IOException {

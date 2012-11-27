@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Login extends Activity {
     /**
@@ -54,7 +54,7 @@ public class Login extends Activity {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override
@@ -65,7 +65,7 @@ public class Login extends Activity {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override

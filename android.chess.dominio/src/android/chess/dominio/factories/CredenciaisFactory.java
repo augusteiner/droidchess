@@ -11,14 +11,14 @@ import android.chess.dominio.seguranca.CredenciaisCript;
  * 
  */
 public class CredenciaisFactory {
-	/**
-	 * @param senha
-	 * @param email
-	 * @return
-	 * @throws Exception
-	 */
-	public static ICredenciais novaInstancia(String login, String senha)
-			throws Exception {
-		return new CredenciaisCript(login, senha);
-	}
+    /**
+     * @param senha
+     * @param email
+     * @return
+     * @throws Exception
+     */
+    public static ICredenciais novaInstancia(String login, String senha)
+        throws Exception {
+        return new CredenciaisCript(login, senha);
+    }
 }

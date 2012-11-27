@@ -9,7 +9,7 @@ import java.net.Socket;
 
 /**
  * Thread para permitir ao servidor tratar vários clientes.
- *
+ * 
  * @author augusteiner
  */
 public class ServidorThread extends Thread {
@@ -19,10 +19,10 @@ public class ServidorThread extends Thread {
 
     /**
      * Constrói a thread e inicia a recepção de conexões por parte do servidor.
-     *
+     * 
      * @param server
      *            Servidor ao qual a thread irá repassar as várias requisições.
-     *
+     * 
      * @throws IOException
      *             Exceção jogada pelo método accept de
      *             {@link ServerSocket#accept()}.
@@ -34,7 +34,7 @@ public class ServidorThread extends Thread {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Thread#start()
      */
     @Override

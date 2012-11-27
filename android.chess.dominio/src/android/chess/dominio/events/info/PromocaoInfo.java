@@ -12,7 +12,7 @@ import android.chess.util.events.interfaces.ICallback;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class PromocaoInfo extends MovimentoInfo implements IPromocaoInfo {
     private IPeao peao;
@@ -35,7 +35,7 @@ public class PromocaoInfo extends MovimentoInfo implements IPromocaoInfo {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.events.info.interfaces.IPromocaoInfo#getCallback()
      */

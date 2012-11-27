@@ -5,7 +5,7 @@ import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class TomadaInfo extends MovimentoInfo implements ITomadaInfo {
     private IPeca dest;
@@ -31,7 +31,7 @@ public class TomadaInfo extends MovimentoInfo implements ITomadaInfo {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.events.info.interfaces.ITomadaInfo#getDest()
      */
     @Override
@@ -41,7 +41,7 @@ public class TomadaInfo extends MovimentoInfo implements ITomadaInfo {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IEventoTomada#getOrig()
      */
     @Override

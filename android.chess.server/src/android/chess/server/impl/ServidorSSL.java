@@ -7,12 +7,12 @@ import javax.net.ssl.SSLServerSocketFactory;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class ServidorSSL extends Servidor {
     /**
      * @author augusteiner
-     *
+     * 
      */
     private static class Holder {
         /**

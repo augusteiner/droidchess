@@ -8,7 +8,7 @@ import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public interface IPeao extends IPeca {
 

@@ -2,7 +2,7 @@ package android.chess.server;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class App {
 

@@ -2,7 +2,7 @@ package android.chess.controle;
 
 /**
  * Executa uma ação em uma thread.
- *
+ * 
  * @author augusteiner
  */
 public abstract class AcaoThread implements Runnable {
@@ -16,7 +16,7 @@ public abstract class AcaoThread implements Runnable {
     /**
      * Retorna se ocorreu uma exceção ao se executar o método
      * {@link #executar()}.
-     *
+     * 
      * @return <code>true</code> caso tenha ocorrido exceção, <code>false</code>
      *         caso contrário.
      */
@@ -25,7 +25,7 @@ public abstract class AcaoThread implements Runnable {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Runnable#run()
      */
     @Override

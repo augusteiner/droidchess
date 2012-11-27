@@ -17,7 +17,7 @@ public class App {
 
     /**
      * @throws Exception
-     *
+     * 
      */
     private static void run() throws Exception {
         Test[] tests = new Test[]{

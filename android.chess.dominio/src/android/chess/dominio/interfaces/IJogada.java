@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public interface IJogada extends Serializable {
     /**
@@ -25,7 +25,7 @@ public interface IJogada extends Serializable {
     public int getOrigJ();
     /**
      * Sentido da jogada (de baixo para cima ou de cima para baixo).
-     *
+     * 
      * @return Um <code>int</code> simbolizando o sentido do movimento.
      */
     public float sentidoI();

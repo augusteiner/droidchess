@@ -15,7 +15,7 @@ public class PecaIterator extends MatrixIterator<IPeca> {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.util.Iterator#next()
      */
     @Override

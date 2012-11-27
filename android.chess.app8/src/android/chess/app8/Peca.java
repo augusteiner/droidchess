@@ -18,7 +18,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Peca extends android.chess.visao.views.PecaAbstrata {
 
@@ -66,7 +66,7 @@ public class Peca extends android.chess.visao.views.PecaAbstrata {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onTouchEvent(android.view.MotionEvent)
      */
     @Override
@@ -112,7 +112,7 @@ public class Peca extends android.chess.visao.views.PecaAbstrata {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onFocusChanged(boolean, int,
      * android.graphics.Rect)
      */

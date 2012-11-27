@@ -4,12 +4,12 @@ import android.chess.server.impl.Servidor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class ServidorFactory {
     /**
      * @author augusteiner
-     *
+     * 
      */
     private static class Holder {
         /**

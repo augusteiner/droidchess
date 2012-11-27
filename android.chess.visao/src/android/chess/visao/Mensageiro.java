@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Mensageiro extends Toast {
 
@@ -24,7 +24,7 @@ public class Mensageiro extends Toast {
 
     /**
      * @param mensagem
-     *
+     * 
      * @see Mensageiro#alertar(CharSequence, int)
      */
     public void alertar(CharSequence mensagem) {
@@ -34,7 +34,7 @@ public class Mensageiro extends Toast {
     /**
      * @param mensagem
      * @param duracao
-     *
+     * 
      * @see Toast#makeText(Context, CharSequence, int)
      * @see Toast#makeText(Context, int, int)
      */
@@ -67,7 +67,7 @@ public class Mensageiro extends Toast {
 
     /**
      * @param mensagem
-     *
+     * 
      * @param duracao
      */
     private void makeText(CharSequence mensagem, int duracao) {

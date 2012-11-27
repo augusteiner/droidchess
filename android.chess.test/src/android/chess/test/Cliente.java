@@ -5,7 +5,7 @@ import android.chess.controle.UsuarioControle;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Cliente extends Test {
     /**
@@ -16,7 +16,7 @@ public class Cliente extends Test {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.test.Test#run()
      */
     @Override

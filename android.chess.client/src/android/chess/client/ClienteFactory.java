@@ -2,12 +2,12 @@ package android.chess.client;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class ClienteFactory {
     /**
      * @author augusteiner
-     *
+     * 
      */
     private static class Holder {
         /**

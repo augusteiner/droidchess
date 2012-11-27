@@ -34,7 +34,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
 /**
  * Classe de domínio para prover validação de jogadas e modelagem geral do jogo
  * de xadrez.
- *
+ * 
  * @author augusteiner
  */
 public class Tabuleiro
@@ -77,7 +77,7 @@ public class Tabuleiro
     /**
      * Retorna um iterator para as peças deste tabuleiro garantindo que as
      * mesmas não sejam nulas.
-     *
+     * 
      * @return {@link Iterator} para as peças deste tabuleiro.
      */
     @Override
@@ -96,20 +96,20 @@ public class Tabuleiro
     /**
      * Move uma peça nessa instância de tabuleiro para um ponto de destino
      * representado por (destI, destJ).
-     *
+     * 
      * @param peca
      *            Peça a ser movida.
-     *
+     * 
      * @param destI
      *            Linha de destino para a peça.
-     *
+     * 
      * @param destJ
      *            Coluna de destino para a peça.
      * @throws PecaNaoEncontradaException
-     *
+     * 
      * @throws MovimentoInvalidoException
      *             Caso o movimento seja considerado inválido.
-     *
+     * 
      * @todo Utilizar factory (possívelmente Partida) para instanciar jogada.
      */
     @Override
@@ -144,7 +144,7 @@ public class Tabuleiro
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onAntesPromocao
      * (android.chess.dominio.interfaces.IPromocaoInfo)
@@ -160,7 +160,7 @@ public class Tabuleiro
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.interfaces.handlers.IPromocaoHandler#onDepoisPromocao
      * (android.chess.dominio.interfaces.IPromocaoInfo)
@@ -173,7 +173,7 @@ public class Tabuleiro
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.interfaces.handlers.IMovimentoHandler#onMovimento
      * (android.chess.dominio.interfaces.IEventoMover)
@@ -275,7 +275,7 @@ public class Tabuleiro
 
     /**
      * @deprecated
-     *
+     * 
      * @param cor
      */
     @SuppressWarnings("unused")
@@ -331,9 +331,9 @@ public class Tabuleiro
     /**
      * Verifica se há alguma peça no caminho da jogada a ser realizada. Método
      * só deve ser chamado após as validações do movimento da peça.
-     *
+     * 
      * @param jogada
-     *
+     * 
      * @return A peça no caminho da jogada ou <code>null</code> caso não haja
      *         peça.
      */
@@ -356,10 +356,10 @@ public class Tabuleiro
     /**
      * Valida o movimento desta peça de acordo com as coordenadas de destino
      * informadas e realiza o movimento da mesma.
-     *
+     * 
      * @param jogada
      *            Jogada em questão.
-     *
+     * 
      * @todo Adicionar suporte a jogadas especiais.
      */
     private void realizar(IJogada jogada) throws ChessException {

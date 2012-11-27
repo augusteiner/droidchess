@@ -24,7 +24,7 @@ import android.view.View;
 
 /**
  * Classe abstrata para representação gráfica de uma peça do tabuleiro.
- *
+ * 
  * @author augusteiner
  */
 public abstract class PecaAbstrata extends View
@@ -65,7 +65,7 @@ public abstract class PecaAbstrata extends View
 
     /**
      * Adiciona um handler do evento de promoção a fila de execução.
-     *
+     * 
      * @param onPromocaoHandler
      *            Handler a ser adicionado.
      */
@@ -75,7 +75,7 @@ public abstract class PecaAbstrata extends View
 
     /**
      * Adiciona um handler do evento de tomada a fila de execução.
-     *
+     * 
      * @param onTomadaHandler
      *            Handler a ser adicionado.
      */
@@ -85,9 +85,9 @@ public abstract class PecaAbstrata extends View
     /**
      * Retorna o resourse_id de acordo com a cor e nome da peça configurada com
      * o setTag.
-     *
+     * 
      * @return Id do recurso associado com a imagem da peça de chadrez.
-     *
+     * 
      * @see View#setTag()
      */
     private int backgroundResId() {
@@ -114,7 +114,7 @@ public abstract class PecaAbstrata extends View
     /**
      * Esconde esta peça. Cancelando chamada anterior ao método
      * {@link #exibir()}.
-     *
+     * 
      * @deprecated
      */
     @Deprecated
@@ -126,7 +126,7 @@ public abstract class PecaAbstrata extends View
     /**
      * Exibe esta peça. Cancelando chamada anterior ao método
      * {@link #esconder()} .
-     *
+     * 
      * @deprecated
      */
     @Deprecated
@@ -137,7 +137,7 @@ public abstract class PecaAbstrata extends View
 
     /**
      * Retorna as métricas do display associado aos recursos desta view.
-     *
+     * 
      * @return Objeto para as métricas do display.
      */
     private DisplayMetrics getDisplayMetrics() {
@@ -147,7 +147,7 @@ public abstract class PecaAbstrata extends View
     /**
      * Retorna o lado do quadrado desta view de acordo com as métricas do
      * display.
-     *
+     * 
      * @return Número inteiro representando o tamanho do lado desta view
      *         (cosiderada como um quadrado).
      */
@@ -159,9 +159,9 @@ public abstract class PecaAbstrata extends View
     /**
      * Atalho para (IPeca)getTag(). Retorna getTag deste objeto com cast para
      * IPeca.
-     *
+     * 
      * @return A peça associada a esta view do android.
-     *
+     * 
      * @see View#getTag()
      */
     public IPeca getPeca() {
@@ -190,7 +190,7 @@ public abstract class PecaAbstrata extends View
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.events.handlers.IAntesPromocaoHandler#onAntesPromocao
      * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
@@ -204,7 +204,7 @@ public abstract class PecaAbstrata extends View
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.events.handlers.IDepoisPromocaoHandler#onDepoisPromocao
      * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
@@ -220,7 +220,7 @@ public abstract class PecaAbstrata extends View
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -237,7 +237,7 @@ public abstract class PecaAbstrata extends View
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onMeasure(int, int)
      */
     @Override
@@ -252,7 +252,7 @@ public abstract class PecaAbstrata extends View
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.events.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.events.info.interfaces.ITomadaInfo)

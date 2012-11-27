@@ -7,7 +7,7 @@ import android.chess.dominio.interfaces.ICredenciais;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class AutenticacaoException extends RequisicaoException {
 

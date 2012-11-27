@@ -10,7 +10,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public interface IPartida extends Serializable {
     /**
@@ -26,8 +26,9 @@ public interface IPartida extends Serializable {
      * @param origJ
      * @param destI
      * @param destJ
-     *
+     * 
      * @throws JogadaException
      */
-    void jogada(int origI, int origJ, int destI, int destJ) throws JogadaException;
+    void jogada(int origI, int origJ, int destI, int destJ)
+        throws JogadaException;
 }

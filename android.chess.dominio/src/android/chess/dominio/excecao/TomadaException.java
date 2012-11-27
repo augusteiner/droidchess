@@ -5,7 +5,7 @@ import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class TomadaException extends JogadaException {
 

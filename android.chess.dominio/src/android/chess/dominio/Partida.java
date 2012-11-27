@@ -18,7 +18,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Partida implements IPartida, Serializable {
     /**
@@ -100,7 +100,7 @@ public class Partida implements IPartida, Serializable {
     }
     /**
      * Retorna o tabuleiro desta partida.
-     *
+     * 
      * @return {@link Tabuleiro}
      */
     @Override
@@ -120,17 +120,17 @@ public class Partida implements IPartida, Serializable {
     }
 
     /**
-     *
+     * 
      * @param origI
-     *
+     * 
      * @param origJ
-     *
+     * 
      * @param destI
-     *
+     * 
      * @param destJ
-     *
+     * 
      * @throws MovimentoInvalidoException
-     *
+     * 
      * @throws PecaNaoEncontradaException
      */
     @Override
@@ -189,9 +189,9 @@ public class Partida implements IPartida, Serializable {
     /**
      * Inicializa propriedades transientes (como o tabuleiro desta partida) afim
      * de economizar networking.
-     *
+     * 
      * @param in
-     *
+     * 
      * @throws IOException
      * @throws ClassNotFoundException
      */

@@ -7,7 +7,7 @@ import android.chess.dominio.excecao.ChessException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class InicializacaoException extends ChessException {
 

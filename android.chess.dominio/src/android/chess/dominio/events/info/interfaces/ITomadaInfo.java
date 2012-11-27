@@ -2,7 +2,6 @@ package android.chess.dominio.events.info.interfaces;
 
 import android.chess.dominio.pecas.interfaces.IPeca;
 
-
 /**
  * @author augusteiner
  * 

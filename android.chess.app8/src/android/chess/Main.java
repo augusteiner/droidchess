@@ -13,13 +13,13 @@ import android.view.WindowManager;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Main extends Activity {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
@@ -43,7 +43,7 @@ public class Main extends Activity {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override

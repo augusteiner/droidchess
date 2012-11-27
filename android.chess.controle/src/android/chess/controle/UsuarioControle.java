@@ -9,7 +9,7 @@ import android.chess.server.exceptions.RequisicaoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class UsuarioControle extends Controle<IJogador> {
     /**
@@ -29,7 +29,7 @@ public class UsuarioControle extends Controle<IJogador> {
     }
     /**
      * @return
-     *
+     * 
      * @throws RequisicaoException
      */
     public IJogador cadastro(String usuario, String senha, String email,
@@ -41,7 +41,7 @@ public class UsuarioControle extends Controle<IJogador> {
     }
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.controle.Controle#getControlado()
      */
     @Override

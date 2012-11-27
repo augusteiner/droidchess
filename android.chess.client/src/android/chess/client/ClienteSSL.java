@@ -11,12 +11,12 @@ import android.chess.server.impl.Servidor;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class ClienteSSL extends Cliente {
     /**
      * @author augusteiner
-     *
+     * 
      */
     private static class Holder {
         /**

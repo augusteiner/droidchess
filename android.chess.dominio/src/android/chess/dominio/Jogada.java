@@ -8,9 +8,9 @@ import android.chess.dominio.pecas.interfaces.IPeca;
 /**
  * Representação de uma jogada realizada com uma peça e tendo uma posição de
  * destino.
- *
+ * 
  * @author augusteiner
- *
+ * 
  */
 public class Jogada implements IJogada {
     private int destI;
@@ -87,7 +87,7 @@ public class Jogada implements IJogada {
     /**
      * Retorna se a jogada está sendo realizada no sentido inverso do tabuleiro
      * (de baixo para cima).
-     *
+     * 
      * @return
      */
     public boolean invertida() {
@@ -96,7 +96,7 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogada#sentidoI()
      */
     @Override
@@ -106,7 +106,7 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogada#sentidoJ()
      */
     @Override
@@ -116,7 +116,7 @@ public class Jogada implements IJogada {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

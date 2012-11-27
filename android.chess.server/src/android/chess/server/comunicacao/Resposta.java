@@ -9,7 +9,7 @@ import android.chess.dominio.Usuario;
 
 /**
  * Resposta enviada pelo servidor a um cliente conectado.
- *
+ * 
  * @author augusteiner
  */
 public class Resposta implements Serializable {
@@ -31,7 +31,7 @@ public class Resposta implements Serializable {
     }
     /**
      * @param destinatario
-     *
+     * 
      * @param mensagem
      */
     public Resposta(Usuario destinatario, Object mensagem) {

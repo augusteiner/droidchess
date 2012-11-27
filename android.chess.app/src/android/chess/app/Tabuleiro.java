@@ -11,7 +11,7 @@ import android.view.DragEvent;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Tabuleiro extends TabuleiroAbstrato {
 
@@ -50,7 +50,7 @@ public class Tabuleiro extends TabuleiroAbstrato {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
     @TargetApi(11)

@@ -2,9 +2,9 @@ package android.chess.dominio.excecao;
 
 /**
  * Exceção base para todas as exceções da implementação do xadrez.
- *
+ * 
  * @author augusteiner
- *
+ * 
  */
 public abstract class ChessException extends Exception {
 
@@ -15,7 +15,7 @@ public abstract class ChessException extends Exception {
 
     /**
      * @param string
-     *
+     * 
      * @param cause
      */
     public ChessException(String string, Throwable cause) {
