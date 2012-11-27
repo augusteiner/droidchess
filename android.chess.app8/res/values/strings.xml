@@ -2,11 +2,12 @@
 
     <string name="app_name">android.chess.client8</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Android Chess</string>
-    <string name="loginText">Login</string>
-    <string name="passwdText">Password</string>
-    <string name="title_activity_login">Login</string>
-    <string name="cadastrarText">Register</string>
     <string name="btnLoginClick">btnLoginOnClick</string>
+    <string name="title_activity_main">Android Chess</string>
+    <string name="title_activity_login">Login</string>
+    <string name="textLogin">Login</string>
+    <string name="textPasswd">Password</string>
+    <string name="textCadastrar">Register</string>
+    <string name="textSair">Sair</string>
 
 </resources>

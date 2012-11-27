@@ -29,7 +29,14 @@ public class Cliente {
         /**
          *
          */
-        private static final Cliente INSTANCIA = new Cliente();
+        private static final Cliente INSTANCIA;
+        static {
+            try {
+                INSTANCIA = new Cliente();
+            } catch (Exception e) {
+                throw new ExceptionInInitializerError(e);
+            }
+        }
     }
     /**
      *
@@ -48,19 +55,17 @@ public class Cliente {
      */
     protected Socket socket;
     /**
+     * @throws Exception
      *
      */
-    public Cliente() {
+    public Cliente() throws Exception {
         try {
             socket = Servidor.novoSocket();
 
             initStreams();
         } catch (IOException e) {
-            e.printStackTrace();
-
-            System.exit(-1);
+            throw e;
         }
-
     }
     /**
      *
@@ -163,7 +168,7 @@ public class Cliente {
     /**
      * @return
      */
-    private static Cliente getInstancia() {
+    static Cliente getInstancia() throws ExceptionInInitializerError {
         return Holder.INSTANCIA;
     }
 }

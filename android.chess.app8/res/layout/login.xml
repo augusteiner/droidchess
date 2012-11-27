@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/loginText" />
+                    android:text="@string/textLogin" />
             </LinearLayout>
 
             <LinearLayout
@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/passwdText" />
+                    android:text="@string/textPasswd" />
             </LinearLayout>
 
             <LinearLayout
@@ -84,17 +84,23 @@
                 android:layout_gravity="right" >
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btnSair"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cadastrarText" />
+                    android:text="@string/textSair" />
+
+                <Button
+                    android:id="@+id/btnRegistrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textCadastrar" />
 
                 <Button
                     android:id="@+id/btnLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@string/btnLoginClick"
-                    android:text="@string/loginText" />
+                    android:text="@string/textLogin" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

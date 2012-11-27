@@ -37,8 +37,13 @@ public class Login extends Activity {
         try {
             ctrl.autenticar(edtLogin.getText().toString(), edtPasswd.getText()
                 .toString());
-        } catch (Exception e) {
-            new Mensageiro(getApplicationContext()).erro(e);
+        } catch (ExceptionInInitializerError e) {
+            new Mensageiro(getApplicationContext()).erro(e.getCause()
+                .getCause().getCause().getMessage());
+
+            return;
+        } catch (Throwable e) {
+            new Mensageiro(getApplicationContext()).erro(e.getMessage());
 
             return;
         }

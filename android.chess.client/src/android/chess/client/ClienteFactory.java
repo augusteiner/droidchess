@@ -13,7 +13,7 @@ public class ClienteFactory {
         /**
          *
          */
-        private static final Cliente PADRAO = new Cliente();
+        private static final Cliente PADRAO = Cliente.getInstancia();
     }
     /**
      * @return

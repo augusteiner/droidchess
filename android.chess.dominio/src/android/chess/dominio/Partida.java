@@ -11,6 +11,7 @@ import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.PecaNaoEncontradaException;
 import android.chess.dominio.interfaces.IJogada;
+import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
@@ -21,17 +22,34 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
  */
 public class Partida implements IPartida, Serializable {
     /**
-     *
-     */
-    private Usuario[] jogadores;
+	 *
+	 */
+    private int id;
+    /**
+	 *
+	 */
+    private IJogador jogador1;
+
+    /**
+	 *
+	 */
+    private IJogador jogador2;
+
     /**
      *
      */
     private transient ITabuleiro tabuleiro;
+
+    /**
+	 *
+	 */
+    private Cor vencedor;
+
     /**
      *
      */
     private static final long serialVersionUID = -5291020267269476271L;
+
     /**
      * @param j1
      * @param j2
@@ -54,10 +72,32 @@ public class Partida implements IPartida, Serializable {
     /**
      * @return
      */
-    public Usuario[] getJogadores() {
-        return jogadores;
+    public int getId() {
+        return id;
     }
 
+    /**
+     * @return
+     */
+    public IJogador getJogador1() {
+        return jogador1;
+    }
+
+    /**
+     * @return
+     */
+    public IJogador getJogador2() {
+        return jogador2;
+    }
+
+    /**
+     * @return
+     */
+    public IJogador[] getJogadores() {
+        return new IJogador[]{
+            jogador1, jogador2
+        };
+    }
     /**
      * Retorna o tabuleiro desta partida.
      *
@@ -67,13 +107,16 @@ public class Partida implements IPartida, Serializable {
     public ITabuleiro getTabuleiro() {
         return tabuleiro;
     }
-
     /**
      * @return
      */
     @Override
     public Cor getTurno() {
         return tabuleiro.getTurno();
+    }
+
+    public IJogador getVencedor() {
+        return getJogadores()[vencedor.ordinal()];
     }
 
     /**
@@ -105,14 +148,44 @@ public class Partida implements IPartida, Serializable {
     }
 
     /**
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @param jogador1
+     */
+    public void setJogador1(IJogador jogador1) {
+        this.jogador1 = jogador1;
+    }
+
+    /**
+     * @param jogador2
+     */
+    public void setJogador2(IJogador jogador2) {
+        this.jogador2 = jogador2;
+    }
+
+    /**
+     * @param vencedorIdx
+     */
+    public void setVencedor(IJogador jogador) {
+        this.vencedor = jogador.getCor();
+    }
+
+    /**
      *
      */
     private void initJogadores(Usuario j1, Usuario j2) {
-        jogadores = new Usuario[2];
+        j1.setCor(Cor.Branca);
+        j2.setCor(Cor.Preta);
 
-        jogadores[0] = j1;
-        jogadores[1] = j2;
+        jogador1 = j1;
+        jogador2 = j2;
     }
+
     /**
      * Inicializa propriedades transientes (como o tabuleiro desta partida) afim
      * de economizar networking.

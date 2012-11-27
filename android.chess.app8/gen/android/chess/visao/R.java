@@ -27,13 +27,14 @@ public final class R {
         public static final int p_torre=0x7f02000d;
     }
     public static final class id {
-        public static final int btnLogin=0x7f070005;
-        public static final int button1=0x7f070004;
+        public static final int btnLogin=0x7f070006;
+        public static final int btnRegistrar=0x7f070005;
+        public static final int btnSair=0x7f070004;
         public static final int edtLogin=0x7f070001;
         public static final int edtPasswd=0x7f070003;
-        public static final int mainLayout=0x7f070006;
-        public static final int menu_settings=0x7f070008;
-        public static final int tabuleiro=0x7f070007;
+        public static final int mainLayout=0x7f070007;
+        public static final int menu_settings=0x7f070009;
+        public static final int tabuleiro=0x7f070008;
         public static final int txtLogin=0x7f070000;
         public static final int txtPasswd=0x7f070002;
     }
@@ -47,13 +48,14 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
-        public static final int btnLoginClick=0x7f040007;
-        public static final int cadastrarText=0x7f040006;
-        public static final int loginText=0x7f040003;
+        public static final int btnLoginClick=0x7f040002;
         public static final int menu_settings=0x7f040001;
-        public static final int passwdText=0x7f040004;
-        public static final int title_activity_login=0x7f040005;
-        public static final int title_activity_main=0x7f040002;
+        public static final int textCadastrar=0x7f040007;
+        public static final int textLogin=0x7f040005;
+        public static final int textPasswd=0x7f040006;
+        public static final int textSair=0x7f040008;
+        public static final int title_activity_login=0x7f040004;
+        public static final int title_activity_main=0x7f040003;
     }
     public static final class style {
         public static final int AppTheme=0x7f050000;
