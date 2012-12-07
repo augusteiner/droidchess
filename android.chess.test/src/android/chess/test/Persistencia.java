@@ -5,7 +5,6 @@ import java.util.Iterator;
 import android.chess.dominio.Usuario;
 
 public class Persistencia extends Test {
-
     /*
      * (non-Javadoc)
      *
@@ -13,8 +12,19 @@ public class Persistencia extends Test {
      */
     @Override
     public void run() throws Exception {
-        android.chess.persistencia.Persistencia p;
-        p = android.chess.persistencia.Persistencia.instancia();
+
+        findAUser();
+
+        findUserWithAttr();
+    }
+
+    /**
+     *
+     */
+    private void findAUser() {
+
+        android.chess.persistencia.Persistencia p = android.chess.persistencia.Persistencia
+            .instancia();
 
         Iterator<Usuario> users = p.all(Usuario.class, 15);
         Usuario usr = null;
@@ -29,5 +39,29 @@ public class Persistencia extends Test {
         p.delete(usr);
 
         p.flush();
+    }
+
+    /**
+     *
+     */
+    private void findUserWithAttr() {
+
+        android.chess.persistencia.Persistencia p = android.chess.persistencia.Persistencia
+            .instancia();
+
+        Usuario u = null;
+
+        try {
+            u = p.find(Usuario.class, Usuario.class.getDeclaredField("login"),
+                "augusteiner");
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        System.out.println(u.getNome());
     }
 }

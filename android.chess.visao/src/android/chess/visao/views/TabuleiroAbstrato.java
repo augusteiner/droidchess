@@ -11,7 +11,9 @@ import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
+import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.util.events.interfaces.IAsyncCallback;
 import android.chess.visao.Mensageiro;
 import android.chess.visao.exceptions.InicializacaoException;
 import android.content.Context;
@@ -29,7 +31,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
@@ -93,24 +95,26 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /**
      * Prepara objetos para desenho deste tabuleiro.
-     * 
+     *
      * @throws Exception
      */
-    public void init(ViewGroup contentView) throws InicializacaoException {
+    public void init(final ViewGroup contentView) throws InicializacaoException {
         this.contentView = contentView;
 
         try {
-            partidaCtrl.novaPartida();
+            partidaCtrl.novaPartida(new IAsyncCallback<IPartida>() {
+
+                public void invoke(IPartida arg) {
+                    contentView.removeAllViews();
+                    contentView.addView(TabuleiroAbstrato.this);
+
+                    initPecas();
+
+                }
+            });
         } catch (ExecucaoException e) {
             mensageiro.erro(e);
-
-            return;
         }
-
-        contentView.removeAllViews();
-        contentView.addView(this);
-
-        initPecas();
     }
 
     /**
@@ -166,7 +170,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     /**
      * Método deve ser utilizado para iniciar algo mais nas classes que herdem
      * desta.
-     * 
+     *
      * @param peca
      */
     protected void initPeca(PecaAbstrata peca) {
@@ -175,7 +179,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /**
      * @param contentView
-     * 
+     *
      */
     protected void initPecas() {
         Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
@@ -213,7 +217,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override
@@ -269,7 +273,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onMeasure(int, int)
      */
     @Override

@@ -1,6 +1,7 @@
 package android.chess.app;
 
 import android.annotation.TargetApi;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.visao.views.TabuleiroAbstrato;
@@ -11,7 +12,7 @@ import android.view.DragEvent;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Tabuleiro extends TabuleiroAbstrato {
 
@@ -50,7 +51,7 @@ public class Tabuleiro extends TabuleiroAbstrato {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View#onDragEvent(android.view.DragEvent)
      */
     @TargetApi(11)
@@ -58,13 +59,12 @@ public class Tabuleiro extends TabuleiroAbstrato {
     public boolean onDragEvent(DragEvent event) {
         try {
             return performOnDragEvent(event);
-            // } catch (ArrayIndexOutOfBoundsException e) {
-            // e.printStackTrace();
-            // return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-
+        } catch (ChessException e) {
             mensageiro.alertar(e.getMessage());
+
+            return false;
+        } catch (Exception e) {
+            mensageiro.erro(e);
 
             Log.d(TAG, e.toString());
 

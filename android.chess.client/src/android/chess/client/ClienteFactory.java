@@ -2,23 +2,14 @@ package android.chess.client;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class ClienteFactory {
     /**
-     * @author augusteiner
-     * 
-     */
-    private static class Holder {
-        /**
-         *
-         */
-        private static final Cliente PADRAO = Cliente.getInstancia();
-    }
-    /**
      * @return
+     * @throws Exception
      */
-    public static Cliente getPadrao() {
-        return Holder.PADRAO;
+    public static Cliente getPadrao() throws Exception {
+        return Cliente.getInstancia();
     }
 }

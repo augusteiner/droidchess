@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package android.chess.dominio.factories;
 
@@ -8,7 +8,6 @@ import android.chess.dominio.seguranca.CredenciaisCript;
 
 /**
  * @author augusteiner
- * 
  */
 public class CredenciaisFactory {
     /**
@@ -17,8 +16,7 @@ public class CredenciaisFactory {
      * @return
      * @throws Exception
      */
-    public static ICredenciais novaInstancia(String login, String senha)
-        throws Exception {
+    public static ICredenciais novaInstancia(String login, String senha) {
         return new CredenciaisCript(login, senha);
     }
 }

@@ -7,7 +7,7 @@ import android.chess.dominio.interfaces.ICredenciais;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class AutenticacaoException extends RequisicaoException {
 
@@ -15,6 +15,13 @@ public class AutenticacaoException extends RequisicaoException {
      *
      */
     private static final long serialVersionUID = 3133445056266729850L;
+
+    /**
+     * @param e
+     */
+    public AutenticacaoException(Exception e) {
+        super("Falha na autenticação.", e);
+    }
 
     /**
      * @param requisicao

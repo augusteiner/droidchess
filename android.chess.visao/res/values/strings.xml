@@ -1,3 +1,7 @@
 <resources>
+
     <string name="app_name">android.chess.visao</string>
+    <string name="atencao">ATENÇÃO</string>
+    <string name="erro">ERRO</string>
+
 </resources>

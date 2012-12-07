@@ -3,9 +3,10 @@
  */
 package android.chess;
 
-import android.app.Activity;
 import android.chess.app8.R;
 import android.chess.controle.UsuarioControle;
+import android.chess.visao.AutenticarCallback;
+import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +16,9 @@ import android.widget.TextView;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public class Login extends Activity {
+public class Login extends FullWindowActivity {
     /**
      *
      */
@@ -33,28 +34,29 @@ public class Login extends Activity {
     /**
      * @param view
      */
+    public void btnExitOnClick(View view) {
+        finish();
+    }
+    /**
+     * @param view
+     */
     public void btnLoginOnClick(View view) {
-        try {
-            ctrl.autenticar(edtLogin.getText().toString(), edtPasswd.getText()
-                .toString());
-        } catch (ExceptionInInitializerError e) {
-            new Mensageiro(getApplicationContext()).erro(e.getCause()
-                .getCause().getCause().getMessage());
+        String login = edtLogin.getText().toString();
+        String senha = edtPasswd.getText().toString();
 
-            return;
-        } catch (Throwable e) {
-            new Mensageiro(getApplicationContext()).erro(e.getMessage());
-
-            return;
-        }
-
-        Intent intent = new Intent(Login.this, Main.class);
+        ctrl.autenticar(login, senha, new AutenticarCallback(this, Main.class));
+    }
+    /**
+     * @param view
+     */
+    public void btnRegisterOnClick(View view) {
+        Intent intent = new Intent(Login.this, Registrar.class);
 
         startActivity(intent);
     }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override
@@ -65,7 +67,7 @@ public class Login extends Activity {
     }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
@@ -80,6 +82,6 @@ public class Login extends Activity {
         edtLogin.setText("android-chess");
         edtPasswd.setText("123456");
 
-        ctrl = new UsuarioControle();
+        ctrl = new UsuarioControle(new Mensageiro(getApplicationContext()));
     }
 }

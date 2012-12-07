@@ -2,16 +2,20 @@ package android.chess.dominio.interfaces;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public interface IUsuario {
+public interface IUsuario extends IJogador {
+    /**
+     * @return
+     */
+    public ICredenciais getCredenciais();
     /**
      * @return
      */
     public String getEmail();
-    // public ICredenciais getCredenciais();
     /**
      * @return
      */
+    @Override
     public String getNome();
 }

@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 import android.chess.dominio.Jogada;
 import android.chess.dominio.Usuario;
+import android.chess.dominio.interfaces.IJogador;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Requisicao implements Serializable {
 
@@ -18,7 +19,7 @@ public class Requisicao implements Serializable {
         AUTENTICAR,
         /**
          * Novo cadastro de um usuário. Objeto {@link #mensagem} deve ser
-         * instância de {@link Jogador}.
+         * instância de {@link IJogador}.
          */
         CADASTRO,
         /**

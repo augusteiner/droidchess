@@ -28,6 +28,8 @@ public final class R {
     }
     public static final class string {
         public static int app_name=0x7f030000;
+        public static int atencao=0x7f030001;
+        public static int erro=0x7f030002;
     }
     public static final class style {
         public static int AppTheme=0x7f040000;

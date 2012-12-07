@@ -1,34 +1,27 @@
 package android.chess;
 
-import android.app.Activity;
 import android.chess.app8.R;
+import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
 import android.chess.visao.exceptions.InicializacaoException;
 import android.chess.visao.views.ITabuleiro;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 /**
  * @author augusteiner
- * 
+ *
  */
-public class Main extends Activity {
-
+public class Main extends FullWindowActivity {
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.main);
 
@@ -43,7 +36,7 @@ public class Main extends Activity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override

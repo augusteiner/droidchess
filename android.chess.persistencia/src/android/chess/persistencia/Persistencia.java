@@ -1,13 +1,14 @@
 package android.chess.persistencia;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-import android.chess.dominio.Usuario;
 import android.chess.persistencia.mapeamento.EntityManagerHelper;
 
 /**
@@ -32,7 +33,7 @@ public class Persistencia {
     /**
      *
      */
-    private Persistencia() {
+    protected Persistencia() {
 
     }
     /**
@@ -73,12 +74,46 @@ public class Persistencia {
         getEM().remove(entity);
     }
     /**
+     * @param declaredField
+     * @param login
+     * @return
+     */
+    public <T> T find(Class<T> clazz, Field field, Object value) {
+        EntityManager em = getEM();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(clazz);
+        Root<T> trans = cq.from(clazz);
+
+        cq.where(cb.equal(trans.get(field.getName()), value));
+
+        TypedQuery<T> q = em.createQuery(cq);
+
+        return q.getSingleResult();
+    }
+    /**
      * @param clazz
      * @param id
      * @return
      */
     public <T> T find(Class<T> clazz, Object id) {
         return getEM().getReference(clazz, id);
+    }
+    /**
+     * @param uclass
+     * @param field
+     * @param value
+     * @return
+     * @throws NoSuchFieldException
+     */
+    public <T> T find(Class<T> uclass, String field, Object value) throws NoSuchFieldException {
+        try {
+            return find(uclass, uclass.getDeclaredField(field), value);
+        } catch (SecurityException e) {
+            throw e;
+        } catch (NoSuchFieldException e) {
+            throw e;
+        }
     }
     /**
      *
@@ -88,6 +123,7 @@ public class Persistencia {
 
         em.flush();
 
+        // FIXME Melhorar código.
         em.getTransaction().commit();
 
         em.getTransaction().begin();

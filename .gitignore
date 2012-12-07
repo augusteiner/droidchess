@@ -5,6 +5,9 @@
 *.ap_
 */bin/*
 */doc/*
+
 tutorials/*
 .classpath
 .project
+
+last.commit

@@ -9,10 +9,11 @@ import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 import android.chess.server.exceptions.RequisicaoException;
+import android.chess.util.events.interfaces.IAsyncCallback;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class PartidaControle extends Controle<IPartida> {
     /**
@@ -24,10 +25,10 @@ public class PartidaControle extends Controle<IPartida> {
      */
     protected Usuario jogador;
     /**
-     * 
+     *
      * @throws ExecucaoException
      * @throws RequisicaoException
-     * 
+     *
      * @todo Adicionar jogadores como parametro.
      * @todo Criar evento para repassar a UI?
      * @todo Deve requisitar à aplicação servidora uma nova partida.
@@ -45,7 +46,7 @@ public class PartidaControle extends Controle<IPartida> {
     }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.chess.controle.Controle#getControlado()
      */
     @Override
@@ -65,15 +66,15 @@ public class PartidaControle extends Controle<IPartida> {
         return partida.getTurno();
     }
     /**
-     * 
+     *
      * @param origI
-     * 
+     *
      * @param origJ
-     * 
+     *
      * @param destI
-     * 
+     *
      * @param destJ
-     * 
+     *
      * @throws ChessException
      */
     public void mover(int origI, int origJ, int destI, int destJ)
@@ -84,9 +85,11 @@ public class PartidaControle extends Controle<IPartida> {
         partida.jogada(origI, origJ, destI, destJ);
     }
     /**
+     * @param callback
      * @throws RequisicaoException
      */
-    public void novaPartida() throws ExecucaoException {
+    public void novaPartida(IAsyncCallback<IPartida> callback)
+        throws ExecucaoException {
         AcaoThread r = new AcaoThread() {
             @Override
             protected void executar() throws Exception {
@@ -95,6 +98,8 @@ public class PartidaControle extends Controle<IPartida> {
         };
 
         threadAndJoin(r);
+
+        callback.invoke(partida);
     }
     /**
      * @param r

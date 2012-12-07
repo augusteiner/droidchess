@@ -11,12 +11,12 @@ import android.chess.server.impl.Servidor;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class ClienteSSL extends Cliente {
     /**
      * @author augusteiner
-     * 
+     *
      */
     private static class Holder {
         /**
@@ -28,7 +28,7 @@ public class ClienteSSL extends Cliente {
      *
      */
     public ClienteSSL() {
-        super(false);
+        super();
 
         try {
             socket = SSLSocketFactory.getDefault().createSocket(

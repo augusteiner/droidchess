@@ -10,7 +10,7 @@ public class App {
     public static void main(String[] args) {
         try {
             run();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
@@ -19,7 +19,7 @@ public class App {
      * @throws Exception
      *
      */
-    private static void run() throws Exception {
+    private static void run() throws Throwable {
         Test[] tests = new Test[]{
             // new Jogada(),
             // new Evento(),

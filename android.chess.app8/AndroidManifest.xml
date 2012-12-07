@@ -28,6 +28,7 @@
             android:name="android.chess.Main"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity android:name="android.chess.Registrar"></activity>
     </application>
 
 </manifest>

@@ -13,17 +13,18 @@ import android.chess.dominio.interfaces.IUsuario;
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Requisicao.Tipo;
 import android.chess.server.comunicacao.Resposta;
+import android.chess.server.exceptions.ConexaoException;
 import android.chess.server.exceptions.RequisicaoException;
 import android.chess.server.impl.Servidor;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Cliente {
     /**
      * @author augusteiner
-     * 
+     *
      */
     private static class Holder {
         /**
@@ -31,11 +32,7 @@ public class Cliente {
          */
         private static final Cliente INSTANCIA;
         static {
-            try {
-                INSTANCIA = new Cliente();
-            } catch (Exception e) {
-                throw new ExceptionInInitializerError(e);
-            }
+            INSTANCIA = new Cliente();
         }
     }
     /**
@@ -56,22 +53,16 @@ public class Cliente {
     protected Socket socket;
     /**
      * @throws Exception
-     * 
-     */
-    public Cliente() throws Exception {
-        try {
-            socket = Servidor.novoSocket();
-
-            initStreams();
-        } catch (IOException e) {
-            throw e;
-        }
-    }
-    /**
      *
      */
-    protected Cliente(boolean arg) {
+    Cliente() {
+        try {
+            conectar();
+        } catch (Exception e) {
+            socket = null;
 
+            e.printStackTrace();
+        }
     }
     /**
      * @param credenciais
@@ -80,8 +71,7 @@ public class Cliente {
      */
     public void autenticar(ICredenciais credenciais) throws RequisicaoException {
 
-        Resposta r = getInstancia().enviar(
-            new Requisicao(Tipo.AUTENTICAR, credenciais));
+        Resposta r = enviar(new Requisicao(Tipo.AUTENTICAR, credenciais));
 
         usuario = (Usuario) r.getMensagem();
     }
@@ -101,7 +91,7 @@ public class Cliente {
     }
     /**
      * @deprecated
-     * 
+     *
      * @todo Renomear método.
      */
     @Deprecated
@@ -109,9 +99,9 @@ public class Cliente {
         try {
             // out.flush();
 
-            getInstancia().in.close();
+            in.close();
 
-            getInstancia().out.close();
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,7 +109,7 @@ public class Cliente {
 
     /**
      * Retorna o jogador autenticado atualmente.
-     * 
+     *
      * @return
      */
     public Usuario getUsuario() {
@@ -127,16 +117,29 @@ public class Cliente {
     }
     /**
      * Solicita ao servidor o início de uma partida.
-     * 
+     *
      * @return A partida iniciada pelo servidor.
-     * 
+     *
      * @throws RequisicaoException
      *             Caso algum erro ocorra durante a requisição.
      */
     public IPartida novaPartida() throws RequisicaoException {
-        Resposta r = getInstancia().enviar(new Requisicao(Tipo.PARTIDA, null));
+        Resposta r = enviar(new Requisicao(Tipo.PARTIDA, null));
 
         return (Partida) r.getMensagem();
+    }
+    /**
+     * @throws Exception
+     */
+    private void conectar() throws ConexaoException {
+        try {
+            socket = Servidor.novoSocket();
+
+            initStreams();
+        } catch (IOException e) {
+            throw new ConexaoException(e);
+        }
+
     }
     /**
      * @param requisicao
@@ -147,10 +150,10 @@ public class Cliente {
 
         Resposta response = null;
         try {
-            getInstancia().out.writeObject(requisicao);
-            getInstancia().out.flush();
+            out.writeObject(requisicao);
+            out.flush();
 
-            response = (Resposta) getInstancia().in.readObject();
+            response = (Resposta) in.readObject();
         } catch (Exception e) {
             throw new RequisicaoException(requisicao, e);
         }
@@ -159,7 +162,7 @@ public class Cliente {
     }
     /**
      * @throws IOException
-     * 
+     *
      */
     protected void initStreams() throws IOException {
         out = new ObjectOutputStream(socket.getOutputStream());
@@ -167,8 +170,12 @@ public class Cliente {
     }
     /**
      * @return
+     * @throws Exception
      */
-    static Cliente getInstancia() throws ExceptionInInitializerError {
+    static Cliente getInstancia() throws Exception {
+        if (Holder.INSTANCIA.socket == null)
+            Holder.INSTANCIA.conectar();
+
         return Holder.INSTANCIA;
     }
 }
