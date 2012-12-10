@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="android.chess.Login"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,27 +26,17 @@
         </activity>
         <activity
             android:name="android.chess.Partida"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_partida" >
         </activity>
         <activity android:name="android.chess.Cadastro" >
         </activity>
         <activity
             android:name="android.chess.Convidar"
             android:label="@string/title_activity_convidar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name="android.chess.Main"
-            android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name="android.chess.Inicial"
+            android:label="@string/title_activity_inicial" >
         </activity>
     </application>
 

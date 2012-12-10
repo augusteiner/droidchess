@@ -3,7 +3,7 @@
  */
 package android.chess;
 
-import android.chess.app8.R;
+import android.chess.visao.R;
 import android.chess.controle.UsuarioControle;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IUsuario;
@@ -20,7 +20,7 @@ import android.widget.EditText;
  * @author augusteiner
  *
  */
-public class Cadastro extends FullWindowActivity {
+public class CadastroActivity extends FullWindowActivity {
     /**
      *
      */
@@ -58,8 +58,8 @@ public class Cadastro extends FullWindowActivity {
 
                     // parametro senha passado devido a criptografia
                     ctrl.autenticar(cred.getLogin(), senha,
-                        new ActivityCallback<IUsuario>(Cadastro.this,
-                            Main.class));
+                        new ActivityCallback<IUsuario>(CadastroActivity.this,
+                            InicialActivity.class));
                 }
             });
     }

@@ -75,16 +75,16 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
-        public static final int atencao=0x7f040001;
+        public static final int atencao=0x7f040019;
         public static final int btnCadastrarOnClick=0x7f040011;
         public static final int btnConvidarOnClick=0x7f040017;
         public static final int btnLoginOnClick=0x7f04000f;
         public static final int btnRegisterOnClick=0x7f040010;
         public static final int btnSairOnClick=0x7f040016;
-        public static final int erro=0x7f040002;
+        public static final int erro=0x7f04001a;
         public static final int hello_world=0x7f040012;
         public static final int lstJogadoresOnClick=0x7f040018;
-        public static final int menu_settings=0x7f040003;
+        public static final int menu_settings=0x7f040001;
         public static final int textCadastrar=0x7f040008;
         public static final int textConvidar=0x7f040014;
         public static final int textEmail=0x7f04000d;
@@ -97,8 +97,10 @@ public final class R {
         public static final int textWelcome=0x7f04000b;
         public static final int textWelcomeMain=0x7f040015;
         public static final int title_activity_convidar=0x7f040013;
-        public static final int title_activity_login=0x7f040005;
-        public static final int title_activity_main=0x7f040004;
+        public static final int title_activity_inicial=0x7f040003;
+        public static final int title_activity_login=0x7f040004;
+        public static final int title_activity_main=0x7f040002;
+        public static final int title_activity_partida=0x7f040005;
     }
     public static final class style {
         public static final int AppTheme=0x7f050000;

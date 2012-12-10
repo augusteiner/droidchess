@@ -14,7 +14,6 @@ import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
-import android.chess.dominio.interfaces.IUsuario;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**

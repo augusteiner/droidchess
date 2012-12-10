@@ -2,7 +2,7 @@ package android.chess;
 
 import java.util.ArrayList;
 
-import android.chess.app8.R;
+import android.chess.visao.R;
 import android.chess.controle.UsuarioControle;
 import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
@@ -22,7 +22,7 @@ import android.widget.ListView;
 /**
  * @author augusteiner
  */
-public class Convidar extends FullWindowActivity {
+public class ConvidarActivity extends FullWindowActivity {
     /**
      *
      */
@@ -57,7 +57,7 @@ public class Convidar extends FullWindowActivity {
                     new IAsyncCallback<IPartida>() {
 
                         public void invoke(IPartida arg) {
-                            startActivity(new Intent(Convidar.this, Main.class));
+                            startActivity(new Intent(ConvidarActivity.this, InicialActivity.class));
                         }
 
                     });
@@ -69,7 +69,7 @@ public class Convidar extends FullWindowActivity {
         ctrl.convidar(0, new IAsyncCallback<ArrayList<IJogador>>() {
             public void invoke(ArrayList<IJogador> arg) {
                 lstJogadores.setAdapter(new ArrayAdapter<IJogador>(
-                    Convidar.this, android.R.layout.simple_list_item_1,
+                    ConvidarActivity.this, android.R.layout.simple_list_item_1,
                     android.R.id.text1, arg));
             }
         });

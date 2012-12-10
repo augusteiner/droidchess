@@ -3,7 +3,7 @@
  */
 package android.chess;
 
-import android.chess.app8.R;
+import android.chess.visao.R;
 import android.chess.controle.UsuarioControle;
 import android.chess.dominio.interfaces.IUsuario;
 import android.chess.visao.ActivityCallback;
@@ -19,7 +19,7 @@ import android.widget.TextView;
  * @author augusteiner
  *
  */
-public class Login extends FullWindowActivity {
+public class LoginActivity extends FullWindowActivity {
     /**
      *
      */
@@ -40,13 +40,13 @@ public class Login extends FullWindowActivity {
         String senha = edtPasswd.getText().toString();
 
         ctrl.autenticar(login, senha, new ActivityCallback<IUsuario>(this,
-            Main.class));
+            InicialActivity.class));
     }
     /**
      * @param view
      */
     public void btnRegisterOnClick(View view) {
-        Intent intent = new Intent(Login.this, Cadastro.class);
+        Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
 
         startActivity(intent);
     }

@@ -1,6 +1,6 @@
 package android.chess;
 
-import android.chess.app8.R;
+import android.chess.visao.R;
 import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
 import android.chess.visao.exceptions.InicializacaoException;
@@ -13,7 +13,15 @@ import android.view.ViewGroup;
  * @author augusteiner
  *
  */
-public class Partida extends FullWindowActivity {
+public abstract class PartidaAbstractActivity extends FullWindowActivity {
+    /**
+     * @return
+     */
+    public abstract int getContentViewLayout();// R.layout.partida
+    /**
+     * @return
+     */
+    public abstract int getTabuleiroViewId(); // R.id.tabuleiro
     /*
      * (non-Javadoc)
      *
@@ -23,17 +31,16 @@ public class Partida extends FullWindowActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.partida);
+        setContentView(getContentViewLayout());
 
-        ViewGroup mainLayout = (ViewGroup) findViewById(R.id.mainLayout);
+        ViewGroup mainLayout = (ViewGroup) findViewById(getContentViewLayout());
 
         try {
-            ((ITabuleiro) findViewById(R.id.tabuleiro)).init(mainLayout);
+            ((ITabuleiro) findViewById(getTabuleiroViewId())).init(mainLayout);
         } catch (InicializacaoException e) {
             new Mensageiro(getApplicationContext()).erro(e);
         }
     }
-
     /*
      * (non-Javadoc)
      *

@@ -1,6 +1,6 @@
 package android.chess;
 
-import android.chess.app8.R;
+import android.chess.visao.R;
 import android.chess.controle.UsuarioControle;
 import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
@@ -15,7 +15,7 @@ import android.widget.TextView;
  * @author augusteiner
  *
  */
-public class Main extends FullWindowActivity {
+public class InicialActivity extends FullWindowActivity {
     /**
      *
      */
@@ -28,7 +28,7 @@ public class Main extends FullWindowActivity {
      * @param view
      */
     public void btnConvidarOnClick(View view) {
-        Intent intent = new Intent(this, Convidar.class);
+        Intent intent = new Intent(this, ConvidarActivity.class);
 
         startActivity(intent);
     }
