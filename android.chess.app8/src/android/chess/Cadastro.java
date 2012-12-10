@@ -8,7 +8,7 @@ import android.chess.controle.UsuarioControle;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IUsuario;
 import android.chess.util.events.interfaces.IAsyncCallback;
-import android.chess.visao.AutenticarCallback;
+import android.chess.visao.ActivityCallback;
 import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import android.widget.EditText;
  * @author augusteiner
  *
  */
-public class Registrar extends FullWindowActivity {
+public class Cadastro extends FullWindowActivity {
     /**
      *
      */
@@ -56,8 +56,10 @@ public class Registrar extends FullWindowActivity {
                 public void invoke(IUsuario usuario) {
                     ICredenciais cred = usuario.getCredenciais();
 
-                    ctrl.autenticar(cred.getLogin(), cred.getSenha(),
-                        new AutenticarCallback(Registrar.this, Main.class));
+                    // parametro senha passado devido a criptografia
+                    ctrl.autenticar(cred.getLogin(), senha,
+                        new ActivityCallback<IUsuario>(Cadastro.this,
+                            Main.class));
                 }
             });
     }
@@ -71,7 +73,7 @@ public class Registrar extends FullWindowActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.registrar);
+        setContentView(R.layout.cadastro);
 
         edtNome = (EditText) findViewById(R.id.edtNome);
         edtEmail = (EditText) findViewById(R.id.edtEmail);

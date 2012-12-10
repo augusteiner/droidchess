@@ -2,14 +2,13 @@ package android.chess.controle;
 
 import android.chess.client.ClienteFactory;
 import android.chess.controle.exceptions.ExecucaoException;
-import android.chess.dominio.Usuario;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.TurnoException;
+import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 import android.chess.server.exceptions.RequisicaoException;
-import android.chess.util.events.interfaces.IAsyncCallback;
 
 /**
  * @author augusteiner
@@ -23,7 +22,7 @@ public class PartidaControle extends Controle<IPartida> {
     /**
      *
      */
-    protected Usuario jogador;
+    protected IJogador jogador;
     /**
      *
      * @throws ExecucaoException
@@ -79,27 +78,11 @@ public class PartidaControle extends Controle<IPartida> {
      */
     public void mover(int origI, int origJ, int destI, int destJ)
         throws ChessException {
+
         if (getTurno() != jogador.getCor())
             throw new TurnoException(jogador.getCor().outra());
 
         partida.jogada(origI, origJ, destI, destJ);
-    }
-    /**
-     * @param callback
-     * @throws RequisicaoException
-     */
-    public void novaPartida(IAsyncCallback<IPartida> callback)
-        throws ExecucaoException {
-        AcaoThread r = new AcaoThread() {
-            @Override
-            protected void executar() throws Exception {
-                partida = ClienteFactory.getPadrao().novaPartida();
-            }
-        };
-
-        threadAndJoin(r);
-
-        callback.invoke(partida);
     }
     /**
      * @param r

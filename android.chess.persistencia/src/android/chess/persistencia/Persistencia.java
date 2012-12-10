@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -18,12 +19,14 @@ import android.chess.persistencia.mapeamento.EntityManagerHelper;
  */
 public class Persistencia {
     /**
-     * @author augusteiner
+     * Classe estática para armazenar instância única de serviços de
+     * persistência.
      *
+     * @author augusteiner
      */
     private static class Holder {
         /**
-         *
+         * Instância única de {@link Persistencia}.
          */
         private final static Persistencia INSTANCIA;
         static {
@@ -33,12 +36,17 @@ public class Persistencia {
     /**
      *
      */
-    protected Persistencia() {
-
+    private Persistencia() {
+        beginTransaction();
     }
     /**
+     * Retorna iterator para todos os objetos persistidos da classe
+     * <code>clazz</code> informada.
+     *
      * @param clazz
-     * @return
+     *            Classe dos objetos a serem recuperados.
+     *
+     * @return {@link Iterator} para a lista de objetos encontrados.
      */
     public <T> Iterator<T> all(Class<T> clazz) {
 
@@ -47,31 +55,70 @@ public class Persistencia {
         return q.getResultList().iterator();
     }
     /**
+     * Retorna iterator para todos os objetos persistidos da classe
+     * <code>clazz</code> informada com um <code>limite</code> na quantidade de
+     * objetos.
+     *
      * @param clazz
-     * @param limit
-     * @return
+     *            Classe dos objetos a serem recuperados.
+     *
+     * @param limite
+     *            Limite para a quantidade a ser retornada.
+     *
+     * @return {@link Iterator} para a lista de objetos encontrados.
      */
-    public <T> Iterator<T> all(Class<T> clazz, int limit) {
+    public <T> Iterator<T> all(Class<T> clazz, int limite) {
         TypedQuery<T> q = getQueryAll(clazz);
 
-        q.setMaxResults(limit);
+        q.setMaxResults(limite);
 
         return q.getResultList().iterator();
     }
     /**
-     * @param clazz
-     * @param id
+     *
      */
-    public <T> void delete(Class<T> clazz, Object id) {
-        Object ref = getEM().getReference(clazz, id);
+    public void beginTransaction() {
+        EntityTransaction t = getEM().getTransaction();
 
-        delete(ref);
+        if (!t.isActive())
+            getEM().getTransaction().begin();
     }
     /**
-     * @param entity
+     *
      */
-    public void delete(Object entity) {
-        getEM().remove(entity);
+    public void commit() {
+        getEM().getTransaction().commit();
+    }
+    /**
+     * @param cq
+     * @return
+     */
+    public <T> TypedQuery<T> createQuery(CriteriaQuery<T> cq) {
+        return getEM().createQuery(cq);
+    }
+    /**
+     * Deleta um objeto persistido de acordo com sua <code>clazz</code> e
+     * <code>id</code> informados.
+     *
+     * @param clazz
+     *            Classe do objeto a ser removido.
+     *
+     * @param id
+     *            Identificador do objeto a ser removido.
+     */
+    public <T> void deletar(Class<T> clazz, Object id) {
+        Object ref = getEM().getReference(clazz, id);
+
+        deletar(ref);
+    }
+    /**
+     * Deleta o <code>objeto</code> informado.
+     *
+     * @param objeto
+     *            Objeto a ser removido do estado persistente.
+     */
+    public void deletar(Object objeto) {
+        getEM().remove(objeto);
     }
     /**
      * @param declaredField
@@ -83,6 +130,7 @@ public class Persistencia {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(clazz);
+
         Root<T> trans = cq.from(clazz);
 
         cq.where(cb.equal(trans.get(field.getName()), value));
@@ -106,7 +154,8 @@ public class Persistencia {
      * @return
      * @throws NoSuchFieldException
      */
-    public <T> T find(Class<T> uclass, String field, Object value) throws NoSuchFieldException {
+    public <T> T find(Class<T> uclass, String field, Object value)
+        throws NoSuchFieldException {
         try {
             return find(uclass, uclass.getDeclaredField(field), value);
         } catch (SecurityException e) {
@@ -116,23 +165,45 @@ public class Persistencia {
         }
     }
     /**
+     * @param clazz
+     * @param field
+     * @param value
+     * @param index
+     * @param value
+     * @return
+     */
+    public <T> Iterator<T> find(Class<T> clazz, String field, Object value,
+        int index, int qt) {
+        TypedQuery<T> q = getTypedQuery(clazz, field, value);
+
+        q.setFirstResult(index * qt);
+        q.setMaxResults(qt);
+
+        return q.getResultList().iterator();
+    }
+    /**
      *
      */
     public void flush() {
-        EntityManager em = getEM();
-
-        em.flush();
-
-        // FIXME Melhorar código.
-        em.getTransaction().commit();
-
-        em.getTransaction().begin();
+        getEM().flush();
+    }
+    /**
+     * @return
+     */
+    public CriteriaBuilder getCriteriaBuilder() {
+        return getEM().getCriteriaBuilder();
     }
     /**
      * @param entity
      */
     public void persist(Object entity) {
         getEM().persist(entity);
+    }
+    /**
+     *
+     */
+    public void rollback() {
+        getEM().getTransaction().rollback();
     }
     /**
      * @return
@@ -155,7 +226,28 @@ public class Persistencia {
         return q;
     }
     /**
+     * @param class1
+     * @param index
+     * @param value
      * @return
+     */
+    private <T> TypedQuery<T> getTypedQuery(Class<T> clazz, String field,
+        Object value) {
+        EntityManager em = getEM();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(clazz);
+
+        Root<T> trans = cq.from(clazz);
+
+        cq.where(cb.equal(trans.get(field), value));
+
+        return em.createQuery(cq);
+    }
+    /**
+     * Retorna instância única para acesso a serviços de persistência.
+     *
+     * @return Instância da fachada de persistência.
      */
     public static Persistencia instancia() {
         return Holder.INSTANCIA;

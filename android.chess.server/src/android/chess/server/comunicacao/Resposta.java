@@ -5,11 +5,11 @@ package android.chess.server.comunicacao;
 
 import java.io.Serializable;
 
-import android.chess.dominio.Usuario;
+import android.chess.dominio.interfaces.IUsuario;
 
 /**
  * Resposta enviada pelo servidor a um cliente conectado.
- * 
+ *
  * @author augusteiner
  */
 public class Resposta implements Serializable {
@@ -17,31 +17,34 @@ public class Resposta implements Serializable {
     /**
      * Destinatário da resposta do servidor.
      */
-    private Usuario destinatario;
+    private IUsuario destinatario;
     /**
      * Conteúdo a ser enviado ao {@link #destinatario} pelo servidor.
      */
     private Object mensagem;
+    /**
+     *
+     */
     private static final long serialVersionUID = -6060812451523286920L;
     /**
      * @param destinatario
      */
-    public Resposta(Usuario destinatario) {
+    public Resposta(IUsuario destinatario) {
         this(destinatario, null);
     }
     /**
      * @param destinatario
-     * 
+     *
      * @param mensagem
      */
-    public Resposta(Usuario destinatario, Object mensagem) {
+    public Resposta(IUsuario destinatario, Object mensagem) {
         this.destinatario = destinatario;
         this.mensagem = mensagem;
     }
     /**
      * @return O destinatário desta resposta.
      */
-    public Usuario getDestinatario() {
+    public IUsuario getDestinatario() {
         return destinatario;
     }
 

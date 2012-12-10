@@ -5,6 +5,7 @@ import java.io.Serializable;
 import android.chess.dominio.Jogada;
 import android.chess.dominio.Usuario;
 import android.chess.dominio.interfaces.IJogador;
+import android.chess.dominio.interfaces.IUsuario;
 
 /**
  * @author augusteiner
@@ -27,6 +28,10 @@ public class Requisicao implements Serializable {
          * Objeto {@link #mensagem} deve ser <code>null</code>.
          */
         CONVIDAR,
+        /**
+         * Checa se há convite a ser recebido.
+         */
+        CONVITE,
         /**
          * Desconectar do jogo em andamento (ou do servidor).
          */
@@ -53,7 +58,7 @@ public class Requisicao implements Serializable {
      * {@link Usuario} que está requisitando ao servidor alguma ação. Deve ser
      * <code>null</code> no caso de cadastro de um novo jogador.
      */
-    private Usuario remetente;
+    private IUsuario remetente;
 
     /**
      * Tipo da requisição a ser disparada.
@@ -68,19 +73,26 @@ public class Requisicao implements Serializable {
     /**
      * @param tipo
      */
-    public Requisicao(Tipo tipo) {
-        this(tipo, null);
+    public Requisicao(Tipo tipo, IUsuario remetente) {
+        this(tipo, remetente, null);
     }
 
     /**
      * @param tipo
      * @param mensagem
      */
-    public Requisicao(Tipo tipo, Object mensagem) {
+    public Requisicao(Tipo tipo, IUsuario remetente, Object mensagem) {
         this.tipo = tipo;
+        this.remetente = remetente;
         this.mensagem = mensagem;
     }
-
+    /**
+     * @param tipo
+     * @param mensagem
+     */
+    public Requisicao(Tipo tipo, Object mensagem) {
+        this(tipo, null, mensagem);
+    }
     /**
      * @return
      */
@@ -91,7 +103,7 @@ public class Requisicao implements Serializable {
     /**
      * @return
      */
-    public Usuario getRemetente() {
+    public IUsuario getRemetente() {
         return remetente;
     }
 

@@ -6,14 +6,11 @@ import static java.lang.Math.min;
 import java.util.Iterator;
 
 import android.chess.controle.PartidaControle;
-import android.chess.controle.exceptions.ExecucaoException;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
-import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.pecas.interfaces.IPeca;
-import android.chess.util.events.interfaces.IAsyncCallback;
 import android.chess.visao.Mensageiro;
 import android.chess.visao.exceptions.InicializacaoException;
 import android.content.Context;
@@ -98,23 +95,23 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      *
      * @throws Exception
      */
-    public void init(final ViewGroup contentView) throws InicializacaoException {
+    public void init(ViewGroup contentView) throws InicializacaoException {
         this.contentView = contentView;
 
-        try {
-            partidaCtrl.novaPartida(new IAsyncCallback<IPartida>() {
+        // try {
+        // partidaCtrl.convidar(null, new IAsyncCallback<IPartida>() {
+        //
+        // public void invoke(IPartida arg) {
+        // }
+        // });
+        // } catch (ExecucaoException e) {
+        // mensageiro.erro(e);
+        // }
 
-                public void invoke(IPartida arg) {
-                    contentView.removeAllViews();
-                    contentView.addView(TabuleiroAbstrato.this);
+        contentView.removeAllViews();
+        contentView.addView(TabuleiroAbstrato.this);
 
-                    initPecas();
-
-                }
-            });
-        } catch (ExecucaoException e) {
-            mensageiro.erro(e);
-        }
+        initPecas();
     }
 
     /**

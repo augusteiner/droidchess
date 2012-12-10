@@ -1,13 +1,16 @@
 package android.chess.client;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.net.Socket;
+import java.util.ArrayList;
 
-import android.chess.dominio.Partida;
-import android.chess.dominio.Usuario;
+import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.interfaces.ICredenciais;
+import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.IUsuario;
 import android.chess.server.comunicacao.Requisicao;
@@ -16,6 +19,7 @@ import android.chess.server.comunicacao.Resposta;
 import android.chess.server.exceptions.ConexaoException;
 import android.chess.server.exceptions.RequisicaoException;
 import android.chess.server.impl.Servidor;
+import android.chess.util.events.interfaces.IAsyncCallback;
 
 /**
  * @author augusteiner
@@ -36,6 +40,11 @@ public class Cliente {
         }
     }
     /**
+     * Lock para permitir que mais de uma thread utilize-se do envio de
+     * mensagens ao servidor.
+     */
+    private final Object enviarLock = new Object();
+    /**
      *
      */
     private ObjectInputStream in;
@@ -46,7 +55,7 @@ public class Cliente {
     /**
      * Usuário autenticado na sessão.
      */
-    private Usuario usuario;
+    private IUsuario usuario;
     /**
      *
      */
@@ -65,29 +74,66 @@ public class Cliente {
         }
     }
     /**
+     * Envia as credenciais de um usuário ao servidor para que o mesmo
+     * autentique o usuário representado por esta credencial.
+     *
      * @param credenciais
-     * @return
-     * @throws RequisicaoException
+     *            Credenciais do usuário previamente cadastrado.
+     * @param callback
+     *
+     * @throws ChessException
+     *             Caso algum erro ocorra durante a requisição.
      */
-    public void autenticar(ICredenciais credenciais) throws RequisicaoException {
+    public void autenticar(ICredenciais credenciais,
+        IAsyncCallback<IUsuario> callback) throws ChessException,
+        ConexaoException {
 
-        Resposta r = enviar(new Requisicao(Tipo.AUTENTICAR, credenciais));
+        usuario = (IUsuario) requisicao(Tipo.AUTENTICAR, credenciais);
 
-        usuario = (Usuario) r.getMensagem();
+        callback.invoke(usuario);
     }
-
     /**
-     * @return
-     * @throws Exception
-     * @throws ClassNotFoundException
-     * @throws IOException
+     * Realiza um cadastro de um novo usuário.
+     *
+     * @return O usuário recem cadastrado.
+     *
+     * @throws ChessException
+     *             Caso algum erro ocorra durante a requisição.
      */
-    public Usuario cadastro(IUsuario usuario) throws RequisicaoException {
+    public IUsuario cadastro(IUsuario usuario) throws ChessException {
+        return (IUsuario) requisicao(Tipo.CADASTRO, usuario);
+    }
+    /**
+     * Solicita ao servidor o início de uma partida.
+     *
+     * @param jogador
+     *            Jogador a ser convidado.
+     *
+     * @return A partida iniciada pelo servidor.
+     *
+     * @throws ChessException
+     *             Caso algum erro ocorra durante a requisição.
+     */
+    public void convidar(IJogador jogador, IAsyncCallback<IPartida> callback)
+        throws ChessException {
 
-        Requisicao requisicao = new Requisicao(Tipo.CADASTRO, usuario);
-        Resposta resposta = enviar(requisicao);
+        IPartida partida = (IPartida) requisicao(Tipo.PARTIDA, jogador);
 
-        return (Usuario) resposta.getMensagem();
+        if (callback != null)
+            callback.invoke(partida);
+    }
+    /**
+     * Requisita uma lista de jogadores disponíveis para uma partida.
+     *
+     * @param index
+     *            Índice da página de jogadores.
+     *
+     * @throws ChessException
+     *             Caso ocorra alguma exceção durante a requisição ao servidor.
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayList<IJogador> convidar(int index) throws ChessException {
+        return (ArrayList<IJogador>) requisicao(Tipo.CONVIDAR, index);
     }
     /**
      * @deprecated
@@ -106,27 +152,13 @@ public class Cliente {
             e.printStackTrace();
         }
     }
-
     /**
      * Retorna o jogador autenticado atualmente.
      *
      * @return
      */
-    public Usuario getUsuario() {
+    public IUsuario getUsuario() {
         return usuario;
-    }
-    /**
-     * Solicita ao servidor o início de uma partida.
-     *
-     * @return A partida iniciada pelo servidor.
-     *
-     * @throws RequisicaoException
-     *             Caso algum erro ocorra durante a requisição.
-     */
-    public IPartida novaPartida() throws RequisicaoException {
-        Resposta r = enviar(new Requisicao(Tipo.PARTIDA, null));
-
-        return (Partida) r.getMensagem();
     }
     /**
      * @throws Exception
@@ -146,19 +178,43 @@ public class Cliente {
      * @return
      * @throws RequisicaoException
      */
-    private Resposta enviar(Requisicao requisicao) throws RequisicaoException {
-
+    private Resposta enviar(Requisicao requisicao) throws ChessException {
         Resposta response = null;
-        try {
-            out.writeObject(requisicao);
-            out.flush();
 
-            response = (Resposta) in.readObject();
+        try {
+            synchronized (enviarLock) {
+                out.writeObject(requisicao);
+                out.flush();
+
+                response = (Resposta) in.readObject();
+            }
+        } catch (EOFException e) {
+            throw new ConexaoException(e);
+        } catch (StreamCorruptedException e) {
+            throw new ConexaoException(e);
         } catch (Exception e) {
             throw new RequisicaoException(requisicao, e);
         }
 
-        return response;
+        if (response.getMensagem() instanceof ChessException)
+            throw (ChessException) response.getMensagem();
+        else if (response.getMensagem() instanceof Exception)
+            throw new RequisicaoException(requisicao,
+                (Exception) response.getMensagem());
+        else
+            return response;
+    }
+    /**
+     * @param tipo
+     * @param mensagem
+     * @return
+     * @throws ChessException
+     */
+    private Object requisicao(Tipo tipo, Object mensagem) throws ChessException {
+        Requisicao requisicao = new Requisicao(tipo, usuario, mensagem);
+        Resposta resposta = enviar(requisicao);
+
+        return resposta.getMensagem();
     }
     /**
      * @throws IOException

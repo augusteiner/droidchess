@@ -54,7 +54,7 @@ public class Mensageiro extends Toast implements IMensageiro {
      * android.chess.visao.interfaces.IMensageiro#erro(java.lang.CharSequence)
      */
     public void erro(CharSequence mensagem) {
-        erro(mensagem, LENGTH_SHORT);
+        erro(mensagem, LENGTH_LONG);
     }
 
     /**

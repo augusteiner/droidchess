@@ -5,27 +5,21 @@ import java.io.Serializable;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IUsuario;
-import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
  *
  */
-public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
-    /**
-     *
-     */
-    private Cor cor;
+public class Usuario extends Jogador
+    implements
+        ICredenciais,
+        Serializable,
+        IUsuario,
+        IJogador {
     /**
      *
      */
     private String email;
-
-    /**
-     *
-     */
-    private int id;
-
     /**
      *
      */
@@ -33,22 +27,16 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
     /**
      *
      */
-    private String nome;
-    /**
-     *
-     */
     private String senha;
-
     /**
      *
      */
     private static final long serialVersionUID = 1949083620486065585L;
-
     /**
      *
      */
     public Usuario() {
-        // super();
+        super();
     }
     /**
      * @param credenciais
@@ -59,6 +47,7 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
         initCredenciais(credenciais);
 
         initUsuario(nome, email);
+
     }
 
     /**
@@ -68,16 +57,6 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
         initUsuario(nome, email);
 
         initCredenciais(login, senha);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.chess.dominio.interfaces.IJogador#getCor()
-     */
-    @Override
-    public Cor getCor() {
-        return cor;
     }
 
     /**
@@ -98,21 +77,9 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
         return email;
     }
 
-    public int getId() {
-        return id;
-    }
-
     @Override
     public String getLogin() {
         return login;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public String getNome() {
-        return nome;
     }
 
     @Override
@@ -129,14 +96,6 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
     public int hashCode() {
         return super.hashCode();
     }
-
-    /**
-     * @param cor
-     */
-    public void setCor(Cor cor) {
-        this.cor = cor;
-    }
-
     /**
      * @param credenciais
      */
@@ -150,17 +109,6 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * @param nome
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
     /*
      * (non-Javadoc)
      *
@@ -168,7 +116,7 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
      */
     @Override
     public String toString() {
-        return nome;
+        return getNome();
     }
     /**
      * @param credenciais
@@ -189,7 +137,8 @@ public class Usuario implements ICredenciais, Serializable, IUsuario, IJogador {
      * @param email
      */
     private void initUsuario(String nome, String email) {
-        this.nome = nome;
+        this.setNome(nome);
+
         this.email = email;
     }
 }

@@ -4,18 +4,18 @@ import android.chess.server.impl.Servidor;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class ServidorFactory {
     /**
      * @author augusteiner
-     * 
+     *
      */
     private static class Holder {
         /**
          *
          */
-        private static final Servidor PADRAO = new Servidor();
+        private static final Servidor PADRAO = Servidor.getInstancia();
     }
     /**
      * @return

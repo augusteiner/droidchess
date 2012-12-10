@@ -16,5 +16,12 @@
     <string name="btnLoginOnClick">btnLoginOnClick</string>
     <string name="btnRegisterOnClick">btnRegisterOnClick</string>
     <string name="btnCadastrarOnClick">btnCadastrarOnClick</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_convidar">Convidar</string>
+    <string name="textConvidar">Convidar jogador</string>
+    <string name="textWelcomeMain">Bem vindo %s!</string>
+    <string name="btnSairOnClick">btnSairOnClick</string>
+    <string name="btnConvidarOnClick">btnConvidarOnClick</string>
+    <string name="lstJogadoresOnClick">lstJogadoresOnClick</string>
 
 </resources>

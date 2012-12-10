@@ -11,8 +11,9 @@ public interface IMensageiro {
     public void alertar(CharSequence mensagem);
     /**
      * @param mensagem
+     * @param duracao
      */
-    public void erro(CharSequence mensagem);
+    public void alertar(CharSequence mensagem, int duracao);
     /**
      * @param e
      */

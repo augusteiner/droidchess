@@ -5,10 +5,15 @@
     <persistence-unit name="android.chess.persistencia.mapeamento"
         transaction-type="RESOURCE_LOCAL">
         <mapping-file>META-INF/orm.xml</mapping-file>
-
         <properties>
             <property name="eclipselink.orm.validate.schema" value="true" />
-            <!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> -->
+
+            <!--
+                 <property
+                name="eclipselink.ddl-generation"
+                value="drop-and-create-tables" />
+            -->
+
             <property name="eclipselink.ddl-generation.output-mode"
                 value="both" />
 

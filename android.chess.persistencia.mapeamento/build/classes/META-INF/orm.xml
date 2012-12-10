@@ -15,17 +15,21 @@
                 <generated-value strategy="IDENTITY" />
             </id>
             <basic name="login">
-                <column name="USR_LOGIN" />
+                <column name="USR_LOGIN" nullable="false" />
             </basic>
-
             <basic name="senha">
-                <column name="USR_SENHA" />
+                <column name="USR_SENHA" nullable="false" />
             </basic>
             <basic name="nome">
-                <column name="USR_NOME" />
+                <column name="USR_NOME" nullable="false" />
+            </basic>
+            <basic name="email">
+                <column name="USR_EMAIL" nullable="false" />
+            </basic>
+            <basic name="online">
+                <column name="USR_ONLINE" nullable="false" />
             </basic>
             <transient name="cor" />
-            <transient name="email" />
         </attributes>
     </entity>
 
@@ -37,19 +41,19 @@
                 <column name="PAR_ID" />
                 <generated-value strategy="IDENTITY" />
             </id>
-            <basic name="vencedor">
+            <basic name="vencedor" optional="true">
                 <column name="PAR_VENC" />
             </basic>
             <one-to-one name="jogador1" target-entity="android.chess.dominio.Usuario"
-                fetch="LAZY" orphan-removal="false">
-                <join-column name="JOG_ID_1" />
+                fetch="LAZY" orphan-removal="false" optional="false">
+                <join-column name="JOG_ID_1" nullable="false" />
                 <cascade>
                     <cascade-persist />
                 </cascade>
             </one-to-one>
             <one-to-one name="jogador2" target-entity="android.chess.dominio.Usuario"
-                fetch="LAZY" orphan-removal="false">
-                <join-column name="JOG_ID_2" />
+                fetch="LAZY" orphan-removal="false" optional="false">
+                <join-column name="JOG_ID_2" nullable="false" />
                 <cascade>
                     <cascade-persist />
                 </cascade>

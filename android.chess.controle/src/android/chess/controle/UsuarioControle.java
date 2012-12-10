@@ -1,11 +1,16 @@
 package android.chess.controle;
 
+import java.util.ArrayList;
+
 import android.chess.client.Cliente;
 import android.chess.client.ClienteFactory;
 import android.chess.dominio.Usuario;
 import android.chess.dominio.factories.CredenciaisFactory;
 import android.chess.dominio.interfaces.ICredenciais;
+import android.chess.dominio.interfaces.IJogador;
+import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.IUsuario;
+import android.chess.server.exceptions.ConexaoException;
 import android.chess.server.exceptions.RequisicaoException;
 import android.chess.util.events.interfaces.IAsyncCallback;
 import android.chess.visao.interfaces.IMensageiro;
@@ -17,8 +22,8 @@ import android.chess.visao.interfaces.IMensageiro;
 public class UsuarioControle extends Controle<IUsuario> {
     private Cliente cliente;
     /**
-         *
-         */
+     *
+     */
     private IMensageiro mensageiro;
     /*
      * (non-Javadoc)
@@ -34,6 +39,8 @@ public class UsuarioControle extends Controle<IUsuario> {
 
         try {
             recuperarCliente();
+        } catch (ConexaoException e) {
+            mensageiro.erro(e);
         } catch (Exception e) {
             mensageiro.erro(e);
         }
@@ -63,7 +70,35 @@ public class UsuarioControle extends Controle<IUsuario> {
 
         try {
             callback.invoke(getCliente().cadastro(
-                new Usuario(cred, email, nome)));
+                new Usuario(cred, nome, email)));
+        } catch (Exception e) {
+            mensageiro.erro(e);
+        }
+    }
+    /**
+     *
+     *
+     * @param adversario
+     *
+     * @param callback
+     */
+    public void convidar(IJogador adversario, IAsyncCallback<IPartida> callback) {
+        try {
+            getCliente().convidar(adversario, callback);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            mensageiro.erro(e);
+        }
+    }
+    /**
+     * @return
+     *
+     */
+    public void convidar(int pagina,
+        IAsyncCallback<ArrayList<IJogador>> callback) {
+        try {
+            callback.invoke(getCliente().convidar(pagina));
         } catch (Exception e) {
             mensageiro.erro(e);
         }
@@ -89,9 +124,7 @@ public class UsuarioControle extends Controle<IUsuario> {
     private void autenticar(ICredenciais credenciais,
         IAsyncCallback<IUsuario> callback) {
         try {
-            getCliente().autenticar(credenciais);
-
-            callback.invoke(getControlado());
+            getCliente().autenticar(credenciais, callback);
         } catch (Exception e) {
             mensageiro.erro(e);
         }

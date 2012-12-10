@@ -30,46 +30,63 @@ public final class R {
         public static final int p_torre=0x7f02000d;
     }
     public static final class id {
-        public static final int TextView01=0x7f08000e;
-        public static final int TextView05=0x7f080013;
-        public static final int btnCadastrar=0x7f080012;
-        public static final int btnLogin=0x7f080007;
-        public static final int btnRegistrar=0x7f080006;
-        public static final int btnSair=0x7f080005;
-        public static final int edtEmail=0x7f08000d;
-        public static final int edtLogin=0x7f080002;
-        public static final int edtNome=0x7f08000b;
-        public static final int edtPasswd=0x7f080004;
-        public static final int edtSenha=0x7f080011;
-        public static final int mainLayout=0x7f080008;
-        public static final int menu_settings=0x7f080014;
-        public static final int tabuleiro=0x7f080009;
-        public static final int txtEmail=0x7f08000c;
-        public static final int txtLogin=0x7f080001;
-        public static final int txtNome=0x7f08000a;
-        public static final int txtPasswd=0x7f080003;
-        public static final int txtSenha=0x7f080010;
-        public static final int txtUsuario=0x7f08000f;
-        public static final int txtWelcome=0x7f080000;
+        public static final int TextView01=0x7f080004;
+        public static final int TextView02=0x7f080016;
+        public static final int TextView03=0x7f080015;
+        public static final int TextView05=0x7f08000a;
+        public static final int btnCadastrar=0x7f080009;
+        public static final int btnLogin=0x7f080013;
+        public static final int btnRegistrar=0x7f080012;
+        public static final int btnSair=0x7f080011;
+        public static final int button1=0x7f08001a;
+        public static final int edtEmail=0x7f080003;
+        public static final int edtLogin=0x7f080006;
+        public static final int edtNome=0x7f080001;
+        public static final int edtPasswd=0x7f080010;
+        public static final int edtSenha=0x7f080008;
+        public static final int lstJogadores=0x7f08000c;
+        public static final int mainLayout=0x7f08001b;
+        public static final int menu_settings=0x7f08001d;
+        public static final int tabuleiro=0x7f08001c;
+        public static final int txtEmail=0x7f080002;
+        public static final int txtJogosGanhos=0x7f080017;
+        public static final int txtLogin=0x7f08000e;
+        public static final int txtMainWelcome=0x7f080014;
+        public static final int txtNome=0x7f080000;
+        public static final int txtPartidas=0x7f080018;
+        public static final int txtPartidasCount=0x7f080019;
+        public static final int txtPasswd=0x7f08000f;
+        public static final int txtSenha=0x7f080007;
+        public static final int txtTituloConvidar=0x7f08000b;
+        public static final int txtUsuario=0x7f080005;
+        public static final int txtWelcome=0x7f08000d;
     }
     public static final class layout {
-        public static final int login=0x7f030000;
-        public static final int main=0x7f030001;
-        public static final int registrar=0x7f030002;
+        public static final int cadastro=0x7f030000;
+        public static final int convidar=0x7f030001;
+        public static final int login=0x7f030002;
+        public static final int main=0x7f030003;
+        public static final int partida=0x7f030004;
     }
     public static final class menu {
-        public static final int login=0x7f070000;
-        public static final int main=0x7f070001;
+        public static final int convidar=0x7f070000;
+        public static final int login=0x7f070001;
+        public static final int main=0x7f070002;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int atencao=0x7f040001;
         public static final int btnCadastrarOnClick=0x7f040011;
+        public static final int btnConvidarOnClick=0x7f040017;
         public static final int btnLoginOnClick=0x7f04000f;
         public static final int btnRegisterOnClick=0x7f040010;
+        public static final int btnSairOnClick=0x7f040016;
         public static final int erro=0x7f040002;
+        public static final int hello_world=0x7f040012;
+        public static final int lstJogadoresOnClick=0x7f040018;
         public static final int menu_settings=0x7f040003;
         public static final int textCadastrar=0x7f040008;
+        public static final int textConvidar=0x7f040014;
         public static final int textEmail=0x7f04000d;
         public static final int textLogin=0x7f040006;
         public static final int textNome=0x7f04000e;
@@ -78,6 +95,8 @@ public final class R {
         public static final int textSenha=0x7f04000c;
         public static final int textUsuario=0x7f04000a;
         public static final int textWelcome=0x7f04000b;
+        public static final int textWelcomeMain=0x7f040015;
+        public static final int title_activity_convidar=0x7f040013;
         public static final int title_activity_login=0x7f040005;
         public static final int title_activity_main=0x7f040004;
     }

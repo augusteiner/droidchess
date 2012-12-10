@@ -14,11 +14,12 @@ import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
+import android.chess.dominio.interfaces.IUsuario;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
 /**
  * @author augusteiner
- * 
+ *
  */
 public class Partida implements IPartida, Serializable {
     /**
@@ -54,7 +55,7 @@ public class Partida implements IPartida, Serializable {
      * @param j1
      * @param j2
      */
-    public Partida(Usuario j1, Usuario j2) {
+    public Partida(IJogador j1, IJogador j2) {
         tabuleiro = new Tabuleiro();
 
         initJogadores(j1, j2);
@@ -100,7 +101,7 @@ public class Partida implements IPartida, Serializable {
     }
     /**
      * Retorna o tabuleiro desta partida.
-     * 
+     *
      * @return {@link Tabuleiro}
      */
     @Override
@@ -120,17 +121,17 @@ public class Partida implements IPartida, Serializable {
     }
 
     /**
-     * 
+     *
      * @param origI
-     * 
+     *
      * @param origJ
-     * 
+     *
      * @param destI
-     * 
+     *
      * @param destJ
-     * 
+     *
      * @throws MovimentoInvalidoException
-     * 
+     *
      * @throws PecaNaoEncontradaException
      */
     @Override
@@ -178,7 +179,7 @@ public class Partida implements IPartida, Serializable {
     /**
      *
      */
-    private void initJogadores(Usuario j1, Usuario j2) {
+    private void initJogadores(IJogador j1, IJogador j2) {
         j1.setCor(Cor.Branca);
         j2.setCor(Cor.Preta);
 
@@ -189,9 +190,9 @@ public class Partida implements IPartida, Serializable {
     /**
      * Inicializa propriedades transientes (como o tabuleiro desta partida) afim
      * de economizar networking.
-     * 
+     *
      * @param in
-     * 
+     *
      * @throws IOException
      * @throws ClassNotFoundException
      */

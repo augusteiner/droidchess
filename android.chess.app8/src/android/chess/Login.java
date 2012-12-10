@@ -5,7 +5,8 @@ package android.chess;
 
 import android.chess.app8.R;
 import android.chess.controle.UsuarioControle;
-import android.chess.visao.AutenticarCallback;
+import android.chess.dominio.interfaces.IUsuario;
+import android.chess.visao.ActivityCallback;
 import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
 import android.content.Intent;
@@ -34,25 +35,26 @@ public class Login extends FullWindowActivity {
     /**
      * @param view
      */
-    public void btnExitOnClick(View view) {
-        finish();
-    }
-    /**
-     * @param view
-     */
     public void btnLoginOnClick(View view) {
         String login = edtLogin.getText().toString();
         String senha = edtPasswd.getText().toString();
 
-        ctrl.autenticar(login, senha, new AutenticarCallback(this, Main.class));
+        ctrl.autenticar(login, senha, new ActivityCallback<IUsuario>(this,
+            Main.class));
     }
     /**
      * @param view
      */
     public void btnRegisterOnClick(View view) {
-        Intent intent = new Intent(Login.this, Registrar.class);
+        Intent intent = new Intent(Login.this, Cadastro.class);
 
         startActivity(intent);
+    }
+    /**
+     * @param view
+     */
+    public void btnSairOnClick(View view) {
+        finish();
     }
     /*
      * (non-Javadoc)

@@ -36,7 +36,7 @@ public class Persistencia extends Test {
         }
 
         // p.delete(Usuario.class, 1);
-        p.delete(usr);
+        p.deletar(usr);
 
         p.flush();
     }

@@ -25,10 +25,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="android.chess.Main"
+            android:name="android.chess.Partida"
             android:label="@string/title_activity_main" >
         </activity>
-        <activity android:name="android.chess.Registrar"></activity>
+        <activity android:name="android.chess.Cadastro" >
+        </activity>
+        <activity
+            android:name="android.chess.Convidar"
+            android:label="@string/title_activity_convidar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="android.chess.Main"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
