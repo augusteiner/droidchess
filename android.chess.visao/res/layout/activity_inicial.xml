@@ -43,10 +43,10 @@
                         android:orientation="vertical" >
 
                         <TextView
-                            android:id="@+id/TextView03"
+                            android:id="@+id/lblRanking"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="@android:string/untitled" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -55,10 +55,10 @@
                         android:orientation="vertical" >
 
                         <TextView
-                            android:id="@+id/TextView02"
+                            android:id="@+id/txtRanking"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="@android:string/untitled" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -73,10 +73,10 @@
                         android:orientation="vertical" >
 
                         <TextView
-                            android:id="@+id/txtJogosGanhos"
+                            android:id="@+id/lblJogosGanhos"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="@android:string/untitled" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -85,10 +85,10 @@
                         android:orientation="vertical" >
 
                         <TextView
-                            android:id="@+id/TextView01"
+                            android:id="@+id/txtJogosGanhos"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="@android:string/untitled" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -105,7 +105,7 @@
                             android:id="@+id/txtPartidas"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="@android:string/untitled" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -117,12 +117,10 @@
                             android:id="@+id/txtPartidasCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="@android:string/untitled" />
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -137,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:onClick="@string/btnConvidarOnClick"
                 android:text="@string/textConvidar" />
-
         </LinearLayout>
     </LinearLayout>
 

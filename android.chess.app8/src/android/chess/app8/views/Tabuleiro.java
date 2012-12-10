@@ -1,7 +1,7 @@
 /**
  *
  */
-package android.chess.app8;
+package android.chess.app8.views;
 
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.visao.views.PecaAbstrata;

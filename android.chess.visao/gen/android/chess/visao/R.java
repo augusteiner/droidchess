@@ -28,39 +28,40 @@ public final class R {
     }
     public static final class id {
         public static int TextView01=0x7f070004;
-        public static int TextView02=0x7f070016;
-        public static int TextView03=0x7f070015;
         public static int TextView05=0x7f07000a;
         public static int btnCadastrar=0x7f070009;
-        public static int btnLogin=0x7f070013;
-        public static int btnRegistrar=0x7f070012;
-        public static int btnSair=0x7f070011;
-        public static int button1=0x7f07001a;
+        public static int btnLogin=0x7f07001b;
+        public static int btnRegistrar=0x7f07001a;
+        public static int btnSair=0x7f070019;
+        public static int button1=0x7f070014;
         public static int edtEmail=0x7f070003;
         public static int edtLogin=0x7f070006;
         public static int edtNome=0x7f070001;
-        public static int edtPasswd=0x7f070010;
+        public static int edtPasswd=0x7f070018;
         public static int edtSenha=0x7f070008;
+        public static int lblJogosGanhos=0x7f070010;
+        public static int lblRanking=0x7f07000e;
         public static int lstJogadores=0x7f07000c;
-        public static int menu_settings=0x7f07001b;
+        public static int menu_settings=0x7f07001c;
         public static int txtEmail=0x7f070002;
-        public static int txtJogosGanhos=0x7f070017;
-        public static int txtLogin=0x7f07000e;
-        public static int txtMainWelcome=0x7f070014;
+        public static int txtJogosGanhos=0x7f070011;
+        public static int txtLogin=0x7f070016;
+        public static int txtMainWelcome=0x7f07000d;
         public static int txtNome=0x7f070000;
-        public static int txtPartidas=0x7f070018;
-        public static int txtPartidasCount=0x7f070019;
-        public static int txtPasswd=0x7f07000f;
+        public static int txtPartidas=0x7f070012;
+        public static int txtPartidasCount=0x7f070013;
+        public static int txtPasswd=0x7f070017;
+        public static int txtRanking=0x7f07000f;
         public static int txtSenha=0x7f070007;
         public static int txtTituloConvidar=0x7f07000b;
         public static int txtUsuario=0x7f070005;
-        public static int txtWelcome=0x7f07000d;
+        public static int txtWelcome=0x7f070015;
     }
     public static final class layout {
-        public static int cadastro=0x7f030000;
-        public static int convidar=0x7f030001;
-        public static int login=0x7f030002;
-        public static int main=0x7f030003;
+        public static int activity_cadastro=0x7f030000;
+        public static int activity_convidar=0x7f030001;
+        public static int activity_inicial=0x7f030002;
+        public static int activity_login=0x7f030003;
     }
     public static final class menu {
         public static int convidar=0x7f060000;

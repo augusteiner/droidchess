@@ -22,7 +22,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/textConvidar"
                 android:textAppearance="@android:style/TextAppearance.Large" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -34,12 +33,10 @@
                 android:id="@+id/lstJogadores"
                 android:layout_width="fill_parent"
                 android:layout_height="310dp"
+                android:choiceMode="singleChoice"
                 android:smoothScrollbar="true" >
-
             </ListView>
-
         </LinearLayout>
-
     </LinearLayout>
 
 </RelativeLayout>

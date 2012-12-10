@@ -19,7 +19,7 @@ import android.widget.TextView;
  * @author augusteiner
  *
  */
-public class LoginActivity extends FullWindowActivity {
+public class LoginAbstractActivity extends FullWindowActivity {
     /**
      *
      */
@@ -46,7 +46,8 @@ public class LoginActivity extends FullWindowActivity {
      * @param view
      */
     public void btnRegisterOnClick(View view) {
-        Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
+        Intent intent = new Intent(LoginAbstractActivity.this,
+            CadastroActivity.class);
 
         startActivity(intent);
     }
@@ -76,7 +77,7 @@ public class LoginActivity extends FullWindowActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
 
         edtLogin = (TextView) findViewById(R.id.edtLogin);
         edtPasswd = (TextView) findViewById(R.id.edtPasswd);

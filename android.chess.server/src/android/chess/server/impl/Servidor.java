@@ -134,6 +134,8 @@ public class Servidor {
      * @throws Exception
      */
     public void servir() throws Exception {
+        Persistencia.instancia();
+
         while (true) {
             new ServidorThread(this).start();
         }

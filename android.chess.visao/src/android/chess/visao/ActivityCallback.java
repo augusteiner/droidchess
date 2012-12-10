@@ -5,7 +5,6 @@ package android.chess.visao;
 
 import android.app.Activity;
 import android.chess.util.events.interfaces.IAsyncCallback;
-import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -16,7 +15,7 @@ public class ActivityCallback<T> implements IAsyncCallback<T> {
     /**
      *
      */
-    private Context context;
+    private Activity context;
     /**
      *
      */
@@ -24,7 +23,7 @@ public class ActivityCallback<T> implements IAsyncCallback<T> {
     /**
      * @param context
      */
-    public ActivityCallback(Context context, Class<? extends Activity> clazz) {
+    public ActivityCallback(Activity context, Class<? extends Activity> clazz) {
 
         this(context, new Intent(context, clazz));
     }
@@ -32,7 +31,7 @@ public class ActivityCallback<T> implements IAsyncCallback<T> {
      * @param context
      * @param intent
      */
-    public ActivityCallback(Context context, Intent intent) {
+    public ActivityCallback(Activity context, Intent intent) {
         this.context = context;
 
         this.intent = intent;
@@ -55,6 +54,6 @@ public class ActivityCallback<T> implements IAsyncCallback<T> {
         // intent.putExtra(IUsuario.Key.name, usuario);
 
         context.startActivity(getIntent());
+        context.finish();
     }
-
 }

@@ -1,7 +1,7 @@
 /**
  *
  */
-package android.chess.app8;
+package android.chess.app8.views;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -9,7 +9,7 @@ import android.chess.PartidaAbstractActivity;
  * @author augusteiner
  *
  */
-public class Partida extends PartidaAbstractActivity {
+public class PartidaActivity extends PartidaAbstractActivity {
     /*
      * (non-Javadoc)
      *
@@ -17,7 +17,7 @@ public class Partida extends PartidaAbstractActivity {
      */
     @Override
     public int getContentViewLayout() {
-        return R.layout.partida;
+        return R.layout.activity_partida;
     }
     /*
      * (non-Javadoc)

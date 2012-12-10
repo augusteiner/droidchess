@@ -73,7 +73,7 @@ public class CadastroActivity extends FullWindowActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.cadastro);
+        setContentView(R.layout.activity_cadastro);
 
         edtNome = (EditText) findViewById(R.id.edtNome);
         edtEmail = (EditText) findViewById(R.id.edtEmail);
