@@ -1,6 +1,5 @@
 package android.chess.controle;
 
-import android.chess.client.ClienteFactory;
 import android.chess.controle.exceptions.ExecucaoException;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.TurnoException;
@@ -37,7 +36,7 @@ public class PartidaControle extends Controle<IPartida> {
         AcaoThread r = new AcaoThread() {
             @Override
             protected void executar() throws Exception {
-                jogador = ClienteFactory.getPadrao().getUsuario();
+                //jogador = ClienteFactory.getPadrao().getUsuario();
             }
         };
 

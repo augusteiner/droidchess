@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.dominio"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.visao.interfaces"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/android.chess.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

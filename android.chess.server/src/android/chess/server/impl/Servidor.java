@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -18,326 +16,340 @@ import android.chess.dominio.interfaces.IConvite;
 import android.chess.dominio.interfaces.ICredenciais;
 import android.chess.dominio.interfaces.IJogada;
 import android.chess.dominio.interfaces.IUsuario;
-
 import android.chess.negocio.JogadorNegocio;
-
-import android.chess.persistencia.Persistencia;
-
 import android.chess.server.comunicacao.Requisicao;
 import android.chess.server.comunicacao.Resposta;
-import android.chess.server.exceptions.AutenticacaoException;
 import android.chess.server.exceptions.RequisicaoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class Servidor {
-    /**
-     * @author augusteiner
-     *
-     */
-    private static class Holder {
-        /**
+	/**
+	 * @author augusteiner
+	 * 
+	 */
+	private static class Holder {
+		/**
          *
          */
-        private static final Servidor INSTANCIA;
-        static {
-            try {
-                INSTANCIA = new Servidor();
-            } catch (Exception e) {
-                e.printStackTrace();
+		private static final Servidor INSTANCIA;
+		static {
+			try {
+				INSTANCIA = new Servidor();
+			} catch (Exception e) {
+				e.printStackTrace();
 
-                throw new ExceptionInInitializerError(e);
-            }
-        }
-    }
-    /**
-     * @author augusteiner
-     *
-     */
-    private class ObjectStreams {
-        /**
+				throw new ExceptionInInitializerError(e);
+			}
+		}
+	}
+
+	/**
+	 * @author augusteiner
+	 * 
+	 */
+	private class ObjectStreams {
+		/**
          *
          */
-        private ObjectInputStream in;
-        /**
+		private ObjectInputStream in;
+		/**
          *
          */
-        private ObjectOutputStream out;
-        /**
-         * @param client
-         * @throws IOException
-         */
-        private ObjectStreams(Socket client) throws IOException {
+		private ObjectOutputStream out;
 
-            in = new ObjectInputStream(client.getInputStream());
-            out = new ObjectOutputStream(client.getOutputStream());
-        }
-    }
-    /**
+		/**
+		 * @param client
+		 * @throws IOException
+		 */
+		private ObjectStreams(Socket client) throws IOException {
+
+			in = new ObjectInputStream(client.getInputStream());
+			out = new ObjectOutputStream(client.getOutputStream());
+		}
+	}
+
+	/**
      *
      */
-    private Map<IUsuario, IConvite> requisicoes;
-    /**
-     * Usuario atual conectado ao servidor.
-     */
-    private IUsuario usuario;
-    /**
-     * Socket servidor associado a esta fachada.
-     */
-    protected ServerSocket socket;
-    /**
+	private Map<IUsuario, IConvite> requisicoes;
+	/**
+	 * Usuario atual conectado ao servidor.
+	 */
+	private IUsuario usuario;
+	/**
+	 * Socket servidor associado a esta fachada.
+	 */
+	protected ServerSocket socket;
+	/**
+	 * 
+	 * FIXME Colocar configurações em arquivo .xml?
+	 */
+	public static final String address = "10.0.2.2";
+	/**
      *
-     * FIXME Colocar configurações em arquivo .xml?
      */
-    public static final String address = "10.0.2.2";
-    /**
-     *
-     */
-    public static final int port = 9666;
-    /**
-     * @throws IOException
-     */
-    private Servidor() throws Exception {
-        try {
-            socket = new ServerSocket(port);
+	public static final int port = 9666;
 
-            requisicoes = new Hashtable<IUsuario, IConvite>();
-        } catch (IOException e) {
-            throw e;
-        }
-    }
-    /**
-     * @param arg
-     */
-    protected Servidor(boolean arg) {
+	/**
+	 * @throws IOException
+	 */
+	private Servidor() throws Exception {
+		try {
+			socket = new ServerSocket(port);
 
-    }
-    /**
-     * Chama o método <code>ServerSocket.accept()</code> na instância singleton
-     * de socket associada a esta fachada.
-     *
-     * @return Socket cliente a ser servido.
-     *
-     * @throws IOException
-     *
-     * @see {@link ServerSocket#accept()}
-     */
-    public Socket accept() throws IOException {
-        return socket.accept();
-    }
-    /**
-     * Loop principal do servidor esperando por conexão de clientes a serem
-     * servidos.
-     *
-     * @throws Exception
-     */
-    public void servir() throws Exception {
-        Persistencia.instancia();
+			requisicoes = new Hashtable<IUsuario, IConvite>();
+		} catch (IOException e) {
+			throw e;
+		}
+	}
 
-        while (true) {
-            new ServidorThread(this).start();
-        }
-    }
+	/**
+	 * @param arg
+	 */
+	protected Servidor(boolean arg) {
 
-    /**
-     * Serve conteúdo para um cliente conectado via o socket informado.
-     *
-     * @param client
-     *            Socket de comunicação com o cliente.
-     *
-     * @throws IOException
-     *
-     * @throws ClassNotFoundException
-     */
-    public void servir(Socket client) throws IOException,
-        ClassNotFoundException, Exception {
+	}
 
-        ObjectStreams streams = new ObjectStreams(client);
+	/**
+	 * Chama o método <code>ServerSocket.accept()</code> na instância singleton
+	 * de socket associada a esta fachada.
+	 * 
+	 * @return Socket cliente a ser servido.
+	 * 
+	 * @throws IOException
+	 * 
+	 * @see {@link ServerSocket#accept()}
+	 */
+	public Socket accept() throws IOException {
+		return socket.accept();
+	}
 
-        while (true) {
-            continuarServindo(streams);
-        }
-    }
+	/**
+	 * Loop principal do servidor esperando por conexão de clientes a serem
+	 * servidos.
+	 * 
+	 * @throws Exception
+	 */
+	public void servir() throws Exception {
+		// Persistencia.instancia();
 
-    /**
-     * Calcula a resposta a um cadastro de jogador/usuário sendo requisitado.
-     *
-     * @param requisicao
-     *
-     * @return
-     * @throws Exception
-     *
-     * @todo Implementar busca do jogador/usuario e verificar credenciais.
-     */
-    private Resposta autenticar(ICredenciais credenciais) throws Exception {
+		while (true) {
+			new ServidorThread(this).start();
+		}
+	}
 
-        Class<Usuario> uclass = Usuario.class;
+	/**
+	 * Serve conteúdo para um cliente conectado via o socket informado.
+	 * 
+	 * @param client
+	 *            Socket de comunicação com o cliente.
+	 * 
+	 * @throws IOException
+	 * 
+	 * @throws ClassNotFoundException
+	 */
+	public void servir(Socket client) throws IOException,
+			ClassNotFoundException, Exception {
 
-        Persistencia p = Persistencia.instancia();
-        Usuario usr;
+		ObjectStreams streams = new ObjectStreams(client);
 
-        try {
-            usr = p.find(uclass, "login", credenciais.getLogin());
-        } catch (NoSuchFieldException e) {
-            throw new AutenticacaoException(e);
-        }
+		while (true) {
+			continuarServindo(streams);
+		}
+	}
 
-        if (credenciais.getSenha().equals(usr.getCredenciais().getSenha())) {
-            usr.setOnline(true);
+	/**
+	 * Calcula a resposta a um cadastro de jogador/usuário sendo requisitado.
+	 * 
+	 * @param requisicao
+	 * 
+	 * @return
+	 * @throws Exception
+	 * 
+	 * @todo Implementar busca do jogador/usuario e verificar credenciais.
+	 */
+	private Resposta autenticar(ICredenciais credenciais) throws Exception {
 
-            persistir(usr);
+		// Class<Usuario> uclass = Usuario.class;
 
-            return new Resposta(usr, usr);
-        } else {
-            throw new AutenticacaoException(credenciais);
-        }
-    }
-    /**
-     * @param usuario
-     * @return
-     * @throws Exception
-     */
-    private Resposta cadastrar(IUsuario usuario) throws Exception {
-        persistir(usuario);
+		// Persistencia p = Persistencia.instancia();
+		Usuario usr = null;
 
-        return new Resposta(null, usuario);
-    }
-    /**
-     * @param streams
-     * @throws ClassNotFoundException
-     * @throws IOException
-     * @throws Exception
-     */
-    private void continuarServindo(ObjectStreams streams) throws IOException,
-        ClassNotFoundException, Exception {
+		// try {
+		// usr = p.find(uclass, "login", credenciais.getLogin());
+		// } catch (NoSuchFieldException e) {
+		// throw new AutenticacaoException(e);
+		// }
 
-        Requisicao r = (Requisicao) streams.in.readObject();
+		// if (usr != null
+		// && credenciais.getSenha().equals(
+		// usr.getCredenciais().getSenha())) {
+		// usr.setOnline(true);
+		//
+		// persistir(usr);
 
-        Object response = null;
+		return new Resposta(usr, usr);
+		// } else {
+		// throw new AutenticacaoException(credenciais);
+		// }
+	}
 
-        try {
-            response = responder(r);
-        } catch (Exception e) {
-            if (e instanceof Serializable)
-                response = new Resposta(r.getRemetente(),
-                    new RequisicaoException(e));
-            else
-                throw e;
-        }
+	/**
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
+	private Resposta cadastrar(IUsuario usuario) throws Exception {
+		persistir(usuario);
 
-        streams.out.writeObject(response);
+		return new Resposta(null, usuario);
+	}
 
-        // in.close();
+	/**
+	 * @param streams
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	private void continuarServindo(ObjectStreams streams) throws IOException,
+			ClassNotFoundException, Exception {
 
-        streams.out.flush();
-        // out.close();
-    }
-    /**
-     * @param mensagem
-     * @return
-     */
-    private Resposta convidar(Integer index) {
-        return new Resposta(null, JogadorNegocio.instancia().disponiveis(index));
-    }
-    /**
-     * @return
-     */
-    private Resposta convites() {
-        IConvite convite = requisicoes.get(usuario);
+		Requisicao r = (Requisicao) streams.in.readObject();
 
-        return new Resposta(usuario, convite);
-    }
-    /**
-     * Calcula a resposta a uma jogada sendo requisitada.
-     *
-     * @param requisicao
-     *
-     * @param jogada
-     * @return
-     */
-    private Resposta jogada(IJogada jogada) {
-        return new Resposta(null, jogada);
-    }
-    /**
-     * @param remetente
-     * @param destinatario
-     * @return
-     */
-    private Resposta partida(IUsuario remetente, IUsuario destinatario) {
-        requisicoes.put(destinatario, new Convite(remetente, destinatario));
+		Object response = null;
 
-        return new Resposta(destinatario, new Partida(remetente, destinatario));
-    }
-    /**
-     * @param usr
-     */
-    private void persistir(IUsuario usr) throws Exception {
-        Persistencia p = Persistencia.instancia();
+		try {
+			response = responder(r);
+		} catch (Exception e) {
+			if (e instanceof Serializable)
+				response = new Resposta(r.getRemetente(),
+						new RequisicaoException(e));
+			else
+				throw e;
+		}
 
-        p.beginTransaction();
+		streams.out.writeObject(response);
 
-        try {
-            p.persist(usr);
+		// in.close();
 
-            p.flush();
-        } catch (Exception e) {
-            p.rollback();
+		streams.out.flush();
+		// out.close();
+	}
 
-            throw e;
-        }
+	/**
+	 * @param mensagem
+	 * @return
+	 */
+	private Resposta convidar(Integer index) {
+		return new Resposta(null, JogadorNegocio.instancia().disponiveis(index));
+	}
 
-        p.commit();
-    }
-    /**
-     * Calcula a resposta a ser enviada de acordo com a requisição recebida.
-     *
-     * @return Resposta a requisição solicitada.
-     *
-     * @throws RequisicaoException
-     *             Caso o tipo da requisição seja desconhecido.
-     */
-    private Resposta responder(Requisicao r) throws Exception {
-        switch (r.getTipo()) {
-            case CONVITE :
-                return convites();
-            case CADASTRO :
-                return cadastrar((IUsuario) r.getMensagem());
-            case PARTIDA :
-                return partida(r.getRemetente(), (IUsuario) r.getMensagem());
-            case JOGADA :
-                return jogada((IJogada) r.getMensagem());
-            case DESCONECTAR :
-                Runtime.getRuntime().exit(0);
-            case AUTENTICAR :
-                return autenticar((ICredenciais) r.getMensagem());
-            case CONVIDAR :
-                return convidar((Integer) r.getMensagem());
-            default :
-                throw new RequisicaoException(r);
-        }
-    }
-    /**
-     * Retorna instância única associada a esta fachada.
-     *
-     * @return
-     */
-    public static Servidor getInstancia() {
-        return Holder.INSTANCIA;
-    }
-    /**
-     * Cria um novo socket de comunicação com o socket servidor associado a esta
-     * instância.
-     *
-     * @return Socket cliente para comunicação com servidor.
-     *
-     * @throws IOException
-     *
-     * @see {@link Socket#Socket(String, int)}
-     */
-    public static Socket novoSocket() throws IOException {
-        return new Socket(address, port);
-    }
+	/**
+	 * @return
+	 */
+	private Resposta convites() {
+		IConvite convite = requisicoes.get(usuario);
+
+		return new Resposta(usuario, convite);
+	}
+
+	/**
+	 * Calcula a resposta a uma jogada sendo requisitada.
+	 * 
+	 * @param requisicao
+	 * 
+	 * @param jogada
+	 * @return
+	 */
+	private Resposta jogada(IJogada jogada) {
+		return new Resposta(null, jogada);
+	}
+
+	/**
+	 * @param remetente
+	 * @param destinatario
+	 * @return
+	 */
+	private Resposta partida(IUsuario remetente, IUsuario destinatario) {
+		requisicoes.put(destinatario, new Convite(remetente, destinatario));
+
+		return new Resposta(destinatario, new Partida(remetente, destinatario));
+	}
+
+	/**
+	 * @param usr
+	 */
+	private void persistir(IUsuario usr) throws Exception {
+		// Persistencia p = Persistencia.instancia();
+		//
+		// p.beginTransaction();
+		//
+		// try {
+		// p.persist(usr);
+		//
+		// p.flush();
+		// } catch (Exception e) {
+		// p.rollback();
+		//
+		// throw e;
+		// }
+		//
+		// p.commit();
+	}
+
+	/**
+	 * Calcula a resposta a ser enviada de acordo com a requisição recebida.
+	 * 
+	 * @return Resposta a requisição solicitada.
+	 * 
+	 * @throws RequisicaoException
+	 *             Caso o tipo da requisição seja desconhecido.
+	 */
+	private Resposta responder(Requisicao r) throws Exception {
+		switch (r.getTipo()) {
+		case CONVITE:
+			return convites();
+		case CADASTRO:
+			return cadastrar((IUsuario) r.getMensagem());
+		case PARTIDA:
+			return partida(r.getRemetente(), (IUsuario) r.getMensagem());
+		case JOGADA:
+			return jogada((IJogada) r.getMensagem());
+		case DESCONECTAR:
+			Runtime.getRuntime().exit(0);
+		case AUTENTICAR:
+			return autenticar((ICredenciais) r.getMensagem());
+		case CONVIDAR:
+			return convidar((Integer) r.getMensagem());
+		default:
+			throw new RequisicaoException(r);
+		}
+	}
+
+	/**
+	 * Retorna instância única associada a esta fachada.
+	 * 
+	 * @return
+	 */
+	public static Servidor getInstancia() {
+		return Holder.INSTANCIA;
+	}
+
+	/**
+	 * Cria um novo socket de comunicação com o socket servidor associado a esta
+	 * instância.
+	 * 
+	 * @return Socket cliente para comunicação com servidor.
+	 * 
+	 * @throws IOException
+	 * 
+	 * @see {@link Socket#Socket(String, int)}
+	 */
+	public static Socket novoSocket() throws IOException {
+		return new Socket(address, port);
+	}
 
 }
