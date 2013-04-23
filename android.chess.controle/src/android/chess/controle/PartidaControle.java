@@ -1,6 +1,8 @@
 package android.chess.controle;
 
 import android.chess.controle.exceptions.ExecucaoException;
+import android.chess.dominio.Jogador;
+import android.chess.dominio.Partida;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.TurnoException;
 import android.chess.dominio.interfaces.IJogador;
@@ -11,104 +13,79 @@ import android.chess.server.exceptions.RequisicaoException;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 public class PartidaControle extends Controle<IPartida> {
-    /**
+	/**
      *
      */
-    private IPartida partida;
-    /**
+	private IPartida partida;
+	/**
      *
      */
-    protected IJogador jogador;
-    /**
-     *
-     * @throws ExecucaoException
-     * @throws RequisicaoException
-     *
-     * @todo Adicionar jogadores como parametro.
-     * @todo Criar evento para repassar a UI?
-     * @todo Deve requisitar à aplicação servidora uma nova partida.
-     * @todo Implementar escolha/convite de adversário.
-     */
-    public PartidaControle() throws ExecucaoException {
-        AcaoThread r = new AcaoThread() {
-            @Override
-            protected void executar() throws Exception {
-                //jogador = ClienteFactory.getPadrao().getUsuario();
-            }
-        };
+	protected IJogador jogador;
 
-        threadAndJoin(r);
-    }
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.chess.controle.Controle#getControlado()
-     */
-    @Override
-    public IPartida getControlado() {
-        return partida;
-    }
-    /**
-     * @return
-     */
-    public ITabuleiro getTabuleiro() {
-        return partida.getTabuleiro();
-    }
-    /**
-     * @return
-     */
-    public Cor getTurno() {
-        return partida.getTurno();
-    }
-    /**
-     *
-     * @param origI
-     *
-     * @param origJ
-     *
-     * @param destI
-     *
-     * @param destJ
-     *
-     * @throws ChessException
-     */
-    public void mover(int origI, int origJ, int destI, int destJ)
-        throws ChessException {
+	/**
+	 * 
+	 * @throws ExecucaoException
+	 * @throws RequisicaoException
+	 * 
+	 * @todo Adicionar jogadores como parametro.
+	 * @todo Criar evento para repassar a UI?
+	 * @todo Deve requisitar à aplicação servidora uma nova partida.
+	 * @todo Implementar escolha/convite de adversário.
+	 */
+	public PartidaControle() throws ExecucaoException {
+		IJogador j1 = new Jogador();
+		IJogador j2 = new Jogador();
 
-        if (getTurno() != jogador.getCor())
-            throw new TurnoException(jogador.getCor().outra());
+		partida = new Partida(j1, j2);
 
-        partida.jogada(origI, origJ, destI, destJ);
-    }
-    /**
-     * @param r
-     * @return
-     */
-    private Thread thread(AcaoThread r) {
-        Thread t = new Thread(r);
+		jogador = j1;
+	}
 
-        t.start();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.chess.controle.Controle#getControlado()
+	 */
+	@Override
+	public IPartida getControlado() {
+		return partida;
+	}
 
-        return t;
-    }
-    /**
-     * @param r
-     * @throws InterruptedException
-     */
-    private void threadAndJoin(AcaoThread r) throws ExecucaoException {
-        Thread t = thread(r);
+	/**
+	 * @return
+	 */
+	public ITabuleiro getTabuleiro() {
+		return partida.getTabuleiro();
+	}
 
-        try {
-            t.join();
+	/**
+	 * @return
+	 */
+	public Cor getTurno() {
+		return partida.getTurno();
+	}
 
-            if (r.ocorreuExcecao()) {
-                throw r.getException();
-            }
-        } catch (Exception e) {
-            throw new ExecucaoException(e);
-        }
-    }
+	/**
+	 * 
+	 * @param origI
+	 * 
+	 * @param origJ
+	 * 
+	 * @param destI
+	 * 
+	 * @param destJ
+	 * 
+	 * @throws ChessException
+	 */
+	public void mover(int origI, int origJ, int destI, int destJ)
+			throws ChessException {
+
+		if (getTurno() != jogador.getCor())
+			throw new TurnoException(jogador.getCor().outra());
+
+		partida.jogada(origI, origJ, destI, destJ);
+	}
 }
