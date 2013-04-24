@@ -32,286 +32,286 @@ import android.widget.RelativeLayout.LayoutParams;
  */
 public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
-	// private boolean moving;
-	private Paint paint;
-	// TODO Reabilitar no caso da implementação de suporte a uma API antiga.
-	// private Peca peca;
-	private Rect placeRect;
-	protected ViewGroup contentView;
-	protected Mensageiro mensageiro;
-	// private static final String TAG = Tabuleiro.class.getSimpleName();
-	protected PartidaControle partidaCtrl;
-	/**
+    // private boolean moving;
+    private Paint paint;
+    // TODO Reabilitar no caso da implementação de suporte a uma API antiga.
+    // private Peca peca;
+    private Rect placeRect;
+    protected ViewGroup contentView;
+    protected Mensageiro mensageiro;
+    // private static final String TAG = Tabuleiro.class.getSimpleName();
+    protected PartidaControle partidaCtrl;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8324111699374876004L;
+
+    /**
+     * @param context
+     */
+    public TabuleiroAbstrato(Context context) {
+        super(context);
+
+        initPrivate();
+    }
+
+    /**
+     * @param context
+     * @param attrs
+     */
+    public TabuleiroAbstrato(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        initPrivate();
+    }
+
+    /**
+     * @param context
+     * @param attrs
+     * @param defStyle
+     */
+    public TabuleiroAbstrato(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        initPrivate();
+    }
+
+    /**
+     * @return
+     */
+    public Mensageiro getMensageiro() {
+        return new Mensageiro(getContext());
+    }
+
+    /**
+     * @return
+     */
+    public final int getSquareSide() {
+        return (getMeasuredWidth() / 8);
+    }
+
+    /**
+     * Prepara objetos para desenho deste tabuleiro.
+     * 
+     * @throws Exception
+     */
+    public void init(ViewGroup contentView) throws InicializacaoException {
+        this.contentView = contentView;
+
+        // try {
+        // partidaCtrl.convidar(null, new IAsyncCallback<IPartida>() {
+        //
+        // public void invoke(IPartida arg) {
+        // }
+        // });
+        // } catch (ExecucaoException e) {
+        // mensageiro.erro(e);
+        // }
+
+        contentView.removeAllViews();
+        contentView.addView(TabuleiroAbstrato.this);
+
+        initPecas();
+    }
+
+    /**
+     * @param sender
+     * @param evento
+     * @throws ChessException
+     */
+    public void onAntesPromocao(Object sender, IPromocaoInfo evento)
+            throws ChessException {
+        //
+    }
+
+    public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
+            throws ChessException {
+        //
+    }
+
+    /**
+     * @param evento
+     * @throws MovimentoException
+     */
+    public void onTomada(ITomadaInfo evento) throws MovimentoException {
+        //
+    }
+
+    /**
+     * @return
+     */
+    private DisplayMetrics getDisplayMetrics() {
+        return getContext().getResources().getDisplayMetrics();
+    }
+
+    /**
      *
      */
-	private static final long serialVersionUID = 8324111699374876004L;
+    private void initPrivate() {
+        mensageiro = new Mensageiro(getContext());
 
-	/**
-	 * @param context
-	 */
-	public TabuleiroAbstrato(Context context) {
-		super(context);
+        try {
+            partidaCtrl = new PartidaControle();
+        } catch (Exception e) {
+            e.printStackTrace();
 
-		initPrivate();
-	}
+            mensageiro.erro(e);
 
-	/**
-	 * @param context
-	 * @param attrs
-	 */
-	public TabuleiroAbstrato(Context context, AttributeSet attrs) {
-		super(context, attrs);
+            return;
+        }
 
-		initPrivate();
-	}
+        placeRect = new Rect();
+        paint = new Paint();
 
-	/**
-	 * @param context
-	 * @param attrs
-	 * @param defStyle
-	 */
-	public TabuleiroAbstrato(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+        setBackgroundColor(Color.WHITE);
+    }
 
-		initPrivate();
-	}
-
-	/**
-	 * @return
-	 */
-	public Mensageiro getMensageiro() {
-		return new Mensageiro(getContext());
-	}
-
-	/**
-	 * @return
-	 */
-	public final int getSquareSide() {
-		return (getMeasuredWidth() / 8);
-	}
-
-	/**
-	 * Prepara objetos para desenho deste tabuleiro.
-	 * 
-	 * @throws Exception
-	 */
-	public void init(ViewGroup contentView) throws InicializacaoException {
-		this.contentView = contentView;
-
-		// try {
-		// partidaCtrl.convidar(null, new IAsyncCallback<IPartida>() {
-		//
-		// public void invoke(IPartida arg) {
-		// }
-		// });
-		// } catch (ExecucaoException e) {
-		// mensageiro.erro(e);
-		// }
-
-		contentView.removeAllViews();
-		contentView.addView(TabuleiroAbstrato.this);
-
-		initPecas();
-	}
-
-	/**
-	 * @param sender
-	 * @param evento
-	 * @throws ChessException
-	 */
-	public void onAntesPromocao(Object sender, IPromocaoInfo evento)
-			throws ChessException {
-		//
-	}
-
-	public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
-			throws ChessException {
-		//
-	}
-
-	/**
-	 * @param evento
-	 * @throws MovimentoException
-	 */
-	public void onTomada(ITomadaInfo evento) throws MovimentoException {
-		//
-	}
-
-	/**
-	 * @return
-	 */
-	private DisplayMetrics getDisplayMetrics() {
-		return getContext().getResources().getDisplayMetrics();
-	}
-
-	/**
-     *
+    /**
+     * Método deve ser utilizado para iniciar algo mais nas classes que herdem
+     * desta.
+     * 
+     * @param peca
      */
-	private void initPrivate() {
-		mensageiro = new Mensageiro(getContext());
+    protected void initPeca(PecaAbstrata peca) {
+        // do nothing.
+    }
 
-		try {
-			partidaCtrl = new PartidaControle();
-		} catch (Exception e) {
-			e.printStackTrace();
+    /**
+     * @param contentView
+     * 
+     */
+    protected void initPecas() {
+        Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
+        IPeca next = null;
+        Context context = getContext();
 
-			mensageiro.erro(e);
+        PecaAbstrata peca = null;
 
-			return;
-		}
+        LayoutParams lp = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 
-		placeRect = new Rect();
-		paint = new Paint();
+        while (pecas.hasNext()) {
+            peca = this.novaPeca(context);
+            this.initPeca(peca);
 
-		setBackgroundColor(Color.WHITE);
-	}
+            next = pecas.next();
+            peca.setTag(next);
+            peca.init();
 
-	/**
-	 * Método deve ser utilizado para iniciar algo mais nas classes que herdem
-	 * desta.
-	 * 
-	 * @param peca
-	 */
-	protected void initPeca(PecaAbstrata peca) {
-		// do nothing.
-	}
+            lp = new LayoutParams(lp);
 
-	/**
-	 * @param contentView
-	 * 
-	 */
-	protected void initPecas() {
-		Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
-		IPeca next = null;
-		Context context = getContext();
+            // LayoutParams não copia as "rules" definidas.
+            lp.addRule(RelativeLayout.ALIGN_TOP, getId());
 
-		PecaAbstrata peca = null;
+            lp.topMargin = peca.getLado() * next.getI();
+            lp.leftMargin = peca.getLado() * next.getJ();
 
-		LayoutParams lp = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            contentView.addView(peca, lp);
+        }
+    }
 
-		while (pecas.hasNext()) {
-			peca = this.novaPeca(context);
-			this.initPeca(peca);
+    /**
+     * @param context
+     * @return
+     */
+    protected abstract PecaAbstrata novaPeca(Context context);
 
-			next = pecas.next();
-			peca.setTag(next);
-			peca.init();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.view.View#onDraw(android.graphics.Canvas)
+     */
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-			lp = new LayoutParams(lp);
+        int width = getMeasuredWidth();
+        int tPlaceSide = getSquareSide();
 
-			// LayoutParams não copia as "rules" definidas.
-			lp.addRule(RelativeLayout.ALIGN_TOP, getId());
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Style.FILL);
 
-			lp.topMargin = peca.getLado() * next.getI();
-			lp.leftMargin = peca.getLado() * next.getJ();
+        for (int i = 0, j; i < 8; i++) {
+            for (j = i % 2; j < 8; j += 2) {
+                placeRect.set(i * tPlaceSide,// left,
+                        j * tPlaceSide,// top,
+                        (i + 1) * tPlaceSide,// right,
+                        (j + 1) * tPlaceSide// bottom
+                );
 
-			contentView.addView(peca, lp);
-		}
-	}
+                // if (moving && i == 3) {
+                // canvas.drawRect(tPlaceRect, tPaint);
+                //
+                // int color = tPaint.getColor();
+                // float strokeWidth = tPaint.getStrokeWidth();
+                //
+                // tPaint.setColor(Color.parseColor("#661696C9"));
+                // tPaint.setStrokeWidth(5.0F);
+                //
+                // canvas.drawRect(tPlaceRect, tPaint);
+                //
+                // tPaint.setColor(color);
+                // tPaint.setStrokeWidth(strokeWidth);
+                // } else {
+                canvas.drawRect(placeRect, paint);
+                // }
+            }
+        }
 
-	/**
-	 * @param context
-	 * @return
-	 */
-	protected abstract PecaAbstrata novaPeca(Context context);
+        // if (pecaMovendo != null) {
+        // paint.setColor(Color.YELLOW);
+        // placeRect.set((int) (pecaMovendo.getY()),
+        // (int) (pecaMovendo.getX()), pecaMovendo.getMeasuredWidth(),
+        // pecaMovendo.getMeasuredHeight());
+        // }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View#onDraw(android.graphics.Canvas)
-	 */
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
+        canvas.drawRect(placeRect, paint);
 
-		int width = getMeasuredWidth();
-		int tPlaceSide = getSquareSide();
+        placeRect.set(0, 0, width + 1, width + 1);
+        paint.setStyle(Style.STROKE);
+        canvas.drawRect(placeRect, paint);
+    }
 
-		paint.setColor(Color.BLACK);
-		paint.setStyle(Style.FILL);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.view.View#onMeasure(int, int)
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (!isInEditMode()) {
+            int side = min(getDisplayMetrics().widthPixels,
+                    getDisplayMetrics().heightPixels);
 
-		for (int i = 0, j; i < 8; i++) {
-			for (j = i % 2; j < 8; j += 2) {
-				placeRect.set(i * tPlaceSide,// left,
-						j * tPlaceSide,// top,
-						(i + 1) * tPlaceSide,// right,
-						(j + 1) * tPlaceSide// bottom
-				);
+            setMeasuredDimension(side, side);
+        } else {
+            setMeasuredDimension(480, 480);
+        }
+    }
 
-				// if (moving && i == 3) {
-				// canvas.drawRect(tPlaceRect, tPaint);
-				//
-				// int color = tPaint.getColor();
-				// float strokeWidth = tPaint.getStrokeWidth();
-				//
-				// tPaint.setColor(Color.parseColor("#661696C9"));
-				// tPaint.setStrokeWidth(5.0F);
-				//
-				// canvas.drawRect(tPlaceRect, tPaint);
-				//
-				// tPaint.setColor(color);
-				// tPaint.setStrokeWidth(strokeWidth);
-				// } else {
-				canvas.drawRect(placeRect, paint);
-				// }
-			}
-		}
+    /**
+     * @param destI
+     * @param destJ
+     * @param peca
+     * @return
+     */
+    protected boolean performDrag(int destI, int destJ, PecaAbstrata peca) {
 
-		// if (pecaMovendo != null) {
-		// paint.setColor(Color.YELLOW);
-		// placeRect.set((int) (pecaMovendo.getY()),
-		// (int) (pecaMovendo.getX()), pecaMovendo.getMeasuredWidth(),
-		// pecaMovendo.getMeasuredHeight());
-		// }
+        // p.getLayoutParams() utilizado para não perder a
+        // referência do alinhamento com esta view.
+        LayoutParams lp = (LayoutParams) peca.getLayoutParams();
 
-		canvas.drawRect(placeRect, paint);
+        if (lp == null)
+            return false;
 
-		placeRect.set(0, 0, width + 1, width + 1);
-		paint.setStyle(Style.STROKE);
-		canvas.drawRect(placeRect, paint);
-	}
+        int leftMargin = destJ * peca.getWidth();
+        int topMargin = destI * peca.getHeight();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View#onMeasure(int, int)
-	 */
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		if (!isInEditMode()) {
-			int side = min(getDisplayMetrics().widthPixels,
-					getDisplayMetrics().heightPixels);
+        lp.leftMargin = leftMargin;
+        lp.topMargin = topMargin;
 
-			setMeasuredDimension(side, side);
-		} else {
-			setMeasuredDimension(480, 480);
-		}
-	}
+        peca.setLayoutParams(lp);
+        peca.invalidate();
 
-	/**
-	 * @param destI
-	 * @param destJ
-	 * @param peca
-	 * @return
-	 */
-	protected boolean performDrag(int destI, int destJ, PecaAbstrata peca) {
-
-		// p.getLayoutParams() utilizado para não perder a
-		// referência do alinhamento com esta view.
-		LayoutParams lp = (LayoutParams) peca.getLayoutParams();
-
-		if (lp == null)
-			return false;
-
-		int leftMargin = destJ * peca.getWidth();
-		int topMargin = destI * peca.getHeight();
-
-		lp.leftMargin = leftMargin;
-		lp.topMargin = topMargin;
-
-		peca.setLayoutParams(lp);
-		peca.invalidate();
-
-		return true;
-	}
+        return true;
+    }
 }
