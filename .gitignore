@@ -6,8 +6,9 @@
 */bin/*
 */doc/*
 
-tutorials/*
+*/gen/**
 .classpath
-.project
+
+tutorials/*
 
 last.commit
