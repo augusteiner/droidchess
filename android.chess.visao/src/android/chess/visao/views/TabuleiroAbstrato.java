@@ -6,6 +6,7 @@ import static java.lang.Math.min;
 import java.util.Iterator;
 
 import android.chess.controle.PartidaControle;
+import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
@@ -33,14 +34,29 @@ import android.widget.RelativeLayout.LayoutParams;
 public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
 
     // private boolean moving;
+    /**
+     * 
+     */
     private Paint paint;
     // TODO Reabilitar no caso da implementação de suporte a uma API antiga.
     // private Peca peca;
+    /**
+     * 
+     */
     private Rect placeRect;
-    protected ViewGroup contentView;
+    /**
+     * 
+     */
     protected Mensageiro mensageiro;
     // private static final String TAG = Tabuleiro.class.getSimpleName();
+    /**
+     * 
+     */
     protected PartidaControle partidaCtrl;
+    /**
+     * 
+     */
+    private IAntesPromocaoHandler onAntesPromocaoUiHandler = null;
     /**
      * 
      */
@@ -95,8 +111,10 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      * 
      * @throws Exception
      */
-    public void init(ViewGroup contentView) throws InicializacaoException {
-        this.contentView = contentView;
+    public void init(IAntesPromocaoHandler promotionHandler,
+            ViewGroup contentView) throws InicializacaoException {
+
+        this.onAntesPromocaoUiHandler = promotionHandler;
 
         // try {
         // partidaCtrl.convidar(null, new IAsyncCallback<IPartida>() {
@@ -109,19 +127,19 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
         // }
 
         contentView.removeAllViews();
-        contentView.addView(TabuleiroAbstrato.this);
+        contentView.addView(this);
 
-        initPecas();
+        initPecas(contentView);
     }
 
     /**
      * @param sender
-     * @param evento
+     * @param info
      * @throws ChessException
      */
-    public void onAntesPromocao(Object sender, IPromocaoInfo evento)
-            throws ChessException {
-        //
+    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+
+        this.onAntesPromocaoUiHandler.onAntesPromocao(info);
     }
 
     public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
@@ -180,7 +198,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      * @param contentView
      * 
      */
-    protected void initPecas() {
+    protected void initPecas(ViewGroup contentView) {
         Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
         IPeca next = null;
         Context context = getContext();
@@ -196,6 +214,8 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
             next = pecas.next();
             peca.setTag(next);
             peca.init();
+
+            peca.addOnPromocaoHandler(this.onAntesPromocaoUiHandler);
 
             lp = new LayoutParams(lp);
 

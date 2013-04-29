@@ -27,5 +27,10 @@
     <string name="lstJogadoresOnClick">lstJogadoresOnClick</string>
     <string name="atencao">ATENÇÃO</string>
     <string name="erro">ERRO</string>
+    <string name="promoteTitle">Escolha o tipo de promoção</string>
+    <string name="textBispo">Bispo</string>
+    <string name="textCavalo">Cavalo</string>
+    <string name="textTorre">Torre</string>
+    <string name="textRainha">Rainha</string>
 
 </resources>

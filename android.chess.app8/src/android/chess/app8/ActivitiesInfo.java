@@ -5,6 +5,7 @@ package android.chess.app8;
 
 import android.chess.ActivitiesAbstractInfo;
 import android.chess.PartidaAbstractActivity;
+import android.chess.PartidaActivity;
 
 /**
  * @author augusteiner

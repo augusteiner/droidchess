@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="android.chess.app8.LoginActivity"
+            android:name="android.chess.LoginActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="android.chess.app8.PartidaActivity"
+            android:name="android.chess.PartidaActivity"
             android:label="@string/title_activity_partida" >
         </activity>
         <activity android:name="android.chess.CadastroActivity" >

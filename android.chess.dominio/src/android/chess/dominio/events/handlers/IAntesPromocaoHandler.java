@@ -7,7 +7,7 @@ import android.chess.dominio.excecao.ChessException;
  * @author augusteiner
  * 
  */
-public interface IAntesPromocaoHandler extends IMovimentoHandler {
+public interface IAntesPromocaoHandler {
     /**
      * Método a ser acionado antes de um evento de promoção ser acionado.
      * 

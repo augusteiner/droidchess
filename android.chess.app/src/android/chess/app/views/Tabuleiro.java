@@ -1,4 +1,4 @@
-package android.chess.app;
+package android.chess.app.views;
 
 import android.annotation.TargetApi;
 import android.chess.dominio.excecao.ChessException;

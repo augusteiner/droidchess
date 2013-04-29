@@ -1,7 +1,7 @@
 /**
  *
  */
-package android.chess.app;
+package android.chess.app.views;
 
 import android.content.ClipData;
 import android.content.Context;

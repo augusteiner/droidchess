@@ -15,20 +15,32 @@ import android.chess.util.events.interfaces.ICallback;
  * 
  */
 public class PromocaoInfo extends MovimentoInfo implements IPromocaoInfo {
+    /**
+     * 
+     */
     private IPeao peao;
+    /**
+     * 
+     */
     private Tipo tipo;
+    /**
+     * 
+     */
     private ICallback<IPromocaoInfo> callback;
 
     /**
      * @param alvo
+     * @param jogada
+     * @param callback
      */
     public PromocaoInfo(Peao alvo, IJogada jogada,
         ICallback<IPromocaoInfo> callback) {
         super(alvo, jogada.getDestI(), jogada.getDestJ());
 
-        peao = alvo;
+        this.peao = alvo;
+
         // Valor padrão é a teoricamente "melhor" peça do jogo.
-        tipo = Tipo.Rainha;
+        this.tipo = Tipo.Rainha;
 
         this.callback = callback;
     }
@@ -42,32 +54,59 @@ public class PromocaoInfo extends MovimentoInfo implements IPromocaoInfo {
     @Override
     public void callback() throws ChessException {
         try {
-            callback.invoke(this);
+            if (this.callback != null) {
+                this.callback.invoke(this);
+            }
         } catch (Exception e) {
-            throw new PromocaoException(peao);
+            throw new PromocaoException(this.peao);
         }
     }
 
-    /**
-     * @return
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.chess.dominio.events.info.interfaces.IPromocaoInfo#getTipoPromocao
+     * ()
      */
     @Override
     public Tipo getTipoPromocao() {
-        return tipo;
+        return this.tipo;
     }
 
-    /**
-     * @param alvo
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.chess.dominio.events.info.interfaces.IPromocaoInfo#setAlvo(android
+     * .chess.dominio.pecas.interfaces.IPeca)
      */
     @Override
     public void setAlvo(IPeca alvo) {
         this.alvo = alvo;
     }
 
-    /**
-     * @param tipo
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.chess.dominio.events.info.interfaces.IPromocaoInfo#setTipoPromocao
+     * (android.chess.dominio.pecas.interfaces.IPeca.Tipo)
      */
+    @Override
     public void setTipoPromocao(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.chess.dominio.events.info.interfaces.IPromocaoInfo#setTipoPromocao
+     * (int)
+     */
+    @Override
+    public void setTipoPromocao(int tipo) {
+        this.tipo = IPeca.Tipo.values()[tipo];
     }
 }

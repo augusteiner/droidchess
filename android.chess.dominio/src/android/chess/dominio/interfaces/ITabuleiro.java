@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.pecas.interfaces.IPeca;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
@@ -15,23 +16,27 @@ import android.chess.dominio.pecas.interfaces.IPeca.Cor;
  * @author augusteiner
  * 
  */
-public interface ITabuleiro extends Serializable {
+public interface ITabuleiro extends IAntesPromocaoHandler, Serializable {
     /**
      * @return
      */
     Iterator<IPeca> getMatrizPecas();
+
     /**
      * @return
      */
     Iterator<IPeca> getPecas();
+
     /**
      * @return
      */
     Cor getTurno();
+
     /**
      * @param jogada
      */
     void mover(IJogada jogada) throws ChessException;
+
     /**
      * @param ps
      */

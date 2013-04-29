@@ -22,12 +22,18 @@ import android.chess.util.events.interfaces.IHandler;
 
 /**
  * Classe de implementação do peão no xadrez.
- *
+ * 
  * @author augusteiner
- *
+ * 
  */
 public class Peao extends Peca implements IPeao {
+    /**
+     * 
+     */
     private IEvent<IPromocaoInfo> onAntesPromocao;
+    /**
+     * 
+     */
     private IEvent<IPromocaoInfo> onDepoisPromocao;
     private int prevI;
     /**
@@ -50,13 +56,15 @@ public class Peao extends Peca implements IPeao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.pecas.interfaces.IPeao#addOnAntesPromocaoHandler
      * (android.chess.dominio.events.handlers.IAntesPromocaoHandler)
      */
     @Override
-    public void addOnAntesPromocaoHandler(final IAntesPromocaoHandler handler) {
+    public void addOnAntesPromocaoHandler(IAntesPromocaoHandler handler) {
+        final IAntesPromocaoHandler handlerRef = handler;
+
         onAntesPromocao.addHandler(new IHandler<IPromocaoInfo>() {
 
             /**
@@ -66,15 +74,15 @@ public class Peao extends Peca implements IPeao {
 
             @Override
             public void handle(Object sender, IPromocaoInfo info)
-                throws Exception {
-                handler.onAntesPromocao(info);
+                    throws Exception {
+                handlerRef.onAntesPromocao(info);
             }
         });
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.interfaces.IPeao#addOnDepoisPromocaoHandler(android
      * .chess.dominio.pecas.handlers.IDepoisPromocaoHandler)
@@ -90,7 +98,7 @@ public class Peao extends Peca implements IPeao {
 
             @Override
             public void handle(Object sender, IPromocaoInfo info)
-                throws Exception {
+                    throws Exception {
                 handler.onDepoisPromocao(info);
             }
 
@@ -99,7 +107,7 @@ public class Peao extends Peca implements IPeao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.pecas.Peca#mover(android.chess.dominio.interfaces
      * .IJogada, android.chess.dominio.pecas.Peca)
@@ -113,7 +121,7 @@ public class Peao extends Peca implements IPeao {
         // Checando condição de promoção.
         if (di == 0 || di == 7) {
             IPromocaoInfo info = new PromocaoInfo(this, jogada,
-                promocaoCallback());
+                    promocaoCallback());
 
             onAntesPromocao(info);
         }
@@ -121,7 +129,7 @@ public class Peao extends Peca implements IPeao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IPeca#mover(int, int)
      */
     @Override
@@ -151,7 +159,7 @@ public class Peao extends Peca implements IPeao {
 
     /**
      * Retorna o índice anterior inicial do movimento deste peão.
-     *
+     * 
      * @return
      */
     private int getInitialPreviousI() {
@@ -161,7 +169,7 @@ public class Peao extends Peca implements IPeao {
     /**
      * Verifica se a direção do movimento deste peão está conforme as regras de
      * movimento do mesmo.
-     *
+     * 
      * @return True caso ok, False caso contrário.
      */
     private boolean isDirecaoOk(int destI) {
@@ -207,6 +215,7 @@ public class Peao extends Peca implements IPeao {
             throw new PromocaoException(this, e);
         }
     }
+
     /**
      * @param info
      * @throws ChessException
@@ -226,22 +235,22 @@ public class Peao extends Peca implements IPeao {
      */
     protected IPeca promover(Tipo tipo) throws ChessException {
         switch (tipo) {
-            case Bispo :
-                return new Bispo(this);
-            case Rainha :
-                return new Rainha(this);
-            case Cavalo :
-                return new Cavalo(this);
-            case Torre :
-                return new Torre(this);
-            default :
-                throw new PromocaoException(this);
+        case Bispo:
+            return new Bispo(this);
+        case Rainha:
+            return new Rainha(this);
+        case Cavalo:
+            return new Cavalo(this);
+        case Torre:
+            return new Torre(this);
+        default:
+            throw new PromocaoException(this);
         }
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * android.chess.dominio.pecas.Peca#validarTomada(android.chess.dominio.
      * interfaces.IPeca)

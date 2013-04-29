@@ -3,7 +3,9 @@
  */
 package android.chess.app8.views;
 
+import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.pecas.interfaces.IPeca;
+import android.chess.visao.exceptions.InicializacaoException;
 import android.chess.visao.views.PecaAbstrata;
 import android.chess.visao.views.TabuleiroAbstrato;
 import android.content.Context;
@@ -11,18 +13,22 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 
 /**
  * @author augusteiner
  * 
  */
-public class Tabuleiro extends TabuleiroAbstrato
-    implements
-        OnFocusChangeListener {
+public class Tabuleiro extends TabuleiroAbstrato implements
+    OnFocusChangeListener {
     /**
      *
      */
     private Peca prevView;
+    /**
+     * 
+     */
+    private ViewGroup contentView;
     /**
      *
      */
@@ -83,28 +89,36 @@ public class Tabuleiro extends TabuleiroAbstrato
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                View v = contentView.getFocusedChild();
+        case MotionEvent.ACTION_DOWN :
+            View v = contentView.getFocusedChild();
 
-                if (v == null || !(v instanceof Peca))
-                    return false;
-
-                Peca vPeca = (Peca) v;
-
-                prevView = null;
-
-                int destI = (int) event.getY() / vPeca.getLado();
-                int destJ = (int) event.getX() / vPeca.getLado();
-
-                jogada(vPeca, destI, destJ);
-
-            case MotionEvent.ACTION_CANCEL :
-                return true;
-            case MotionEvent.ACTION_UP :
-                return true;
-            default :
+            if (v == null || !(v instanceof Peca))
                 return false;
+
+            Peca vPeca = (Peca) v;
+
+            prevView = null;
+
+            int destI = (int) event.getY() / vPeca.getLado();
+            int destJ = (int) event.getX() / vPeca.getLado();
+
+            jogada(vPeca, destI, destJ);
+
+        case MotionEvent.ACTION_CANCEL :
+            return true;
+        case MotionEvent.ACTION_UP :
+            return true;
+        default :
+            return false;
         }
+    }
+
+    @Override
+    public void init(IAntesPromocaoHandler handler, ViewGroup contentView)
+        throws InicializacaoException {
+        super.init(handler, contentView);
+
+        this.contentView = contentView;
     }
 
     /**

@@ -1,10 +1,11 @@
 /**
  *
  */
-package android.chess.app8;
+package android.chess;
 
 import android.chess.ActivitiesAbstractInfo;
 import android.chess.LoginAbstractActivity;
+import android.chess.app8.ActivitiesInfo;
 import android.os.Bundle;
 
 /**

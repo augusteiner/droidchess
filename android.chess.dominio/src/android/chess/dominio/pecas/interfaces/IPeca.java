@@ -46,6 +46,7 @@ public interface IPeca extends Serializable {
                 return Branca;
         }
     }
+
     /**
      * Tipos de peça consideradas em um jogo de xadrez.
      * 
@@ -57,31 +58,32 @@ public interface IPeca extends Serializable {
          */
         Bispo,
         /**
+         * Torre possui movimentos somente na horizontal ou vertical.
+         */
+        Torre,
+        /**
          * Cavalo possui movimento em forma de L. Sempre dois deslocamentos em
          * uma direção e um na outra. Única peça do jogo que pode "pular"
          * outras.
          */
         Cavalo,
         /**
-         * Peão possui primeiro movimento duplo, restante deslocamento somente
-         * nas conlunas e sua tomada e na diagonal.
-         */
-        Peao,
-        /**
          * Rainha é a combinação da Torre em conjunto com o Bispo (possui o
          * movimento combinado de ambos).
          */
         Rainha,
         /**
+         * Peão possui primeiro movimento duplo, restante deslocamento somente
+         * nas conlunas e sua tomada e na diagonal.
+         */
+        Peao,
+        /**
          * Rei é a peça mais importante do jogo (embora possua papel
          * "burocrático"), se move somente uma casa por vez em qualquer direção.
          */
-        Rei,
-        /**
-         * Torre possui movimentos somente na horizontal ou vertical.
-         */
-        Torre;
+        Rei;
     }
+
     /**
      * Adiciona handler para o evento de movimento desta peça.
      * 
@@ -90,6 +92,7 @@ public interface IPeca extends Serializable {
      *            movimento desta peça.
      */
     void addOnMovimentoHandler(IMovimentoHandler onMovimentoHandler);
+
     /**
      * Adiciona handler para o evento de tomada de peças.
      * 
@@ -98,22 +101,27 @@ public interface IPeca extends Serializable {
      *            tomada desta peça.
      */
     void addOnTomadaHandler(ITomadaHandler onTomadaHandler);
+
     /**
      * @return Cor desta peça.
      */
     Cor getCor();
+
     /**
      * @return Linha atual desta peça.
      */
     int getI();
+
     /**
      * @return Coluna atual desta peça.
      */
     int getJ();
+
     /**
      * @return Retorna o tipo desta peça.
      */
     Tipo getTipo();
+
     /**
      * Move esta peça de acordo com as coordenadas de destino e origem da
      * jogada.
@@ -131,6 +139,7 @@ public interface IPeca extends Serializable {
      * @see IPeca#mover(int, int)
      */
     void mover(IJogada jogada, Peca outra) throws ChessException;
+
     /**
      * Retorna se o movimento da peça na jogada é na diagonal. Útil para
      * validação de movimentos de bispos.
@@ -141,6 +150,7 @@ public interface IPeca extends Serializable {
      * @return
      */
     boolean movimentoDiagonal(int destI, int destJ);
+
     /**
      * Retorna se o movimento da peça na jogada é vertical ou horizontal. Útil
      * para validação de movimentos de bispos, torres e rainhas.
@@ -150,6 +160,7 @@ public interface IPeca extends Serializable {
      * @return
      */
     boolean movimentoHorizDiag(int destI, int destJ);
+
     /**
      * Retorna se o movimento da jogada é horizontal.
      * 
@@ -160,6 +171,7 @@ public interface IPeca extends Serializable {
      *         caso contrário.
      */
     boolean movimentoHorizontal(int destJ);
+
     /**
      * Retorna se o movimento da jogada é horizontal ou vertical.
      * 
@@ -173,6 +185,7 @@ public interface IPeca extends Serializable {
      *         <code>false</code> caso contrário.
      */
     boolean movimentoHorizVert(int destI, int destJ);
+
     /**
      * Retorna se o movimento da jogada é vertical.
      * 
@@ -186,21 +199,25 @@ public interface IPeca extends Serializable {
      *         <code>false</code> caso contrário.
      */
     boolean movimentoVertical(int destI, int destJ);
+
     /**
      * @param i
      *            Nova linha desta peça.
      */
     void setI(int i);
+
     /**
      * @param j
      *            Nova coluna desta peça.
      */
     void setJ(int j);
+
     /**
      * @return Representação desta peça como {@link String}
      */
     @Override
     String toString();
+
     /**
      * Valida o movimento da peça em questão de acordo com a jogada
      * especificada.
@@ -212,6 +229,7 @@ public interface IPeca extends Serializable {
      *             Caso o movimento seja inválido esta exceção será jogada.
      */
     void validarJogada(IJogada jogada) throws ChessException;
+
     /**
      * Valida o movimento da peça em questão de acordo com as posições de
      * destino informadas.

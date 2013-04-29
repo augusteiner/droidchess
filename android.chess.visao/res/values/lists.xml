@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="itemsPromotion">
+        <item>@string/textBispo</item>
+        <item>@string/textTorre</item>
+        <item>@string/textCavalo</item>
+        <item>@string/textRainha</item>
+    </string-array>
+
+</resources>

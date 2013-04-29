@@ -1,25 +1,32 @@
 package android.chess.visao.views;
 
 import static java.lang.Math.min;
+
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
 import android.chess.dominio.events.handlers.IMovimentoHandler;
 import android.chess.dominio.events.handlers.ITomadaHandler;
+
 import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
 import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.events.info.interfaces.ITomadaInfo;
+
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
-import android.chess.dominio.pecas.Peao;
+
 import android.chess.dominio.pecas.interfaces.IPeao;
 import android.chess.dominio.pecas.interfaces.IPeca;
-import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
+
 import android.chess.visao.R;
+
 import android.content.Context;
+
 import android.graphics.Canvas;
+
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
 import android.view.View;
 
 /**
@@ -27,11 +34,8 @@ import android.view.View;
  * 
  * @author augusteiner
  */
-public abstract class PecaAbstrata extends View
-    implements
-        IAntesPromocaoHandler,
-        IDepoisPromocaoHandler,
-        ITomadaHandler,
+public abstract class PecaAbstrata extends View implements
+        IAntesPromocaoHandler, IDepoisPromocaoHandler, ITomadaHandler,
         IMovimentoHandler {
 
     /**
@@ -70,7 +74,11 @@ public abstract class PecaAbstrata extends View
      *            Handler a ser adicionado.
      */
     public void addOnPromocaoHandler(IAntesPromocaoHandler onPromocaoHandler) {
-        ((Peao) getPeca()).addOnAntesPromocaoHandler(onPromocaoHandler);
+        IPeca peca = (IPeca) getPeca();
+
+        if (peca instanceof IPeao) {
+            ((IPeao) peca).addOnAntesPromocaoHandler(onPromocaoHandler);
+        }
     }
 
     /**
@@ -82,6 +90,7 @@ public abstract class PecaAbstrata extends View
     public void addOnTomadaHandler(ITomadaHandler onTomadaHandler) {
         getPeca().addOnTomadaHandler(onTomadaHandler);
     }
+
     /**
      * Retorna o resourse_id de acordo com a cor e nome da peça configurada com
      * o setTag.
@@ -97,8 +106,8 @@ public abstract class PecaAbstrata extends View
             return 0;
 
         String bgName = String.format("%s_%s", peca.getCor().toString()
-            .substring(0, 1).toLowerCase(), peca.getClass().getSimpleName()
-            .toLowerCase());
+                .substring(0, 1).toLowerCase(), peca.getClass().getSimpleName()
+                .toLowerCase());
 
         try {
             /*
@@ -153,7 +162,7 @@ public abstract class PecaAbstrata extends View
      */
     public int getLado() {
         return (min(getDisplayMetrics().widthPixels,
-            getDisplayMetrics().heightPixels) / 8);
+                getDisplayMetrics().heightPixels) / 8);
     }
 
     /**
@@ -167,6 +176,7 @@ public abstract class PecaAbstrata extends View
     public IPeca getPeca() {
         return (IPeca) getTag();
     }
+
     /**
      * Inicializa informações desta peça, como imagem de fundo entre outros.
      */
@@ -176,8 +186,7 @@ public abstract class PecaAbstrata extends View
         // Peça da camada de modelo.
         IPeca peca = getPeca();
 
-        // TODO Melhorar abordagem!
-        if (getPeca().getTipo() == Tipo.Peao) {
+        if (peca instanceof IPeao) {
             IPeao peao = (IPeao) peca;
 
             peao.addOnAntesPromocaoHandler(this);
@@ -199,7 +208,7 @@ public abstract class PecaAbstrata extends View
         Log.d(TAG, String.format("Promoção da peça %s.", info.getAlvo()));
 
         // FIXME Remover chamada daqui, método deve ser executado na UI.
-        info.callback();
+        // info.callback();
     }
 
     /*
@@ -246,7 +255,7 @@ public abstract class PecaAbstrata extends View
     }
 
     public void onMovimento(Object sender, IMovimentoInfo evento)
-        throws ChessException {
+            throws ChessException {
 
     }
 
