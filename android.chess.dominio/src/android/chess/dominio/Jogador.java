@@ -4,6 +4,10 @@ import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IUsuario;
 import android.chess.dominio.pecas.interfaces.IPeca.Cor;
 
+/**
+ * @author augusteiner
+ * 
+ */
 public class Jogador implements IJogador {
     /**
      *
@@ -25,60 +29,76 @@ public class Jogador implements IJogador {
      *
      */
     private static final long serialVersionUID = -2697601184492517631L;
+
     /**
      *
      */
     public Jogador() {
 
     }
+
+    /**
+     * @param cor
+     */
+    public Jogador(Cor cor) {
+        this.cor = cor;
+    }
+
     /**
      * @param usuario
+     * 
+     * @deprecated
      */
+    @Deprecated
     public Jogador(IUsuario usuario) {
 
-        nome = usuario.getNome();
-        id = usuario.getId();
-        online = usuario.getOnline();
+        this(usuario.getCor());
 
-        cor = ((IJogador) usuario).getCor();
-
+        this.nome = usuario.getNome();
+        this.id = usuario.getId();
+        this.online = usuario.getOnline();
     }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogador#getCor()
      */
     @Override
     public Cor getCor() {
-        return cor;
+        return this.cor;
     }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogador#getId()
      */
     @Override
     public int getId() {
-        return id;
+        return this.id;
     }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogador#getNome()
      */
     @Override
     public String getNome() {
-        return nome;
+        return this.nome;
     }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.chess.dominio.interfaces.IJogador#getOnline()
      */
     @Override
     public boolean getOnline() {
-        return online;
+        return this.online;
     }
+
     /**
      * @param cor
      */
@@ -86,15 +106,21 @@ public class Jogador implements IJogador {
     public void setCor(Cor cor) {
         this.cor = cor;
     }
+
+    /**
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
+
     /**
      * @param nome
      */
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     /**
      * @param online
      */

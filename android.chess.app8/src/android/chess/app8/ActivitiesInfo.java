@@ -9,8 +9,10 @@ import android.chess.PartidaActivity;
 
 /**
  * @author augusteiner
- *
+ * 
+ * @deprecated
  */
+@Deprecated
 public class ActivitiesInfo extends ActivitiesAbstractInfo {
     /**
      * @return
@@ -19,6 +21,7 @@ public class ActivitiesInfo extends ActivitiesAbstractInfo {
     public Class<? extends PartidaAbstractActivity> getPartidaActivityClass() {
         return PartidaActivity.class;
     }
+
     /**
      * @return
      */

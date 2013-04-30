@@ -26,13 +26,13 @@ public interface IPeca extends Serializable {
      */
     public enum Cor {
         /**
-         * Cor de peça branca.
-         */
-        Branca,
-        /**
          * Cor de peça preta.
          */
-        Preta;
+        Preta,
+        /**
+         * Cor de peça branca.
+         */
+        Branca;
         /**
          * Dado que o valor deste enum retorna o seu valor oposto (levando em
          * consideração que só há dois valores possíveis).
@@ -40,10 +40,11 @@ public interface IPeca extends Serializable {
          * @return A cor oposta a atual deste enum.
          */
         public Cor outra() {
-            if (compareTo(Branca) == 0)
+            if (compareTo(Branca) == 0) {
                 return Preta;
-            else
+            } else {
                 return Branca;
+            }
         }
     }
 
@@ -88,8 +89,8 @@ public interface IPeca extends Serializable {
      * Adiciona handler para o evento de movimento desta peça.
      * 
      * @param onMovimentoHandler
-     *            Handler a ser adicionado a fila de notificação caso ocorra o
-     *            movimento desta peça.
+     * Handler a ser adicionado a fila de notificação caso ocorra o movimento
+     * desta peça.
      */
     void addOnMovimentoHandler(IMovimentoHandler onMovimentoHandler);
 
@@ -97,8 +98,8 @@ public interface IPeca extends Serializable {
      * Adiciona handler para o evento de tomada de peças.
      * 
      * @param onTomadaHandler
-     *            Handler a ser adicionado a fila de notificação caso ocorra
-     *            tomada desta peça.
+     * Handler a ser adicionado a fila de notificação caso ocorra tomada desta
+     * peça.
      */
     void addOnTomadaHandler(ITomadaHandler onTomadaHandler);
 
@@ -127,14 +128,14 @@ public interface IPeca extends Serializable {
      * jogada.
      * 
      * @param jogada
-     *            Objeto para fornecer informações das coordenadas da jogada.
+     * Objeto para fornecer informações das coordenadas da jogada.
      * 
      * @param outra
-     *            Caso a jogada seja uma tomada de peça, este objeto deve ser
-     *            diferente de <code>null</code>.
+     * Caso a jogada seja uma tomada de peça, este objeto deve ser diferente de
+     * <code>null</code>.
      * 
      * @throws ChessException
-     *             Caso algum erro ocorra.
+     * Caso algum erro ocorra.
      * 
      * @see IPeca#mover(int, int)
      */
@@ -165,10 +166,10 @@ public interface IPeca extends Serializable {
      * Retorna se o movimento da jogada é horizontal.
      * 
      * @param jogada
-     *            Jogada a ser testado o tipo de movimento.
+     * Jogada a ser testado o tipo de movimento.
      * 
      * @return {@link Boolean} True caso o movimento seja na horizontal, False
-     *         caso contrário.
+     * caso contrário.
      */
     boolean movimentoHorizontal(int destJ);
 
@@ -176,13 +177,13 @@ public interface IPeca extends Serializable {
      * Retorna se o movimento da jogada é horizontal ou vertical.
      * 
      * @param destI
-     *            Linha de destino do movimento.
+     * Linha de destino do movimento.
      * 
      * @param destJ
-     *            Coluna de destino do movimento.
+     * Coluna de destino do movimento.
      * 
      * @return <code>true</code> caso o movimento seja horizontal ou vertical,
-     *         <code>false</code> caso contrário.
+     * <code>false</code> caso contrário.
      */
     boolean movimentoHorizVert(int destI, int destJ);
 
@@ -190,25 +191,25 @@ public interface IPeca extends Serializable {
      * Retorna se o movimento da jogada é vertical.
      * 
      * @param destI
-     *            Linha de destino do movimento.
+     * Linha de destino do movimento.
      * 
      * @param destJ
-     *            Coluna de destino do movimento.
+     * Coluna de destino do movimento.
      * 
      * @return <code>true</code> caso o movimento seja considerado vertial,
-     *         <code>false</code> caso contrário.
+     * <code>false</code> caso contrário.
      */
     boolean movimentoVertical(int destI, int destJ);
 
     /**
      * @param i
-     *            Nova linha desta peça.
+     * Nova linha desta peça.
      */
     void setI(int i);
 
     /**
      * @param j
-     *            Nova coluna desta peça.
+     * Nova coluna desta peça.
      */
     void setJ(int j);
 
@@ -223,10 +224,10 @@ public interface IPeca extends Serializable {
      * especificada.
      * 
      * @param jogada
-     *            Jogada a ser realizada com a peça em questão.
+     * Jogada a ser realizada com a peça em questão.
      * 
      * @throws ChessException
-     *             Caso o movimento seja inválido esta exceção será jogada.
+     * Caso o movimento seja inválido esta exceção será jogada.
      */
     void validarJogada(IJogada jogada) throws ChessException;
 
@@ -235,13 +236,13 @@ public interface IPeca extends Serializable {
      * destino informadas.
      * 
      * @param destI
-     *            Linha de destino.
+     * Linha de destino.
      * 
      * @param destJ
-     *            Coluna de destino.
+     * Coluna de destino.
      * 
      * @throws ChessException
-     *             Caso o movimento seja inválido esta exceção será jogada.
+     * Caso o movimento seja inválido esta exceção será jogada.
      */
     void validarJogada(int destI, int destJ) throws ChessException;
 }
