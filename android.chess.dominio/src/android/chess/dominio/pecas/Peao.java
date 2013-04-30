@@ -4,10 +4,10 @@ import static java.lang.Math.abs;
 import static java.lang.Math.signum;
 import android.chess.dominio.Jogada;
 import android.chess.dominio.Peca;
+import android.chess.dominio.events.args.PromocaoArgs;
+import android.chess.dominio.events.args.interfaces.IPromocaoArgs;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
-import android.chess.dominio.events.info.PromocaoInfo;
-import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoException;
@@ -30,11 +30,11 @@ public class Peao extends Peca implements IPeao {
     /**
      * 
      */
-    private IEvent<IPromocaoInfo> onAntesPromocao;
+    private IEvent<IPromocaoArgs> onAntesPromocao;
     /**
      * 
      */
-    private IEvent<IPromocaoInfo> onDepoisPromocao;
+    private IEvent<IPromocaoArgs> onDepoisPromocao;
     private int prevI;
     /**
      *
@@ -50,8 +50,8 @@ public class Peao extends Peca implements IPeao {
 
         prevI = getInitialPreviousI();
 
-        onAntesPromocao = new Event<IPromocaoInfo>();
-        onDepoisPromocao = new Event<IPromocaoInfo>();
+        onAntesPromocao = new Event<IPromocaoArgs>();
+        onDepoisPromocao = new Event<IPromocaoArgs>();
     }
 
     /*
@@ -65,7 +65,7 @@ public class Peao extends Peca implements IPeao {
     public void addOnAntesPromocaoHandler(IAntesPromocaoHandler handler) {
         final IAntesPromocaoHandler handlerRef = handler;
 
-        onAntesPromocao.addHandler(new IHandler<IPromocaoInfo>() {
+        onAntesPromocao.addHandler(new IHandler<IPromocaoArgs>() {
 
             /**
              *
@@ -73,7 +73,7 @@ public class Peao extends Peca implements IPeao {
             private static final long serialVersionUID = -148723678563964175L;
 
             @Override
-            public void handle(Object sender, IPromocaoInfo info)
+            public void handle(Object sender, IPromocaoArgs info)
                     throws Exception {
                 handlerRef.onAntesPromocao(info);
             }
@@ -89,7 +89,7 @@ public class Peao extends Peca implements IPeao {
      */
     @Override
     public void addOnDepoisPromocaoHandler(final IDepoisPromocaoHandler handler) {
-        onDepoisPromocao.addHandler(new IHandler<IPromocaoInfo>() {
+        onDepoisPromocao.addHandler(new IHandler<IPromocaoArgs>() {
 
             /**
              *
@@ -97,7 +97,7 @@ public class Peao extends Peca implements IPeao {
             private static final long serialVersionUID = 4226611616067756655L;
 
             @Override
-            public void handle(Object sender, IPromocaoInfo info)
+            public void handle(Object sender, IPromocaoArgs info)
                     throws Exception {
                 handler.onDepoisPromocao(info);
             }
@@ -120,7 +120,7 @@ public class Peao extends Peca implements IPeao {
 
         // Checando condição de promoção.
         if (di == 0 || di == 7) {
-            IPromocaoInfo info = new PromocaoInfo(this, jogada,
+            IPromocaoArgs info = new PromocaoArgs(this, jogada,
                     promocaoCallback());
 
             onAntesPromocao(info);
@@ -185,12 +185,12 @@ public class Peao extends Peca implements IPeao {
     /**
      * @return
      */
-    private ICallback<IPromocaoInfo> promocaoCallback() {
-        return new ICallback<IPromocaoInfo>() {
+    private ICallback<IPromocaoArgs> promocaoCallback() {
+        return new ICallback<IPromocaoArgs>() {
             private boolean invoked = false;
 
             @Override
-            public void invoke(IPromocaoInfo info) throws ChessException {
+            public void invoke(IPromocaoArgs info) throws ChessException {
 
                 if (invoked)
                     return;
@@ -208,7 +208,7 @@ public class Peao extends Peca implements IPeao {
      * @param info
      * @throws ChessException
      */
-    protected void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+    protected void onAntesPromocao(IPromocaoArgs info) throws ChessException {
         try {
             onAntesPromocao.raise(info);
         } catch (Exception e) {
@@ -220,7 +220,7 @@ public class Peao extends Peca implements IPeao {
      * @param info
      * @throws ChessException
      */
-    protected void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+    protected void onDepoisPromocao(IPromocaoArgs info) throws ChessException {
         try {
             onDepoisPromocao.raise(info);
         } catch (Exception e) {

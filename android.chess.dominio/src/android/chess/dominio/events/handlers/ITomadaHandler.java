@@ -1,6 +1,6 @@
 package android.chess.dominio.events.handlers;
 
-import android.chess.dominio.events.info.interfaces.ITomadaInfo;
+import android.chess.dominio.events.args.interfaces.ITomadaArgs;
 import android.chess.dominio.excecao.MovimentoException;
 
 /**
@@ -14,11 +14,10 @@ public interface ITomadaHandler {
      * uma tomada de peça ocorra.
      * 
      * @param info
-     *            Informações a serem repassadas a este handler.
+     * Informações a serem repassadas a este handler.
      * 
      * @throws MovimentoException
-     *             O método deve jogar esta exceção caso o movimento deva ser
-     *             cancelado.
+     * O método deve jogar esta exceção caso o movimento deva ser cancelado.
      */
-    public void onTomada(ITomadaInfo info) throws MovimentoException;
+    public void onTomada(ITomadaArgs info) throws MovimentoException;
 }

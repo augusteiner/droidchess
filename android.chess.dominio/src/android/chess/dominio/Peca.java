@@ -4,12 +4,12 @@
 package android.chess.dominio;
 
 import static java.lang.Math.abs;
+import android.chess.dominio.events.args.MovimentoArgs;
+import android.chess.dominio.events.args.TomadaArgs;
+import android.chess.dominio.events.args.interfaces.IMovimentoArgs;
+import android.chess.dominio.events.args.interfaces.ITomadaArgs;
 import android.chess.dominio.events.handlers.IMovimentoHandler;
 import android.chess.dominio.events.handlers.ITomadaHandler;
-import android.chess.dominio.events.info.MovimentoInfo;
-import android.chess.dominio.events.info.TomadaInfo;
-import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
-import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.interfaces.IJogada;
@@ -32,9 +32,9 @@ public abstract class Peca implements IPeca {
 
     private boolean moveu;
 
-    private Event<IMovimentoInfo> onMovimento;
+    private Event<IMovimentoArgs> onMovimento;
 
-    private Event<ITomadaInfo> onTomada;
+    private Event<ITomadaArgs> onTomada;
     /**
      *
      */
@@ -46,8 +46,8 @@ public abstract class Peca implements IPeca {
     protected Peca(Cor cor) {
         this(cor, false);
 
-        onTomada = new Event<ITomadaInfo>();
-        onMovimento = new Event<IMovimentoInfo>();
+        onTomada = new Event<ITomadaArgs>();
+        onMovimento = new Event<IMovimentoArgs>();
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public void addOnMovimentoHandler(final IMovimentoHandler onMovimentoHandler) {
-        onMovimento.addHandler(new IHandler<IMovimentoInfo>() {
+        onMovimento.addHandler(new IHandler<IMovimentoArgs>() {
 
             /**
              *
@@ -94,7 +94,7 @@ public abstract class Peca implements IPeca {
             private static final long serialVersionUID = 1324757291254818261L;
 
             @Override
-            public void handle(Object sender, IMovimentoInfo info)
+            public void handle(Object sender, IMovimentoArgs info)
                 throws Exception {
                 onMovimentoHandler.onMovimento(sender, info);
             }
@@ -110,7 +110,7 @@ public abstract class Peca implements IPeca {
      */
     @Override
     public void addOnTomadaHandler(final ITomadaHandler onTomadaHandler) {
-        onTomada.addHandler(new IHandler<ITomadaInfo>() {
+        onTomada.addHandler(new IHandler<ITomadaArgs>() {
 
             /**
              *
@@ -118,7 +118,7 @@ public abstract class Peca implements IPeca {
             private static final long serialVersionUID = -1823497395502062889L;
 
             @Override
-            public void handle(Object sender, ITomadaInfo info)
+            public void handle(Object sender, ITomadaArgs info)
                 throws Exception {
                 onTomadaHandler.onTomada(info);
             }
@@ -340,7 +340,7 @@ public abstract class Peca implements IPeca {
         } else {
             validarTomada(outra);
 
-            TomadaInfo evento = new TomadaInfo(this, outra);
+            TomadaArgs evento = new TomadaArgs(this, outra);
 
             outra.onTomada(evento);
             onMovimento(evento);
@@ -353,7 +353,7 @@ public abstract class Peca implements IPeca {
      * @param destI
      * @param destJ
      */
-    protected void acionarMovimento(MovimentoInfo evento) {
+    protected void acionarMovimento(MovimentoArgs evento) {
         onMovimento(evento);
 
         setI(evento.getDestI());
@@ -369,7 +369,7 @@ public abstract class Peca implements IPeca {
      * @param destJ
      *            Coordenada j de destino.
      */
-    protected void onMovimento(MovimentoInfo evento) {
+    protected void onMovimento(MovimentoArgs evento) {
         try {
             onMovimento.raise(evento);
         } catch (Exception e) {
@@ -381,7 +381,7 @@ public abstract class Peca implements IPeca {
      * @param evento
      * @throws MovimentoException
      */
-    protected void onTomada(ITomadaInfo evento) throws MovimentoException {
+    protected void onTomada(ITomadaArgs evento) throws MovimentoException {
         try {
             onTomada.raise(evento);
         } catch (MovimentoException e) {
@@ -399,7 +399,7 @@ public abstract class Peca implements IPeca {
      * @param destJ
      */
     protected void realizarMovimento(int destI, int destJ) {
-        MovimentoInfo evento = new MovimentoInfo(this, destI, destJ);
+        MovimentoArgs evento = new MovimentoArgs(this, destI, destJ);
 
         acionarMovimento(evento);
     }

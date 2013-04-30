@@ -5,13 +5,13 @@ import static java.lang.Math.abs;
 import java.io.PrintStream;
 import java.util.Iterator;
 
+import android.chess.dominio.events.args.interfaces.IMovimentoArgs;
+import android.chess.dominio.events.args.interfaces.IPromocaoArgs;
+import android.chess.dominio.events.args.interfaces.ITomadaArgs;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
 import android.chess.dominio.events.handlers.IMovimentoHandler;
 import android.chess.dominio.events.handlers.ITomadaHandler;
-import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
-import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
-import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
 import android.chess.dominio.excecao.MovimentoException;
@@ -147,7 +147,7 @@ IDepoisPromocaoHandler, IMovimentoHandler, ITomadaHandler {
      * (android.chess.dominio.interfaces.IPromocaoInfo)
      */
     @Override
-    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+    public void onAntesPromocao(IPromocaoArgs info) throws ChessException {
 
         if (info.getAlvo().getTipo() != Tipo.Peao) {
             throw new MovimentoException(info.getAlvo(), info.getDestI(),
@@ -163,7 +163,7 @@ IDepoisPromocaoHandler, IMovimentoHandler, ITomadaHandler {
      * (android.chess.dominio.interfaces.IPromocaoInfo)
      */
     @Override
-    public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+    public void onDepoisPromocao(IPromocaoArgs info) throws ChessException {
 
         this.pecas[info.getDestI()][info.getDestJ()] = info.getAlvo();
     }
@@ -176,7 +176,7 @@ IDepoisPromocaoHandler, IMovimentoHandler, ITomadaHandler {
      * (android.chess.dominio.interfaces.IEventoMover)
      */
     @Override
-    public void onMovimento(Object sender, IMovimentoInfo info)
+    public void onMovimento(Object sender, IMovimentoArgs info)
         throws ChessException {
         IPeca peca = info.getAlvo();
 
@@ -186,7 +186,7 @@ IDepoisPromocaoHandler, IMovimentoHandler, ITomadaHandler {
     }
 
     @Override
-    public void onTomada(ITomadaInfo evento) throws MovimentoException {
+    public void onTomada(ITomadaArgs evento) throws MovimentoException {
 
     }
 

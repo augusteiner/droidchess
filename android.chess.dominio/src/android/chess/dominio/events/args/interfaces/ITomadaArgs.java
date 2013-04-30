@@ -1,4 +1,4 @@
-package android.chess.dominio.events.info.interfaces;
+package android.chess.dominio.events.args.interfaces;
 
 import android.chess.dominio.pecas.interfaces.IPeca;
 
@@ -6,7 +6,7 @@ import android.chess.dominio.pecas.interfaces.IPeca;
  * @author augusteiner
  * 
  */
-public interface ITomadaInfo {
+public interface ITomadaArgs {
 
     /**
      * @return

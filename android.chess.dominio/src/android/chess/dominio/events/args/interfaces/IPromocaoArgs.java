@@ -1,4 +1,4 @@
-package android.chess.dominio.events.info.interfaces;
+package android.chess.dominio.events.args.interfaces;
 
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.pecas.interfaces.IPeca;
@@ -11,7 +11,7 @@ import android.chess.dominio.pecas.interfaces.IPeca.Tipo;
  * @author augusteiner
  * 
  */
-public interface IPromocaoInfo extends IMovimentoInfo {
+public interface IPromocaoArgs extends IMovimentoArgs {
     /**
      * @return
      * @throws Exception

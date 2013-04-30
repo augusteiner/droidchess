@@ -1,6 +1,6 @@
 package android.chess.dominio.events.handlers;
 
-import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
+import android.chess.dominio.events.args.interfaces.IMovimentoArgs;
 import android.chess.dominio.excecao.ChessException;
 
 /**
@@ -13,5 +13,5 @@ public interface IMovimentoHandler {
      * @param info
      * @throws Exception
      */
-    void onMovimento(Object sender, IMovimentoInfo info) throws ChessException;
+    void onMovimento(Object sender, IMovimentoArgs info) throws ChessException;
 }

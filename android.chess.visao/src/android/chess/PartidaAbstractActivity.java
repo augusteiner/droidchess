@@ -1,8 +1,8 @@
 package android.chess;
 
 import android.app.AlertDialog.Builder;
+import android.chess.dominio.events.args.interfaces.IPromocaoArgs;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
-import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.visao.FullWindowActivity;
 import android.chess.visao.Mensageiro;
@@ -69,8 +69,8 @@ public abstract class PartidaAbstractActivity extends FullWindowActivity
     /**
      * Exibe um diálogo para escolha da peça da promoção.
      */
-    public void showPromotionDialog(IPromocaoInfo info) {
-        final IPromocaoInfo infoRef = info;
+    public void showPromotionDialog(IPromocaoArgs info) {
+        final IPromocaoArgs infoRef = info;
 
         Builder b = new Builder(this);
 
@@ -128,7 +128,7 @@ public abstract class PartidaAbstractActivity extends FullWindowActivity
      * android.chess.dominio.events.handlers.IAntesPromocaoHandler#onAntesPromocao
      * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
      */
-    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+    public void onAntesPromocao(IPromocaoArgs info) throws ChessException {
         showPromotionDialog(info);
     }
 }

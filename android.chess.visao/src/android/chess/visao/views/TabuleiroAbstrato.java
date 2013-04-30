@@ -6,9 +6,9 @@ import static java.lang.Math.min;
 import java.util.Iterator;
 
 import android.chess.controle.PartidaControle;
+import android.chess.dominio.events.args.interfaces.IPromocaoArgs;
+import android.chess.dominio.events.args.interfaces.ITomadaArgs;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
-import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
-import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.pecas.interfaces.IPeca;
@@ -137,12 +137,12 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      * @param info
      * @throws ChessException
      */
-    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+    public void onAntesPromocao(IPromocaoArgs info) throws ChessException {
 
         this.onAntesPromocaoUiHandler.onAntesPromocao(info);
     }
 
-    public void onDepoisPromocao(Object sender, IPromocaoInfo evento)
+    public void onDepoisPromocao(Object sender, IPromocaoArgs evento)
             throws ChessException {
         //
     }
@@ -151,7 +151,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      * @param evento
      * @throws MovimentoException
      */
-    public void onTomada(ITomadaInfo evento) throws MovimentoException {
+    public void onTomada(ITomadaArgs evento) throws MovimentoException {
         //
     }
 

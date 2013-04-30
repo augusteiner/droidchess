@@ -1,13 +1,13 @@
-package android.chess.dominio.events.info;
+package android.chess.dominio.events.args;
 
-import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
+import android.chess.dominio.events.args.interfaces.IMovimentoArgs;
 import android.chess.dominio.pecas.interfaces.IPeca;
 
 /**
  * @author augusteiner
  * 
  */
-public class MovimentoInfo implements IMovimentoInfo {
+public class MovimentoArgs implements IMovimentoArgs {
     private int destI;
     private int destJ;
     protected IPeca alvo;
@@ -17,7 +17,7 @@ public class MovimentoInfo implements IMovimentoInfo {
      * @param destI
      * @param destJ
      */
-    public MovimentoInfo(IPeca alvo, int destI, int destJ) {
+    public MovimentoArgs(IPeca alvo, int destI, int destJ) {
         this.alvo = alvo;
 
         this.destI = destI;

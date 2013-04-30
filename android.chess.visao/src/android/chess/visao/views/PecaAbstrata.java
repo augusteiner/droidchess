@@ -2,14 +2,14 @@ package android.chess.visao.views;
 
 import static java.lang.Math.min;
 
+import android.chess.dominio.events.args.interfaces.IMovimentoArgs;
+import android.chess.dominio.events.args.interfaces.IPromocaoArgs;
+import android.chess.dominio.events.args.interfaces.ITomadaArgs;
 import android.chess.dominio.events.handlers.IAntesPromocaoHandler;
 import android.chess.dominio.events.handlers.IDepoisPromocaoHandler;
 import android.chess.dominio.events.handlers.IMovimentoHandler;
 import android.chess.dominio.events.handlers.ITomadaHandler;
 
-import android.chess.dominio.events.info.interfaces.IMovimentoInfo;
-import android.chess.dominio.events.info.interfaces.IPromocaoInfo;
-import android.chess.dominio.events.info.interfaces.ITomadaInfo;
 
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
@@ -71,7 +71,7 @@ public abstract class PecaAbstrata extends View implements
      * Adiciona um handler do evento de promoção a fila de execução.
      * 
      * @param onPromocaoHandler
-     *            Handler a ser adicionado.
+     * Handler a ser adicionado.
      */
     public void addOnPromocaoHandler(IAntesPromocaoHandler onPromocaoHandler) {
         IPeca peca = (IPeca) getPeca();
@@ -85,7 +85,7 @@ public abstract class PecaAbstrata extends View implements
      * Adiciona um handler do evento de tomada a fila de execução.
      * 
      * @param onTomadaHandler
-     *            Handler a ser adicionado.
+     * Handler a ser adicionado.
      */
     public void addOnTomadaHandler(ITomadaHandler onTomadaHandler) {
         getPeca().addOnTomadaHandler(onTomadaHandler);
@@ -158,7 +158,7 @@ public abstract class PecaAbstrata extends View implements
      * display.
      * 
      * @return Número inteiro representando o tamanho do lado desta view
-     *         (cosiderada como um quadrado).
+     * (cosiderada como um quadrado).
      */
     public int getLado() {
         return (min(getDisplayMetrics().widthPixels,
@@ -204,7 +204,7 @@ public abstract class PecaAbstrata extends View implements
      * android.chess.dominio.events.handlers.IAntesPromocaoHandler#onAntesPromocao
      * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
      */
-    public void onAntesPromocao(IPromocaoInfo info) throws ChessException {
+    public void onAntesPromocao(IPromocaoArgs info) throws ChessException {
         Log.d(TAG, String.format("Promoção da peça %s.", info.getAlvo()));
 
         // FIXME Remover chamada daqui, método deve ser executado na UI.
@@ -218,7 +218,7 @@ public abstract class PecaAbstrata extends View implements
      * android.chess.dominio.events.handlers.IDepoisPromocaoHandler#onDepoisPromocao
      * (android.chess.dominio.events.info.interfaces.IPromocaoInfo)
      */
-    public void onDepoisPromocao(IPromocaoInfo info) throws ChessException {
+    public void onDepoisPromocao(IPromocaoArgs info) throws ChessException {
         Log.d(TAG, String.format("Peão promovido a %s.", info.getAlvo()));
 
         setTag(info.getAlvo());
@@ -254,7 +254,7 @@ public abstract class PecaAbstrata extends View implements
         setMeasuredDimension(getLado(), getLado());
     }
 
-    public void onMovimento(Object sender, IMovimentoInfo evento)
+    public void onMovimento(Object sender, IMovimentoArgs evento)
             throws ChessException {
 
     }
@@ -266,7 +266,7 @@ public abstract class PecaAbstrata extends View implements
      * android.chess.dominio.events.handlers.ITomadaHandler#onTomada(android
      * .chess.dominio.events.info.interfaces.ITomadaInfo)
      */
-    public void onTomada(ITomadaInfo evento) throws MovimentoException {
+    public void onTomada(ITomadaArgs evento) throws MovimentoException {
         setVisibility(INVISIBLE);
         invalidate();
 

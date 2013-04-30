@@ -5,7 +5,7 @@ package android.chess.dominio.pecas;
 
 import static java.lang.Math.abs;
 import android.chess.dominio.Peca;
-import android.chess.dominio.events.info.interfaces.ITomadaInfo;
+import android.chess.dominio.events.args.interfaces.ITomadaArgs;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.MovimentoException;
 import android.chess.dominio.excecao.TomadaException;
@@ -50,7 +50,7 @@ public class Rei extends Peca {
      * .interfaces.ITomadaInfo)
      */
     @Override
-    protected void onTomada(ITomadaInfo evento) throws MovimentoException {
+    protected void onTomada(ITomadaArgs evento) throws MovimentoException {
 
         throw new TomadaException(evento.getOrig(), evento.getDest());
     }
