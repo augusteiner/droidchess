@@ -1,73 +1,40 @@
 package android.chess.test;
 
-import android.chess.client.ClienteFactory;
+import android.chess.dominio.Jogador;
+import android.chess.dominio.Partida;
 import android.chess.dominio.excecao.ChessException;
 import android.chess.dominio.excecao.JogadaException;
+import android.chess.dominio.interfaces.IJogador;
 import android.chess.dominio.interfaces.IPartida;
 import android.chess.dominio.interfaces.ITabuleiro;
 
 /**
  * @author augusteiner
- *
+ * 
  */
 @SuppressWarnings("unused")
 public class Jogada extends Test {
+    /**
+     * 
+     */
     private IPartida partida;
 
     /**
-     *
-     * @return
+     * 
      */
-    public IPartida getPartida() {
-        return partida;
+    public Jogada() {
+        reiniciar();
     }
 
-    /**
-     * Realiza uma jogada no tabuleiro da partida atual e imprime-o logo após.
-     *
-     * @param origI
-     * @param origJ
-     * @param destI
-     * @param destJ
-     * @throws JogadaInvalida
-     * @throws PecaNaoEncontrada
-     */
-    public void jogada(int origI, int origJ, int destI, int destJ)
-        throws ChessException {
-        IPartida p = getPartida();
-
-        p.jogada(origI, origJ, destI, destJ);
-
-        print(p.getTabuleiro());
-    }
-
-    /**
-     * Realiza o teste com algumas jogadas
-     *
-     * @throws MovimentoInvalido
-     * @throws PecaNaoEncontrada
-     */
-    @Override
-    public void run() throws Exception {
-        // peao();
-        // cavalo();
-        // bispo();
-        // rainha();
-
-        // peaoTorre();
-        // tentarMate();
-        // promocao();
-        tomadaInvalida();
-    }
     /**
      * Testa jogadas com um bispo.
-     *
+     * 
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
-     *
+     * 
      */
     private void bispo() throws ChessException {
-        convidar();
+        reiniciar();
 
         // Removendo os peões do caminho.
         jogada(1, 6, 3, 6);
@@ -75,15 +42,16 @@ public class Jogada extends Test {
         // Movendo o bispo.
         jogada(0, 5, 2, 7);
     }
+
     /**
      * Testa jogadas com um cavalo.
-     *
+     * 
      * @throws JogadaInvalida
      * @throws PecaNaoEncontrada
      */
     private void cavalo() throws ChessException {
 
-        convidar();
+        reiniciar();
 
         System.out.println("Testando movimentos do cavalo.");
 
@@ -93,22 +61,37 @@ public class Jogada extends Test {
 
         System.out.println("OK!");
     }
-    /**
-     * Partida do zero para reinicializar posições possivelmente alteradas.
-     */
-    private void convidar() {
-        try {
-            ClienteFactory.getPadrao().convidar(null, null);
-        } catch (Exception e) {
-            System.err.println(e);
 
-            System.exit(-1);
-        }
+    /**
+     * 
+     * @return
+     */
+    public IPartida getPartida() {
+        return this.partida;
+    }
+
+    /**
+     * Realiza uma jogada no tabuleiro da partida atual e imprime-o logo após.
+     * 
+     * @param origI
+     * @param origJ
+     * @param destI
+     * @param destJ
+     * @throws JogadaInvalida
+     * @throws PecaNaoEncontrada
+     */
+    public void jogada(int origI, int origJ, int destI, int destJ)
+            throws ChessException {
+        IPartida p = getPartida();
+
+        p.jogada(origI, origJ, destI, destJ);
+
+        print(p.getTabuleiro());
     }
 
     /**
      * Jogada simples entre dois peões.
-     *
+     * 
      * @throws PecaNaoEncontrada
      * @throws JogadaInvalida
      */
@@ -133,15 +116,17 @@ public class Jogada extends Test {
     private void print() {
         print(getPartida().getTabuleiro());
     }
+
     /**
      * Imprime uma representação gráfica do tabuleiro dado.
-     *
+     * 
      * @param tabuleiro
-     *            Tabuleiro a ser impresso.
+     * Tabuleiro a ser impresso.
      */
     private void print(ITabuleiro tabuleiro) {
         tabuleiro.print(System.out);
     }
+
     /**
      * @throws ChessException
      */
@@ -177,6 +162,36 @@ public class Jogada extends Test {
     }
 
     /**
+     * Partida do zero para reinicializar posições possivelmente alteradas.
+     */
+    private void reiniciar() {
+        IJogador j1 = new Jogador();
+        IJogador j2 = new Jogador();
+
+        this.partida = new Partida(j1, j2);
+    }
+
+    /**
+     * Realiza o teste com algumas jogadas
+     * 
+     * @throws MovimentoInvalido
+     * @throws PecaNaoEncontrada
+     */
+    @Override
+    public void run() throws Exception {
+        // peao();
+        // cavalo();
+        // bispo();
+        // rainha();
+
+        // peaoTorre();
+        // tentarMate();
+        // promocao();
+        // tomadaInvalida();
+
+    }
+
+    /**
      * @throws ChessException
      */
     private void tentarMate() throws ChessException {
@@ -201,11 +216,12 @@ public class Jogada extends Test {
         // Só reimprimindo tabuleiro.
         // print(getPartida().getTabuleiro());
     }
+
     /**
      * Testa um exemplo de tomada inválida com peça no caminho da jogada.
-     *
+     * 
      * @throws Exception
-     *
+     * 
      * @throws ChessException
      */
     private void tomadaInvalida() throws Exception {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.dominio"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.visao.interfaces"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/android.chess.negocio"/>

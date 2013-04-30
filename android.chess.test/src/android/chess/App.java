@@ -1,6 +1,6 @@
 package android.chess;
 
-import android.chess.test.Persistencia;
+import android.chess.test.Jogada;
 import android.chess.test.Test;
 
 public class App {
@@ -17,14 +17,13 @@ public class App {
 
     /**
      * @throws Exception
-     *
+     * 
      */
     private static void run() throws Throwable {
-        Test[] tests = new Test[]{
-            // new Jogada(),
-            // new Evento(),
-            // new Cliente(),
-            new Persistencia()
+        Test[] tests = new Test[] { new Jogada()
+        // new Evento(),
+        // new Cliente(),
+        // new Persistencia()
         };
 
         for (Test t : tests) {

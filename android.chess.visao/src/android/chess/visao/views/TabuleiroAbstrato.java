@@ -95,6 +95,13 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     /**
      * @return
      */
+    private DisplayMetrics getDisplayMetrics() {
+        return getContext().getResources().getDisplayMetrics();
+    }
+
+    /**
+     * @return
+     */
     public Mensageiro getMensageiro() {
         return new Mensageiro(getContext());
     }
@@ -133,58 +140,6 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     }
 
     /**
-     * @param sender
-     * @param info
-     * @throws ChessException
-     */
-    public void onAntesPromocao(IPromocaoArgs info) throws ChessException {
-
-        this.onAntesPromocaoUiHandler.onAntesPromocao(info);
-    }
-
-    public void onDepoisPromocao(Object sender, IPromocaoArgs evento)
-            throws ChessException {
-        //
-    }
-
-    /**
-     * @param evento
-     * @throws MovimentoException
-     */
-    public void onTomada(ITomadaArgs evento) throws MovimentoException {
-        //
-    }
-
-    /**
-     * @return
-     */
-    private DisplayMetrics getDisplayMetrics() {
-        return getContext().getResources().getDisplayMetrics();
-    }
-
-    /**
-     *
-     */
-    private void initPrivate() {
-        mensageiro = new Mensageiro(getContext());
-
-        try {
-            partidaCtrl = new PartidaControle();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            mensageiro.erro(e);
-
-            return;
-        }
-
-        placeRect = new Rect();
-        paint = new Paint();
-
-        setBackgroundColor(Color.WHITE);
-    }
-
-    /**
      * Método deve ser utilizado para iniciar algo mais nas classes que herdem
      * desta.
      * 
@@ -199,7 +154,7 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
      * 
      */
     protected void initPecas(ViewGroup contentView) {
-        Iterator<IPeca> pecas = partidaCtrl.getTabuleiro().getPecas();
+        Iterator<IPeca> pecas = this.partidaCtrl.getTabuleiro().getPecas();
         IPeca next = null;
         Context context = getContext();
 
@@ -230,10 +185,47 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     }
 
     /**
+     *
+     */
+    private void initPrivate() {
+        this.mensageiro = new Mensageiro(getContext());
+
+        try {
+            this.partidaCtrl = new PartidaControle();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            this.mensageiro.erro(e);
+
+            return;
+        }
+
+        this.placeRect = new Rect();
+        this.paint = new Paint();
+
+        setBackgroundColor(Color.WHITE);
+    }
+
+    /**
      * @param context
      * @return
      */
     protected abstract PecaAbstrata novaPeca(Context context);
+
+    /**
+     * @param sender
+     * @param info
+     * @throws ChessException
+     */
+    public void onAntesPromocao(IPromocaoArgs info) throws ChessException {
+
+        this.onAntesPromocaoUiHandler.onAntesPromocao(info);
+    }
+
+    public void onDepoisPromocao(Object sender, IPromocaoArgs evento)
+            throws ChessException {
+        //
+    }
 
     /*
      * (non-Javadoc)
@@ -247,33 +239,17 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
         int width = getMeasuredWidth();
         int tPlaceSide = getSquareSide();
 
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Style.FILL);
+        this.paint.setColor(Color.BLACK);
+        this.paint.setStyle(Style.FILL);
 
         for (int i = 0, j; i < 8; i++) {
-            for (j = i % 2; j < 8; j += 2) {
-                placeRect.set(i * tPlaceSide,// left,
+            for (j = (i + 1) % 2; j < 8; j += 2) {
+                this.placeRect.set(i * tPlaceSide,// left,
                         j * tPlaceSide,// top,
                         (i + 1) * tPlaceSide,// right,
                         (j + 1) * tPlaceSide// bottom
-                );
-
-                // if (moving && i == 3) {
-                // canvas.drawRect(tPlaceRect, tPaint);
-                //
-                // int color = tPaint.getColor();
-                // float strokeWidth = tPaint.getStrokeWidth();
-                //
-                // tPaint.setColor(Color.parseColor("#661696C9"));
-                // tPaint.setStrokeWidth(5.0F);
-                //
-                // canvas.drawRect(tPlaceRect, tPaint);
-                //
-                // tPaint.setColor(color);
-                // tPaint.setStrokeWidth(strokeWidth);
-                // } else {
-                canvas.drawRect(placeRect, paint);
-                // }
+                        );
+                canvas.drawRect(this.placeRect, this.paint);
             }
         }
 
@@ -284,11 +260,11 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
         // pecaMovendo.getMeasuredHeight());
         // }
 
-        canvas.drawRect(placeRect, paint);
+        canvas.drawRect(this.placeRect, this.paint);
 
-        placeRect.set(0, 0, width + 1, width + 1);
-        paint.setStyle(Style.STROKE);
-        canvas.drawRect(placeRect, paint);
+        this.placeRect.set(0, 0, width + 1, width + 1);
+        this.paint.setStyle(Style.STROKE);
+        canvas.drawRect(this.placeRect, this.paint);
     }
 
     /*
@@ -309,6 +285,14 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
     }
 
     /**
+     * @param evento
+     * @throws MovimentoException
+     */
+    public void onTomada(ITomadaArgs evento) throws MovimentoException {
+        //
+    }
+
+    /**
      * @param destI
      * @param destJ
      * @param peca
@@ -320,8 +304,9 @@ public abstract class TabuleiroAbstrato extends View implements ITabuleiro {
         // referência do alinhamento com esta view.
         LayoutParams lp = (LayoutParams) peca.getLayoutParams();
 
-        if (lp == null)
+        if (lp == null) {
             return false;
+        }
 
         int leftMargin = destJ * peca.getWidth();
         int topMargin = destI * peca.getHeight();
