@@ -16,27 +16,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="android.chess.LoginActivity"
+            android:name="android.chess.PartidaActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="android.chess.PartidaActivity"
-            android:label="@string/title_activity_partida" >
-        </activity>
-        <activity android:name="android.chess.CadastroActivity" >
-        </activity>
-        <activity
-            android:name="android.chess.ConvidarActivity"
-            android:label="@string/title_activity_convidar" >
-        </activity>
-        <activity
-            android:name="android.chess.InicialActivity"
-            android:label="@string/title_activity_inicial" >
         </activity>
     </application>
 
